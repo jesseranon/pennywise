@@ -1,0 +1,87 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row mt-5">
+      <div class="col-6">
+        <p><strong>User Name</strong>: <%= user.userName %></p>
+        <p><strong>Email</strong>: <%= user.email %></p>
+          <!-- <div class="mt-5">
+            <h2>Add a post</h2>
+            
+          </div> -->
+      </div>
+      <div class="col-6">
+        <% if (user.accounts.length > 0) { %>
+          <% const assets = user.accounts.filter(account => account.accountSubType === 'asset') %>
+          <% const liabilities = user.accounts.filter(account => account.accountSubType === 'liability') %>
+          <ul class="row list-unstyled">
+            <% for(var i=0; i < assets.length; i++) {%>
+              <li class="col-6 mt-5" id="<%= assets[i]._id %>">
+                <a href="/account/<%= assets[i]._id%>">
+                  <%= assets[i].accountName %>
+                </a>
+                <%= user.currency %><%= assets[i].currentBalance %>
+                <a href="/transaction/form/<%= assets[i]._id %>" class="show-transaction-form">+</a>
+              </li>
+            <% } %>
+          </ul>
+          <ul class="row list-unstyled">
+            <% for(var i=0; i<liabilities.length; i++) {%>
+              <li class="col-6 mt-5" id="<%= liabilities[i]._id %>">
+                <a href="/account/<%= liabilities[i]._id%>">
+                  <%= liabilities[i].accountName %>
+                </a>
+                <%= user.currency %><%= liabilities[i].currentBalance %>
+                <a href="/transaction/form/<%= liabilities[i]._id %>" class="show-transaction-form">+</a>
+              </li>
+            <% } %>
+          </ul>
+        <% } %>
+        <form action="account/createAccount" method="post">
+        <% if (user.accounts.length === 0) {%>
+          Create an account to track start tracking your finances.
+        <% } else { %>
+          Create another account to track.
+        <% } %>
+            <!-- Name -->
+            <p>
+              <label for="createAccountName">Name</label>
+              <input type="text" name="createAccountName" id="createAccountName">
+            </p>
+            
+            
+            <!-- Type -->
+            <p>
+              <label for="createAccountType">Type</label>
+              <select name="createAccountType" id="createAccountType">
+                <option value="savings">Savings</option>
+                <option value="checking">Checking</option>
+                <option value="cash">Cash</option>
+                <option value="credit-card">Credit Card</option>
+                <option value="loan">Loan</option>
+              </select>
+            </p>
+            
+            <!-- Beginning Balance -->
+            <p>
+              <label for="createAccountBalance">Beginning balance</label>
+              <%= user.currency %><input type="text" name="createAccountBalance" id="createAccountBalance" placeholder="0.00">
+            </p>
+            
+            <button type="submit" class="btn btn-primary">
+              <% if (user.accounts.length === 0) { %>
+                Create your account
+              <% } else { %> 
+                Create another account
+              <% } %>
+            </button>
+
+          </form>
+
+        <!-- <div class="row justify-content-center mt-5">
+          <a class="btn btn-primary" href="/feed">Return to Feed</a>
+        </div>   -->
+      </div>  
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') -%>

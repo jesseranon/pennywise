@@ -1,0 +1,49 @@
+
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <!-- Account To Post To -->
+    <p>
+      Post a transaction to <span id="account-data" data-account-sub-type="<%= account.accountSubType %>"><%= account.accountName %></span>
+    </p>
+
+    <p>
+      Current Balance: <strong><%= user.currency %><span id="currentBalance"><%= account.currentBalance %></span></strong>
+    </p>
+    <form action="" method="">
+
+      <!-- Type -->
+      <p>
+        <label for="createTransactionType">Are putting money in or spending from this account?</label>
+        <select name="createTransactionType" id="createTransactionType">
+          <option value="debit">
+            Putting money in
+          </option>
+          <option value="credit">
+            Spending
+          </option>
+        </select>
+      </p>
+
+      <!-- Category -->
+      <!-- category dropdown will go here -->
+
+      <!-- Transaction Amount -->
+      <p>
+        <label for="createTransactionAmount">
+          How much?
+        </label>
+        <input type="text" name="createTransactionAmount" id="createTransactionAmount" placeholder="0.00">
+      </p>
+      
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+
+      <button type="button" class="btn" disabled>
+        <p>
+          Balance will change to
+        </p><strong><%= user.currency %><span id="netEffect"><%= account.currentBalance %></span></strong>
+      </button>
+    </form>
+  </div>
+</div>

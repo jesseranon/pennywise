@@ -6,7 +6,7 @@ module.exports = {
     displayTransactionForm: async (req, res) => {
         //send up the transaction form
         const accountId = req.params.accountId
-        const userId = req.user._id
+        const userId = req.user.id
         try {
             const user = await User.findOne({ _id: userId })
             const account = await Account.findOne({ _id: accountId}).populate("transactions")

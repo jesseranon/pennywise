@@ -5,7 +5,15 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const user = await User.findOne({ _id: req.user.id })
-        .populate("accounts")
+        .populate(
+          {
+            path: 'accounts',
+            populate: {
+              path: 'transactions'
+            }
+          },
+        )
+      console.log(user)
       user.accounts.forEach(account => {
         account.currentBalance = account.currentBalance.toString()
       })
@@ -34,9 +42,7 @@ module.exports = {
         accountType: req.body.createAccountType,
         accountSubType: createAccountSubType,
         currentBalance: req.body.createAccountBalance,
-        users: {
-          owner: req.user.id
-        }
+        owner: req.user.id,
       });
       const user = await User.findOneAndUpdate(
         { _id: userId },
@@ -73,5 +79,11 @@ module.exports = {
     } catch (err) {
       res.redirect("/profile");
     }
+  },
+  // TRANSACTIONS
+  postTransaction: async (req, res) => {
+    console.log(`post transaction request for ${req.params.accountId}`)
+    console.log(req.body)
+    res.redirect("/profile")
   },
 };

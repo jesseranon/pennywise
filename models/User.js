@@ -15,10 +15,10 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account"
   }],
-  categories: {
-    type: [mongoose.Schema.Types.Map],
-    default: []
-  }
+  categories: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category"
+  }],
 });
 
 

@@ -7,15 +7,16 @@ const accountSubType = accountInfo.dataset.accountSubType
 transactionAmount.addEventListener('input', (e) => {
     let inputAmount = e.target.value
     const inputLength = inputAmount.length
+    let dollars = ''
+    let cents = ''
+    let newAmountDisplay = ''
+
     //format input
-    if (inputLength <= 2) {
-        inputAmount = Number("00." + "0".repeat(2 - inputLength) + inputAmount)
-    } else if (inputLength <= 4) { // 01.23 -> 12.34
-        inputAmount = Number("0".repeat(4 - inputLength) + inputAmount.slice(0, inputLength - 2) + "." + inputAmount.slice(inputLength - 2))
-    } else if (inputLength === 5) {
-        inputAmount = Number(inputAmount.toString())
-    }
-    console.log(inputAmount)
+    /**
+    pull off two right-most characters and format as cents
+    if there are any other characters left, put those to dollars
+    -> insert a comma after every third character from the right
+     */
 
     // //change newAmount display
     // const selectedType = spendReceive.options[spendReceive.selectedIndex].value

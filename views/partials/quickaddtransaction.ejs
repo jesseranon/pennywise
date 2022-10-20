@@ -1,3 +1,12 @@
+<% let transactionDebit = '' %>
+<% let transactionCredit = '' %>
+<% if (account.accountSubType === 'asset') { %>
+  <% transactionDebit = 'depositing' %>
+  <% transactionCredit = 'withdraw/spending' %>
+<% } else { %>
+  <% transactionDebit = 'paying down' %>
+  <% transactionCredit = 'withdraw/spending' %>
+<% } %>
 
 <div class="container">
   <div class="row justify-content-center mt-5">
@@ -9,17 +18,17 @@
     <p>
       Current Balance: <strong><%= user.currency %><span id="currentBalance"><%= account.currentBalance %></span></strong>
     </p>
-    <form action="" method="">
+    <form action="/account/postTransaction/<%= account._id %>" method="put">
 
       <!-- Type -->
       <p>
-        <label for="createTransactionType">Are putting money in or spending from this account?</label>
+        <label for="createTransactionType">What are you doing with this transaction?</label>
         <select name="createTransactionType" id="createTransactionType">
           <option value="debit">
-            Putting money in
+            <%= transactionDebit %>
           </option>
           <option value="credit">
-            Spending
+            <%= transactionCredit %>
           </option>
         </select>
       </p>

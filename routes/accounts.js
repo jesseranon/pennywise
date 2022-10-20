@@ -17,6 +17,10 @@ router.put("modifyAccount/:id", accountsController.modifyAccount)
 
 // update account - this doesn't need to be an option i don't think
 
+
+//post transaction to account
+router.put("postTransaction/:accountId", accountsController.postTransaction)
+
 // post customCategory
 // get customCategory
 // put customCategory

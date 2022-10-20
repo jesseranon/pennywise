@@ -45,16 +45,10 @@ const AccountSchema = new mongoose.Schema({
     set: v => new mongoose.Types.Decimal128.fromString(v),
     required: true,
   },
-  users: {
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true
-    },
-    linkedUsers: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
-    }]
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   },
   transactions: [transactionSchema],
   createdAt: {

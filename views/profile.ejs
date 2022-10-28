@@ -11,16 +11,17 @@
       </div>
       <div class="col-6">
         <% if (user.accounts.length > 0) { %>
-          <% const assets = user.accounts.filter(account => account.accountSubType === 'asset') %>
-          <% const liabilities = user.accounts.filter(account => account.accountSubType === 'liability') %>
+          <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
+          <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
           <ul class="row list-unstyled">
             <% for(var i=0; i < assets.length; i++) {%>
               <li class="col-6 mt-5" id="<%= assets[i]._id %>">
                 <a href="/account/<%= assets[i]._id%>">
-                  <%= assets[i].accountName %>
+                  <%= assets[i].name %>
                 </a>
-                <%= user.currency %><%= assets[i].currentBalance %>
-                <a href="/transaction/form/<%= assets[i]._id %>" class="show-transaction-form">+</a>
+                <% const thisBalance = assets[i].currentBalance %>
+                <%= user.currency %><%= thisBalance %>
+                <a href="/transaction/post/<%= assets[i]._id %>" class="show-transaction-form">+</a>
               </li>
             <% } %>
           </ul>
@@ -28,10 +29,11 @@
             <% for(var i=0; i<liabilities.length; i++) {%>
               <li class="col-6 mt-5" id="<%= liabilities[i]._id %>">
                 <a href="/account/<%= liabilities[i]._id%>">
-                  <%= liabilities[i].accountName %>
+                  <%= liabilities[i].name %>
                 </a>
-                <%= user.currency %><%= liabilities[i].currentBalance %>
-                <a href="/transaction/form/<%= liabilities[i]._id %>" class="show-transaction-form">+</a>
+                <% const thisBalance = liabilities[i].currentBalance %>
+                <%= user.currency %><%= thisBalance %>
+                <a href="/transaction/post/<%= liabilities[i]._id %>" class="show-transaction-form">+</a>
               </li>
             <% } %>
           </ul>
@@ -64,14 +66,14 @@
             <!-- Beginning Balance -->
             <p>
               <label for="createAccountBalance">Beginning balance</label>
-              <%= user.currency %><input type="text" name="createAccountBalance" id="createAccountBalance" placeholder="0.00">
+              <%= user.currency %><input type="number" step="0.01" min="0" name="createAccountBalance" id="createAccountBalance" placeholder="0.00">
             </p>
             
             <button type="submit" class="btn btn-primary">
               <% if (user.accounts.length === 0) { %>
                 Create your account
               <% } else { %> 
-                Create another account
+                Create account
               <% } %>
             </button>
 

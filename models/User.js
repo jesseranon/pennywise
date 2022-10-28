@@ -2,23 +2,22 @@ const bcrypt = require("bcrypt")
 const mongoose = require("mongoose")
 const Account = require("./Account")
 const Category = require("./Category")
+const Payee = require("./Payee")
+const Transaction = require("./Transaction")
+const Forecast = require("./Forecast")
 
 const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
   email: { type: String, unique: true },
   password: String,
   currency: {
-      type: String,
-      default: "$"
+        type: String,
+        default: "$"
   },
-  accounts: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Account"
-  }],
-  categories: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category"
-  }],
+  accounts: [Object],
+  forecasts: [Object],
+  transactions: [Object],
+  categories: [Object],
 });
 
 
@@ -54,4 +53,4 @@ UserSchema.methods.comparePassword = function comparePassword(
   });
 };
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema)

@@ -1,15 +1,18 @@
-const transactionAmount = document.querySelector('#createTransactionAmount')
+const transactionAmount = document.querySelector('#transactionAmount')
 const currentBalance = Number(document.querySelector('#currentBalance').innerText)
-const spendReceive = document.querySelector('#createTransactionType')
+const spendReceive = document.querySelector('#transactionType')
 const accountInfo = document.querySelector('#account-data')
 const accountSubType = accountInfo.dataset.accountSubType
 
 transactionAmount.addEventListener('input', (e) => {
-    let inputAmount = e.target.value
-    const inputLength = inputAmount.length
-    let dollars = ''
-    let cents = ''
-    let newAmountDisplay = ''
+    // let inputAmount = e.target.value
+    // console.log(typeof inputAmount)
+    // let placeholder = transactionAmount.getAttribute('placeholder')
+    // if (inputAmount.length <= 2) {
+    //     placeholder = placeholder.slice(0, placeholder.length - inputAmount.length)
+    //     transactionAmount.setAttribute('placeholder', placeholder + inputAmount)
+    // }
+    // console.log(placeholder)
 
     //format input
     /**

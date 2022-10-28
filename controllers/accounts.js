@@ -1,57 +1,47 @@
-const Account = require("../models/Account")
 const User = require("../models/User")
+const Account = require("../models/Account")
+const Category = require("../models/Category")
+const Payee = require("../models/Payee")
 
 module.exports = {
-  getProfile: async (req, res) => {
-    try {
-      const user = await User.findOne({ _id: req.user.id })
-        .populate(
-          {
-            path: 'accounts',
-            populate: {
-              path: 'transactions'
-            }
-          },
-        )
-      console.log(user)
-      user.accounts.forEach(account => {
-        account.currentBalance = account.currentBalance.toString()
-      })
-      res.render("profile.ejs", { user: user });
-    } catch (err) {
-      console.log(err);
-    }
-  },
   getAccount: async (req, res) => {
-    try {
+    try { 
       const account = await Account.findById(req.params.id);
       res.render("account.ejs", { account: account, user: req.user });
     } catch (err) {
       console.log(err);
-    } 
+    }
   },
-  createAccount: async (req, res) => {
+  postAccount: async (req, res) => {
     const userId = req.user.id
     console.log(req.body.createAccountType)
-    const assets = ['savings','checking', 'cash']
+    const assets = ['savings', 'checking', 'cash']
     const createAccountSubType = (assets.includes(req.body.createAccountType) ? 'asset' : 'liability')
-    console.log(createAccountSubType)
+
     try {
-      const newAccount = await Account.create({
-        accountName: req.body.createAccountName,
-        accountType: req.body.createAccountType,
-        accountSubType: createAccountSubType,
+      const newAccount = new Account({
+        name: req.body.createAccountName,
+        type: req.body.createAccountType,
+        balanceType: createAccountSubType,
         currentBalance: req.body.createAccountBalance,
-        owner: req.user.id,
       });
-      const user = await User.findOneAndUpdate(
-        { _id: userId },
-        {
-          $push: { accounts: newAccount }
+      console.log(newAccount)
+      const newAccountPush = {
+        accounts: newAccount
+      }
+      if (newAccount.balanceType === 'liability') {
+        //create payee & category {name: `${type} bill`} and put into push as categories
+        const newCategory = {
+          name: `${newAccount.name} payment`,
+          account: newAccount._id
         }
+        newAccountPush.categories = newCategory
+      }
+      console.log('to $push:', newAccountPush)
+      await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: newAccountPush }  
       )
-      console.log(user.accounts)
-      console.log(`successfully created new account`)
       res.redirect("/profile");
     } catch (err) {
       console.log(err);
@@ -70,20 +60,15 @@ module.exports = {
     }
   },
   deleteAccount: async (req, res) => { //delete a whole-ass account
+    //
     try {
       // Find account by id
       let account = await Account.findById({ _id: req.params.id });
       //delete account
       //remove from User.accounts
-      res.redirect("/profile");
     } catch (err) {
-      res.redirect("/profile");
+      console.error(err)
     }
-  },
-  // TRANSACTIONS
-  postTransaction: async (req, res) => {
-    console.log(`post transaction request for ${req.params.accountId}`)
-    console.log(req.body)
-    res.redirect("/profile")
+    res.redirect("/profile");
   },
 };

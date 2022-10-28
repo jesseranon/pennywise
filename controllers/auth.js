@@ -1,6 +1,7 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const Category = require("../models/Category")
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -83,93 +84,31 @@ exports.postSignup = (req, res, next) => {
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
   });
+  
+  const defaultCategories = []
 
-  const defaultCategories = [
-    {
-      name: 'rent',
-      subCategory: 'housing'
-    },
-    {
-      name: 'mortgage',
-      subCategory: 'housing'
-    },
-    {
-      name: 'water',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'electric',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'sewer',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'cable',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'internet',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'phone',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'garbage',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'natural gas',
-      subCategory: 'utilities'
-    },
-    {
-      name: 'gas',
-      subCategory: 'transportation'
-    },
-    {
-      name: 'car payment',
-      subCategory: 'transportation'
-    },
-    {
-      name: 'car insurance',
-      subCategory: 'transportation'
-    },
-    {
-      name: 'bus pass',
-      subCategory: 'transportation'
-    },
-    {
-      name: 'bus fare',
-      subCategory: 'transportation'
-    },
-    {
-      name: 'salary',
-      subCategory: 'job'
-    },
-    {
-      name: 'paycheck',
-      subCategory: 'job'
-    },
-    {
-      name: 'commission',
-      subCategory: 'job'
-    },
-    {
-      name: 'medication',
-      subCategory: 'medical'
-    },
-    {
-      name: 'doctor visit copay',
-      subCategory: 'medical'
-    },
-    {
-      name: 'medical bill',
-      subCategory: 'medical'
-    },
+  const defaultCategoryNames = [
+    'Housing',
+    'Transportation',
+    'Utilities',
+    'Groceries',
+    'Hobbies',
+    'Entertainment',
+    'School tuition',
+    'School supplies',
+    'Clothing',
+    'Primary job',
+    'Side hustle',
+    'Interest charge',
+    'Overdraft fee',
+    'Late payment fee'
   ]
+
+  for (let i = 0; i < defaultCategoryNames.length; i++) {
+    defaultCategories.push(new Category({
+      name: defaultCategoryNames[i]
+    }))
+  }
 
   const user = new User({
     userName: req.body.userName,

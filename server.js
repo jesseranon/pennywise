@@ -11,6 +11,7 @@ const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
 const accountsRoutes = require("./routes/accounts");
 const transactionsRoutes = require("./routes/transactions");
+const forecastsRoutes = require("./routes/forecasts");
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -59,6 +60,7 @@ app.use(flash());
 app.use("/", mainRoutes);
 app.use("/account", accountsRoutes);
 app.use("/transaction", transactionsRoutes);
+app.use("/calendar", forecastsRoutes);
 
 const PORT = process.env.PORT || 8500
 

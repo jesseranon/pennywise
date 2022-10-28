@@ -1,29 +1,30 @@
 <% let transactionDebit = '' %>
 <% let transactionCredit = '' %>
-<% if (account.accountSubType === 'asset') { %>
-  <% transactionDebit = 'depositing' %>
-  <% transactionCredit = 'withdraw/spending' %>
+<% if (account.balanceType === 'asset') { %>
+  <% transactionDebit = 'deposit' %>
+  <% transactionCredit = 'spend' %>
 <% } else { %>
-  <% transactionDebit = 'paying down' %>
-  <% transactionCredit = 'withdraw/spending' %>
+  <% transactionDebit = 'pay down' %>
+  <% transactionCredit = 'spend' %>
 <% } %>
 
 <div class="container">
   <div class="row justify-content-center mt-5">
     <!-- Account To Post To -->
     <p>
-      Post a transaction to <span id="account-data" data-account-sub-type="<%= account.accountSubType %>"><%= account.accountName %></span>
+      Post a transaction to <span id="account-data" data-account-sub-type="<%= account.subType %>"><%= account.name %></span>
     </p>
 
     <p>
       Current Balance: <strong><%= user.currency %><span id="currentBalance"><%= account.currentBalance %></span></strong>
     </p>
-    <form action="/account/postTransaction/<%= account._id %>" method="put">
-
+    <form action="../post/<%= account._id %>" method="post">
       <!-- Type -->
+      <input type="hidden" name="account" value="<%= account._id %>">
+
       <p>
-        <label for="createTransactionType">What are you doing with this transaction?</label>
-        <select name="createTransactionType" id="createTransactionType">
+        <label for="accountingType">What are you doing with this transaction?</label>
+        <select name="accountingType" id="accountingType">
           <option value="debit">
             <%= transactionDebit %>
           </option>
@@ -32,27 +33,40 @@
           </option>
         </select>
       </p>
-
-      <!-- Category -->
-      <!-- category dropdown will go here -->
-
+      
+      
       <!-- Transaction Amount -->
       <p>
-        <label for="createTransactionAmount">
+        <label for="amount">
           How much?
         </label>
-        <input type="number" step="0.01" min="0" name="createTransactionAmount" id="createTransactionAmount" placeholder="0.00">
+        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="00.00">
       </p>
       
+      <!-- Category -->
+      <p>
+        <label for="category">
+          Category: 
+        </label>
+        <input type="text" name="category" id="category" list="categories" autocomplete="off">
+        <datalist id="categories">
+          <% if (user.categories.length > 0) { %>
+            <% for (let i = 0; i < user.categories.length; i++) { %>
+              <option value="<%= user.categories[i].name %>">
+            <% } %>
+          <% } %>
+        </datalist>
+      </p>
+
       <button type="submit" class="btn btn-primary">
         Submit
       </button>
 
-      <button type="button" class="btn" disabled>
+      <!-- <button type="button" class="btn" disabled>
         <p>
           Balance will change to
         </p><strong><%= user.currency %><span id="netEffect"><%= account.currentBalance %></span></strong>
-      </button>
+      </button> -->
     </form>
   </div>
 </div>

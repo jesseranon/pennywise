@@ -1,60 +1,37 @@
 const mongoose = require("mongoose")
-const User = require("./User")
-const Category = require("./Category")
-
-const transactionSchema = new mongoose.Schema({
-  transactionType: {
-    type: String,
-    required: true,
-  },
-  amount: {
-    type: mongoose.Schema.Types.Decimal128,
-    required: true,
-    default: 0,
-
-  },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category"
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+const Transaction = require("./Transaction")
 
 const AccountSchema = new mongoose.Schema({
-  accountName: {
-    type: String,
-    required: true,
-  },
-  accountType: {
-    type: String,
-    required: true,
-  },
-  accountSubType: {
-    type: String,
-    required: true,
-  },
-  currentBalance: {
-    type: mongoose.Types.Decimal128,
-    set: v => new mongoose.Types.Decimal128.fromString(v),
-    required: true,
-  },
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
-  },
-  transactions: [transactionSchema],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+    name: {
+        type: String,
+        required: true,
+    },
+    type: { //cash, savings, checking, credit card, etc.
+        type: String,
+        required: true,
+    },
+    balanceType: { //asset or liability
+        type: String,
+        required: true,
+    },
+    currentBalance: { 
+        type: mongoose.Types.Decimal128,
+        set: v => new mongoose.Types.Decimal128.fromString(parseFloat(v).toFixed(2)),
+        get: v => parseFloat(v),
+        required: true,
+    },
+    debits: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Transaction'
+    }],
+    credits: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Transaction'
+    }],
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 })
 
-module.exports = mongoose.model("Account", AccountSchema);
+module.exports = mongoose.model('Account', AccountSchema)

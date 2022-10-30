@@ -8,6 +8,26 @@
             <h2>Add a post</h2>
             
           </div> -->
+          <% if (user.forecasts.length > 0) {%>
+            <ul class="row list-unstyled">
+              <% for (let i = 0; i < user.forecasts.length; i++) {%>
+                <li class="col-6 mt-5">
+                  <%= user.forecasts[i].date.toLocaleDateString() %>
+                  <%= user.forecasts[i].category %>
+                  <% if (user.forecasts[i].accountingType === 'debit') { %>
+                    +
+                  <% } else { %>
+                    -
+                  <% } %>
+                  <%= user.currency %><%= user.forecasts[i].amount %>
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </li>
+              <% } %>
+            </ul>
+          <% } %>
+          <!-- create forecast form -->
+          <%- include('partials/createforecast') -%>
       </div>
       <div class="col-6">
         <% if (user.accounts.length > 0) { %>

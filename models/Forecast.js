@@ -8,6 +8,8 @@ const ForecastSchema = new mongoose.Schema({
     },
     amount: {
         type: mongoose.Schema.Types.Decimal128,
+        set: v => new mongoose.Types.Decimal128.fromString(parseFloat(v).toFixed(2)),
+        get: v => parseFloat(v),
         required: true
     },
     category: {

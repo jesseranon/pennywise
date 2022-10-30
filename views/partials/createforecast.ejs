@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row justify-content-center mt-5">
     Create a Forecast
-    <form action="" method="post">
+    <form action="forecasts/createForecast" method="post">
       <!-- Type -->
       <p>
         <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
@@ -29,11 +29,11 @@
         <label for="category">
           Who's paying you or who are you paying?
         </label>
-        <input type="text" name="category" id="category" list="categories">
+        <input type="text" name="category" id="category" list="categories" autocomplete="off">
         <datalist id="categories">
-          <% if (user.payees.length > 0) { %>
-            <% for (let i = 0; i < user.payees.length; i++) { %>
-              <option value="<%= user.categories[i] %>">
+          <% if (user.categories.length > 0) { %>
+            <% for (let i = 0; i < user.categories.length; i++) { %>
+              <option value="<%= user.categories[i].name %>">
             <% } %>
           <% } %>
         </datalist>

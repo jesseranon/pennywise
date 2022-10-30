@@ -61,6 +61,7 @@ app.use("/", mainRoutes);
 app.use("/account", accountsRoutes);
 app.use("/transaction", transactionsRoutes);
 app.use("/calendar", forecastsRoutes);
+app.use("/forecasts", forecastsRoutes)
 
 const PORT = process.env.PORT || 8500
 

@@ -14,8 +14,8 @@ module.exports = {
     res.render("forecastform.ejs", {user})
   },
   postForecast: async (req, res) => {
-    console.log(`hello from forecastsController.postForecast`)
-    console.log(`incoming info`, req.body)
+    // console.log(`hello from forecastsController.postForecast`)
+    // console.log(`incoming info`, req.body)
     const catCheck = await checkCategory(req.user._id, req.body.category)
     const {categoryId} = catCheck
     const newForecast = new Forecast(req.body)

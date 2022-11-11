@@ -6,7 +6,8 @@ const Payee = require("../models/Payee")
 module.exports = {
   getAccount: async (req, res) => {
     try { 
-      const account = await Account.findById(req.params.id);
+      const user = req.user
+      const account = user.accounts.filter(account => account._id == req.params.id)[0]
       res.render("account.ejs", { account: account, user: req.user });
     } catch (err) {
       console.log(err);
@@ -51,17 +52,19 @@ module.exports = {
   modifyAccount: async (req, res) => { //Probably only going to allow for changing name
     try {
       // Find account by id
-      let account = await Account.findOneAndUpdate(
-        { _id: req.params.id },
-        // name: req.body.newAccountName
-      )
+      // account id will come in from req.params.
+      // new account name will come in from form -> req.body.newAccountName
+      const newAccountName = req.body.newAccountName
+
     } catch (err) {
       res.redirect("/profile");
     }
   },
   deleteAccount: async (req, res) => { //delete a whole-ass account
-    //
     try {
+      // get user
+      // remove account by setting user.accounts to filter out the account id out
+      // save user
       // Find account by id
       let account = await Account.findById({ _id: req.params.id });
       //delete account

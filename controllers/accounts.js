@@ -7,8 +7,23 @@ module.exports = {
   getAccount: async (req, res) => {
     try { 
       const user = req.user
-      const account = user.accounts.filter(account => account._id == req.params.id)[0]
-      res.render("account.ejs", { account: account, user: req.user });
+      User.find(
+        {_id: req.user._id},
+      )
+      // .populate({
+      //   path: 'accounts',
+      //   populate: [
+      //     {path: 'debits'},
+      //     {path: 'credits'}
+      //   ]
+      // })
+      .exec((err, u) => {
+        if (u) {
+          console.log(u[0].accounts)
+          const account = u[0].accounts.filter(account => account._id == req.params.id)[0]
+          res.render('account.ejs', { account, user })
+        }
+      })      
     } catch (err) {
       console.log(err);
     }

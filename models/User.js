@@ -14,10 +14,22 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "$"
   },
-  accounts: [Object],
-  forecasts: [Object],
-  transactions: [Object],
-  categories: [Object],
+  accounts: [{
+    type: Object,
+    ref: "Account"
+  }],
+  forecasts: [{
+    type: Object,
+    ref: "Forecast"
+  }],
+  transactions: [{
+    type: Object,
+    ref: "Transaction"
+  }],
+  categories: [{
+    type: Object,
+    ref: "Category"
+  }],
 });
 
 

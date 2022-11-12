@@ -4,6 +4,12 @@
     <div class="col-6">
       <h2><%= account.name %></h2>
       <p>Account Type: <%= account.type %></p>
+      <ul>
+        <% for (let i = 0; i < user.transactions.length; i++) { %>
+          <% %>
+          <% %>
+        <% } %>
+      </ul>
 
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>

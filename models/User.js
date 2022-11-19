@@ -2,9 +2,8 @@ const bcrypt = require("bcrypt")
 const mongoose = require("mongoose")
 const Account = require("./Account")
 const Category = require("./Category")
-const Payee = require("./Payee")
-const Transaction = require("./Transaction")
 const Forecast = require("./Forecast")
+const Transaction = require("./Transaction")
 
 const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true },
@@ -15,19 +14,19 @@ const UserSchema = new mongoose.Schema({
         default: "$"
   },
   accounts: [{
-    type: Object,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Account"
   }],
   forecasts: [{
-    type: Object,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Forecast"
   }],
   transactions: [{
-    type: Object,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Transaction"
   }],
   categories: [{
-    type: Object,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Category"
   }],
 });

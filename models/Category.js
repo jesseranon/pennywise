@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const Account = require("./Account")
+const User = require("./User")
 
 const CategorySchema = new mongoose.Schema({
     name: {
@@ -9,6 +10,11 @@ const CategorySchema = new mongoose.Schema({
     account: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
+        default: null
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         default: null
     }
 });

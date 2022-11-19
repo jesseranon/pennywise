@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
-const Payee = require("./Payee")
+const Category = require("./Category")
+const User = require("./User")
 
 const ForecastSchema = new mongoose.Schema({
     accountingType: {
@@ -13,12 +14,18 @@ const ForecastSchema = new mongoose.Schema({
         required: true
     },
     category: {
-        type: String,
-        default: "Uncategorized"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true
     },
     date: {
         type: Date,
         default: Date.now,
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 })
 

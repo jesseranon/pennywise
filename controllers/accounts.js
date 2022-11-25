@@ -1,7 +1,6 @@
 const User = require("../models/User")
 const Account = require("../models/Account")
 const Category = require("../models/Category")
-const Payee = require("../models/Payee")
 
 module.exports = {
   getAccount: async (req, res) => {

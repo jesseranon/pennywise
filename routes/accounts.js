@@ -7,7 +7,7 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Account Routes - simplified for now
 // post account
-router.post("/createAccount", accountsController.postAccount)
+router.post("/createAccount", accountsController.createAccount)
 // get account
 router.get("/:id", ensureAuth, accountsController.getAccount)
 // delete account

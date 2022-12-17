@@ -27,30 +27,34 @@ module.exports = {
       console.log(err);
     }
   },
-  postAccount: async (req, res) => {
+  createAccount: async (req, res) => {
     const userId = req.user.id
     console.log(req.body.createAccountType)
     const assets = ['savings', 'checking', 'cash']
-    const createAccountSubType = (assets.includes(req.body.createAccountType) ? 'asset' : 'liability')
+    const createAccountType = (assets.includes(req.body.createAccountType) ? 'asset' : 'liability')
 
     try {
       const newAccount = new Account({
         name: req.body.createAccountName,
         type: req.body.createAccountType,
-        balanceType: createAccountSubType,
+        balanceType: createAccountType,
         currentBalance: req.body.createAccountBalance,
+        user: userId
       });
+      await newAccount.save()
+
       console.log(newAccount)
       const newAccountPush = {
-        accounts: newAccount
+        accounts: newAccount._id
       }
       if (newAccount.balanceType === 'liability') {
         //create payee & category {name: `${type} bill`} and put into push as categories
-        const newCategory = {
+        const newCategory = new Category({
           name: `${newAccount.name} payment`,
           account: newAccount._id
-        }
-        newAccountPush.categories = newCategory
+        })
+        await newCategory.save()
+        newAccountPush.categories = newCategory._id
       }
       console.log('to $push:', newAccountPush)
       await User.findOneAndUpdate(

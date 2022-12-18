@@ -51,7 +51,8 @@ module.exports = {
         //create payee & category {name: `${type} bill`} and put into push as categories
         const newCategory = new Category({
           name: `${newAccount.name} payment`,
-          account: newAccount._id
+          account: newAccount._id,
+          user: userId
         })
         await newCategory.save()
         newAccountPush.categories = newCategory._id

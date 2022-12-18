@@ -85,36 +85,36 @@ exports.postSignup = (req, res, next) => {
     gmail_remove_dots: false,
   });
   
-  const defaultCategories = []
+  // default categories to reside in db with user value null
+  // user will have access to categories with user null or their own _id
 
-  const defaultCategoryNames = [
-    'Housing',
-    'Transportation',
-    'Utilities',
-    'Groceries',
-    'Hobbies',
-    'Entertainment',
-    'School tuition',
-    'School supplies',
-    'Clothing',
-    'Primary job',
-    'Side hustle',
-    'Interest charge',
-    'Overdraft fee',
-    'Late payment fee'
-  ]
+  // const defaultCategoryNames = [
+  //   'Housing',
+  //   'Transportation',
+  //   'Utilities',
+  //   'Groceries',
+  //   'Hobbies',
+  //   'Entertainment',
+  //   'School tuition',
+  //   'School supplies',
+  //   'Clothing',
+  //   'Primary job',
+  //   'Side hustle',
+  //   'Interest charge',
+  //   'Overdraft fee',
+  //   'Late payment fee'
+  // ]
 
-  for (let i = 0; i < defaultCategoryNames.length; i++) {
-    defaultCategories.push(new Category({
-      name: defaultCategoryNames[i]
-    }))
-  }
+  // for (let i = 0; i < defaultCategoryNames.length; i++) {
+  //   defaultCategories.push(new Category({
+  //     name: defaultCategoryNames[i],
+  //   }))
+  // }
 
   const user = new User({
     userName: req.body.userName,
     email: req.body.email,
     password: req.body.password,
-    categories: defaultCategories
   });
 
   User.findOne(

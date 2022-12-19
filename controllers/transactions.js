@@ -14,6 +14,8 @@ module.exports = {
         const userId = req.user.id
         try {
             const user = await User.findOne({ _id: userId })
+                .populate('categories')
+                .populate('accounts')
             const account = user.accounts.filter(account => account._id == accountId)[0]
             console.log(`transaction form requested for account ${req.params.accountId}`)
             console.log(account)

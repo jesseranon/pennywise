@@ -8,6 +8,8 @@ module.exports = {
             const user = await User.findOne({ _id: req.user.id })
                 .populate('accounts')
                 .populate('forecasts')
+                .populate('categories')
+                .populate('transactions')
             res.render("profile.ejs", { user: user });
         } catch (err) {
             console.log(err);

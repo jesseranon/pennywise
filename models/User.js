@@ -15,18 +15,22 @@ const UserSchema = new mongoose.Schema({
   },
   accounts: [{
     type: mongoose.Schema.Types.ObjectId,
+    default: [],
     ref: "Account"
   }],
   forecasts: [{
     type: mongoose.Schema.Types.ObjectId,
+    default: [],
     ref: "Forecast"
   }],
   transactions: [{
     type: mongoose.Schema.Types.ObjectId,
+    default: [],
     ref: "Transaction"
   }],
   categories: [{
     type: mongoose.Schema.Types.ObjectId,
+    default: [],
     ref: "Category"
   }],
 });

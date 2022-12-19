@@ -55,16 +55,16 @@ module.exports = {
                 category = await categoriesController.postCategory(req.user._id, category)
             }
 
-            category = category._id
+            const categoryId = category._id
             const user = req.user._id
 
             // set newTransaction params
-            const amount = req.params.amount
+            const amount = req.body.amount
 
             // create newTransaction
             const newTransaction = new Transaction({
                 amount,
-                category,
+                category: categoryId,
                 user
             })
             await newTransaction.save()
@@ -99,20 +99,45 @@ module.exports = {
                 }
                 else mainAccount.currentBalance = Number(currentBalance) - Number(newTransaction.amount)
             } else if (mainAccount.balanceType === 'liability') {
-                if (accountAction === 'credits') {
+                if (accountAction === 'debits') {
                     mainAccount.currentBalance = Number(currentBalance) - Number(newTransaction.amount)
                 }
                 else mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount) 
             }
-            mainAccount.save()
+            await mainAccount.save()
 
             // if category is associated with an account,
             // push transactionId to the category.account
+            console.log(category.account, accountAction)
             if (category.account) {
-                // const accountOtherAction = (accountAction === 'debits' ? 'credits')
-                // const secondAccount = Account.find({_id: category.account._id})
+                const accountOtherAction = (accountAction === 'debits' ? 'credits' : 'debits')
+                const secondAccount = await Account.findOne({_id: category.account, user: req.user._id})
+                console.log(secondAccount, accountOtherAction)
+                secondAccount[accountOtherAction].push(transactionId)
                 // push newTransaction._id to secondAccount[accountOtherAction]
+                const secondCurrentBalance = secondAccount.currentBalance
+                if (secondAccount.balanceType === 'asset') {
+                    if (accountOtherAction === 'debits') {
+                        secondAccount.currentBalance = Number(secondCurrentBalance) + Number(newTransaction.amount)
+                    }
+                    else secondAccount.currentBalance = Number(secondCurrentBalance) - Number(newTransaction.amount)
+                } else if (secondAccount.balanceType === 'liability') {
+                    if (accountOtherAction === 'debits') {
+                        secondAccount.currentBalance = Number(secondCurrentBalance) - Number(newTransaction.amount)
+                    }
+                    else secondAccount.currentBalance = Number(secondCurrentBalance) + Number(newTransaction.amount) 
+                }
+                await secondAccount.save()
             }
+
+            await User.findOneAndUpdate(
+                {_id: user},
+                {
+                    $push: {
+                        transactions: transactionId
+                    }
+                }
+            )
             res.redirect("/profile")
         } catch (err) {
             console.error(err)

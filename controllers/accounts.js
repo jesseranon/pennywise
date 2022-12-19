@@ -1,6 +1,7 @@
 const User = require("../models/User")
 const Account = require("../models/Account")
 const Category = require("../models/Category")
+const categoryController = require("./categories")
 
 module.exports = {
   getAccount: async (req, res) => {
@@ -47,6 +48,7 @@ module.exports = {
       const newAccountPush = {
         accounts: newAccount._id
       }
+      
       if (newAccount.balanceType === 'liability') {
         //create payee & category {name: `${type} bill`} and put into push as categories
         const newCategory = new Category({
@@ -57,6 +59,7 @@ module.exports = {
         await newCategory.save()
         newAccountPush.categories = newCategory._id
       }
+
       console.log('to $push:', newAccountPush)
       await User.findOneAndUpdate(
         { _id: userId },

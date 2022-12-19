@@ -42,17 +42,22 @@ module.exports = {
     postTransaction: async (req, res) => {
         // console.log(`hello from postTransaction in transactions controller`)
         try {
-            const accountAction = req.body.AccountingType
+            const accountAction = req.body.accountingType
             const accountId = req.params.accountId
+
+            // check if the category exists
+            let category = await categoriesController.checkCategory(req.user._id, req.body.category)
+            
+            // if it does not, create it with user: req.user._id
+            if (typeof category === 'string') {
+                category = await categoriesController.postCategory(req.user._id, category)
+            }
+
+            category = category._id
+            const user = req.user._id
 
             // set newTransaction params
             const amount = req.params.amount
-            let category = await Category.findOne({
-                name: req.body.category,
-                user: req.user._id
-            })
-            category = category._id
-            const user = req.user._id
 
             // create newTransaction
             const newTransaction = new Transaction({
@@ -80,9 +85,12 @@ module.exports = {
                 }
             )
             // push newTransaction._id to mainAccount[accountAction]
+            console.log(accountAction)
             mainAccount[accountAction].push(transactionId)
             // increment account.currentBalance
             const currentBalance = mainAccount.currentBalance
+            console.log(newTransaction.amount)
+            console.log(mainAccount.balanceType)
             if (mainAccount.balanceType === 'asset') {
                 if (accountAction === 'debits') {
                     mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount)
@@ -94,6 +102,7 @@ module.exports = {
                 }
                 else mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount) 
             }
+            mainAccount.save()
 
             // if category is associated with an account,
             // push transactionId to the category.account

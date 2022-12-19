@@ -1,3 +1,21 @@
+# Default Categories
+
+- Housing
+- Groceries,
+- Entertainment,
+- Primary job,
+- Side hustle,
+- Interest charge,
+- Overdraft fee,
+- Late payment fee,
+- Eating out,
+- Utilities,
+- Transportation,
+- Hobbies,
+- School tuition,
+- School supplies,
+- Clothing,
+
 # Install
 
 `npm install`

@@ -15,10 +15,15 @@ module.exports = {
             if (!foundCategory) foundCategory = await Category.findOne(
                 {name: cleanCategoryString, user: userId}
             )
-            if (!foundCategory) foundCategory = cleanCategoryString
+            if (!foundCategory) {
+                foundCategory = await categoriesController.postCategory(req.user._id, category)
+            }
             return foundCategory
         } catch (err) {
-            return null
+            req.flash("errors", {
+                msg: "Unable to find or create category.",
+            });
+            return res.redirect("/profile");
         }
     },
     postCategory: async (userId, categoryNameString) => {

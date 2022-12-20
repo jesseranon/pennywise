@@ -1,6 +1,16 @@
 <%- include('partials/header') -%>
 <div class="container">
   <div class="row mt-5">
+      <% if (locals.messages.errors) { %>
+        <% messages.errors.forEach( el => { %>
+            <div class="alert alert-danger"><%= el.msg %></div>
+        <% }) %>    
+      <% } %>
+      <% if (locals.messages.info) { %>
+          <% messages.info.forEach( el => { %>
+              <div class="alert alert-info"><%= el.msg %></div>
+          <% }) %>    
+      <% } %>
       <div class="col-6">
         <p><strong>User Name</strong>: <%= user.userName %></p>
         <p><strong>Email</strong>: <%= user.email %></p>

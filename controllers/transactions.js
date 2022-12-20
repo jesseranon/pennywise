@@ -49,11 +49,6 @@ module.exports = {
 
             // check if the category exists
             let category = await categoriesController.checkCategory(req.user._id, req.body.category)
-            
-            // if it does not, create it with user: req.user._id
-            if (typeof category === 'string') {
-                category = await categoriesController.postCategory(req.user._id, category)
-            }
 
             const categoryId = category._id
             const user = req.user._id

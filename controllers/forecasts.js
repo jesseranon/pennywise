@@ -17,12 +17,13 @@ module.exports = {
     // console.log(`hello from forecastsController.postForecast`)
     // console.log(`incoming info`, req.body)
     const catCheck = await checkCategory(req.user._id, req.body.category)
-    const {categoryId} = catCheck
+    
     const newForecast = new Forecast(req.body)
+    await newForecast.save()
     await User.findOneAndUpdate(
       { _id: req.user._id},
       { $push: {
-          forecasts: newForecast
+          forecasts: newForecast._id
         }
       }
     )

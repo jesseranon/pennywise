@@ -20,16 +20,17 @@
           </div> -->
           <% if (user.forecasts.length > 0) {%>
             <ul class="row list-unstyled">
-              <% for (let i = 0; i < user.forecasts.length; i++) {%>
+              <% const sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
+              <% for (let i = 0; i < sortedForecasts.length; i++) {%>
                 <li class="col-6 mt-5">
-                  <%= user.forecasts[i].date.toLocaleDateString() %>
-                  <%= user.forecasts[i].category %>
-                  <% if (user.forecasts[i].accountingType === 'debit') { %>
+                  <%= sortedForecasts[i].date.toLocaleDateString() %>
+                  <%= sortedForecasts[i].category.name %>
+                  <% if (sortedForecasts[i].accountingType === 'debit') { %>
                     +
                   <% } else { %>
                     -
                   <% } %>
-                  <%= user.currency %><%= user.forecasts[i].amount %>
+                  <%= user.currency %><%= sortedForecasts[i].amount %>
                   <button class="edit-forecast btn btn-primary">Edit</button>
                   <button class="delete-forecast btn btn-secondary">Delete</button>
                 </li>

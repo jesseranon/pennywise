@@ -18,7 +18,17 @@ module.exports = {
     // console.log(`incoming info`, req.body)
     const catCheck = await checkCategory(req.user._id, req.body.category)
     
-    const newForecast = new Forecast(req.body)
+    const amount = req.body.amount
+    const category = catCheck._id
+    const date = req.body.date
+    const user = req.user._id
+
+    const newForecast = new Forecast({
+      amount,
+      category,
+      date,
+      user
+    })
     await newForecast.save()
     await User.findOneAndUpdate(
       { _id: req.user._id},

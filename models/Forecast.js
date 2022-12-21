@@ -9,6 +9,10 @@ const ForecastSchema = new mongoose.Schema({
         get: v => parseFloat(v),
         required: true
     },
+    accountingType: {
+        type: String,
+        default: 'credit'
+    },
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Category",
@@ -16,7 +20,7 @@ const ForecastSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        default: Date.now,
+        default: null,
     },
     interval:  {
         type: Number,

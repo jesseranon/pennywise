@@ -1,4 +1,12 @@
 <%- include('partials/header') -%>
+<% const totalAssets = user.accounts.reduce((accumulator, account) => { %>
+  <% if (account.balanceType === 'asset') return accumulator += Number(account.currentBalance) %>
+  <% return accumulator %>
+<% }, 0) %>
+<% let sortedForecasts = null %>
+<% if (user.forecasts.length > 0) {%>
+    <% sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
+<% } %>
 <div class="container">
   <div class="row mt-5">
       <% if (locals.messages.errors) { %>
@@ -14,13 +22,15 @@
       <div class="col-6">
         <p><strong>User Name</strong>: <%= user.userName %></p>
         <p><strong>Email</strong>: <%= user.email %></p>
-          <!-- <div class="mt-5">
-            <h2>Add a post</h2>
-            
-          </div> -->
-          <% if (user.forecasts.length > 0) {%>
+          <!-- Display available funds until next inflow net of forecasted outflows -->
+          
+          <% if (sortedForecasts) {%>
+            <% const nextInflowDate = sortedForecasts.find(forecast => forecast.accountingType === 'debit').date %>
+            <% const outflowsUntilNextInflow = sortedForecasts.filter(forecast => forecast.date < nextInflowDate).reduce((accumulator, forecast) => { %>
+              <% return accumulator += Number(forecast.amount) %>
+            <% }, 0) %>
+            <p>You have <%= user.currency %><%= totalAssets - outflowsUntilNextInflow %> to spend until you get paid next</p>
             <ul class="row list-unstyled">
-              <% const sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
               <% for (let i = 0; i < sortedForecasts.length; i++) {%>
                 <li class="col-6 mt-5">
                   <%= sortedForecasts[i].date.toLocaleDateString() %>

@@ -19,12 +19,14 @@ module.exports = {
     const catCheck = await checkCategory(req.user._id, req.body.category)
     
     const amount = req.body.amount
+    const accountingType = req.body.accountingType
     const category = catCheck._id
     const date = req.body.date
     const user = req.user._id
 
     const newForecast = new Forecast({
       amount,
+      accountingType,
       category,
       date,
       user

@@ -26,10 +26,10 @@
           
           <% if (sortedForecasts) {%>
             <% const nextInflowDate = sortedForecasts.find(forecast => forecast.accountingType === 'debit').date %>
-            <% const outflowsUntilNextInflow = sortedForecasts.filter(forecast => forecast.date < nextInflowDate).reduce((accumulator, forecast) => { %>
+            <% const outflowsUntilNextInflow = sortedForecasts.filter(forecast => !(forecast.date > nextInflowDate) && forecast.accountingType === 'credit').reduce((accumulator, forecast) => { %>
               <% return accumulator += Number(forecast.amount) %>
             <% }, 0) %>
-            <p>You have <%= user.currency %><%= totalAssets - outflowsUntilNextInflow %> to spend until you get paid next</p>
+            <p>You have <%= user.currency %><%= totalAssets - outflowsUntilNextInflow %> to spend until you next get paid.</p>
             <ul class="row list-unstyled">
               <% for (let i = 0; i < sortedForecasts.length; i++) {%>
                 <li class="col-6 mt-5">
@@ -46,6 +46,9 @@
                 </li>
               <% } %>
             </ul>
+          <% } else { %>
+            <p>You have currently have <%= user.currency %><%= totalAssets %> in checking, savings, and cash.</p>
+            <p>Add a forecast to see how bills and commitments affect how much you actually have to spend until you next get paid.</p>
           <% } %>
           <!-- create forecast form -->
           <%- include('partials/createforecast') -%>

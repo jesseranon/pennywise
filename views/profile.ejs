@@ -25,11 +25,7 @@
           <!-- Display available funds until next inflow net of forecasted outflows -->
           
           <% if (sortedForecasts) {%>
-            <% const nextInflowDate = sortedForecasts.find(forecast => forecast.accountingType === 'debit').date %>
-            <% const outflowsUntilNextInflow = sortedForecasts.filter(forecast => !(forecast.date > nextInflowDate) && forecast.accountingType === 'credit').reduce((accumulator, forecast) => { %>
-              <% return accumulator += Number(forecast.amount) %>
-            <% }, 0) %>
-            <p>You have <%= user.currency %><%= totalAssets - outflowsUntilNextInflow %> to spend until you next get paid.</p>
+            
             <ul class="row list-unstyled">
               <% for (let i = 0; i < sortedForecasts.length; i++) {%>
                 <li class="col-6 mt-5">

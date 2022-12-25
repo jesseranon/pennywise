@@ -41,6 +41,9 @@ module.exports = {
     )
     res.redirect("/profile")
   },
+  updateForecast: async (req, res) => {
+    //allows user to update date, amount, and/or category of forecast
+  },
   deleteForecast: async (req, res) => {
     //delete forecast from database
     //can also be used when converting forecasts into transactions

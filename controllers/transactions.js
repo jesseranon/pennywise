@@ -38,6 +38,16 @@ module.exports = {
     },
     deleteTransaction: async (req, res) => {
         //delete a single transaction
+        const transactionId = null
+        // 1. remove from any accounts that contain it in their debits or credits
+        // 1.5 increment/decrement account by transaction amount
+        // 2. remove from user's transactions
+        // 3. delete transaction from db
+        try {
+            // stuff
+        } catch (err) {
+            console.log(err)
+        }
         console.log(`transaction delete requested for transaction ${req.params.id}`)
         res.redirect("/profile")
     },

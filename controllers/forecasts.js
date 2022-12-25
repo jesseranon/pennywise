@@ -40,5 +40,9 @@ module.exports = {
       }
     )
     res.redirect("/profile")
+  },
+  deleteForecast: async (req, res) => {
+    //delete forecast from database
+    //can also be used when converting forecasts into transactions
   }
 };

@@ -1,21 +1,28 @@
 <%- include('partials/header') -%>
-<% let accountTransactions = null %>
-<% if (account.debits.length > 0 && account.credits.length > 0) { %>
-  <% accountTransactions = account.debits.concat(account.credits) %>
+<% let accountTransactions = [] %>
+<% if (account.debits.length > 0) { %>
+  <% accountTransactions = accountTransactions.concat(account.debits) %>
+<% } %>
+<% if (account.credits.length > 0) { %>
+  <% accountTransactions = accountTransactions.concat(account.credits) %>
+<% } %>
+<% if (accountTransactions.length > 0) { %>
   <% accountTransactions.sort((a, b) => a.date - b.date) %>
 <% } %>
+
 <div class="container">
   <div class="row justify-content-center mt-5">
     <div class="col-6">
       <h2><%= account.name %></h2>
       <p>Account Type: <%= account.type %></p>
       <p>Transactions</p>
-      <% if (accountTransactions) { %>
+      <% if (accountTransactions.length > 0) { %>
         <ul>
           <% for (let i = 0; i < accountTransactions.length; i++) { %>
             <% let incDec = null %>
             <% const transaction = accountTransactions[i]%>
-            <% let transactionFoundInDebits = account.debits.filter(t => t._id == transaction._id).length > 0 %>
+            <% let transactionFoundInDebits = false %>
+            <% if (account.debits.length > 0) transactionFoundInDebits = account.debits.filter(t => t._id == transaction._id).length > 0 %>
             <% if (account.balanceType == 'asset') { %>
               <% if (transactionFoundInDebits) { %>
                 <% incDec = "+" %>
@@ -23,16 +30,18 @@
                 <% incDec = "-" %>
               <% } %>
             <% } else { %>
-              <% if (transactionFoundIndebits) { %>
+              <% if (transactionFoundInDebits) { %>
                 <% incDec = "-" %>
               <% } else { %> 
                 <% incDec = "+" %>
               <% } %>
             <% } %>
             <li>
-              <span><%= transaction.date.toLocaleDateString('en-us') %></span>
-              <span><%= transaction.category.name %></span>
-              <span><%= incDec %> <%= user.currency %><%= transaction.amount %></span>
+              <span><%= transaction.date.toLocaleDateString('en-us') %></span> |
+              <span><%= transaction.category.name %></span> |
+              <span><%= incDec %><%= user.currency %><%= transaction.amount %></span>
+              <button class="edit-transaction btn btn-primary">Edit</button>
+              <button class="delete-transaction btn btn-secondary">Delete</button>
             </li>
           <% } %>
         </ul>

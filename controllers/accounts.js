@@ -6,6 +6,29 @@ const categoryController = require("./categories")
 module.exports = {
   getAccount: async (req, res) => {
     // this will be used to display the account page of a singular account
+    const targetAccountId = req.params.id
+    console.log(targetAccountId)
+    try {
+      const targetAccount = await Account.findOne({
+        _id: targetAccountId
+      }).populate({
+        path: 'debits',
+        populate: {
+          path: 'category',
+          model: 'Category'
+        }
+      }).populate({
+        path: 'credits',
+        populate: {
+          path: 'category',
+          model: 'Category'
+        }
+      })
+      console.log(targetAccount)
+      res.render("account.ejs", { user: req.user, account: targetAccount })
+    } catch (err) {
+      res.redirect("/profile")
+    }
   },
   createAccount: async (req, res) => {
     const userId = req.user.id

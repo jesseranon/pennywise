@@ -1,24 +1,44 @@
 <%- include('partials/header') -%>
-<% const accountTransactions = account.debits.concat(account.credits) %>
-<% accountTransactions.sort((a, b) => a.date - b.date) %>
+<% let accountTransactions = null %>
+<% if (account.debits.length > 0 && account.credits.length > 0) { %>
+  <% accountTransactions = account.debits.concat(account.credits) %>
+  <% accountTransactions.sort((a, b) => a.date - b.date) %>
+<% } %>
 <div class="container">
   <div class="row justify-content-center mt-5">
     <div class="col-6">
       <h2><%= account.name %></h2>
       <p>Account Type: <%= account.type %></p>
-      <ul>
-        <% for (let i = 0; i < accountTransactions.length; i++) { %>
-          <li>
-            <span><%= accountTransactions[i].date %></span>
-            
-            <span><%= accountTransactions[i].amount %></span>
-          </li>
-        <% } %>
-      </ul>
-
+      <p>Transactions</p>
+      <% if (accountTransactions) { %>
+        <ul>
+          <% for (let i = 0; i < accountTransactions.length; i++) { %>
+            <% let incDec = null %>
+            <% const transaction = accountTransactions[i]%>
+            <% let transactionFoundInDebits = account.debits.filter(t => t._id == transaction._id).length > 0 %>
+            <% if (account.balanceType == 'asset') { %>
+              <% if (transactionFoundInDebits) { %>
+                <% incDec = "+" %>
+              <% } else { %> 
+                <% incDec = "-" %>
+              <% } %>
+            <% } else { %>
+              <% if (transactionFoundIndebits) { %>
+                <% incDec = "-" %>
+              <% } else { %> 
+                <% incDec = "+" %>
+              <% } %>
+            <% } %>
+            <li>
+              <span><%= transaction.date.toLocaleDateString('en-us') %></span>
+              <span><%= transaction.category.name %></span>
+              <span><%= incDec %> <%= user.currency %><%= transaction.amount %></span>
+            </li>
+          <% } %>
+        </ul>
+      <% } %>
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>
-      <a class="btn btn-primary" href="/feed">Return to Feed</a>
     </div>
   </div>
 </div>

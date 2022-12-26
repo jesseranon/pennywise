@@ -4,10 +4,10 @@
 <% if (account.debits.length > 0) { %>
   <% accountTransactions = accountTransactions.concat(account.debits) %>
 <% } %>
-<% if (account.credits.length > 0) { %>
+<% if (account.credits.length) { %>
   <% accountTransactions = accountTransactions.concat(account.credits) %>
 <% } %>
-<% if (accountTransactions.length > 0) { %>
+<% if (accountTransactions.length) { %>
   <% accountTransactions.sort((a, b) => a.date - b.date) %>
 <% } %>
 
@@ -16,7 +16,8 @@
     <div class="col-6">
       <h2><%= account.name %> <button class="edit-account btn btn-primary">edit account name</button></h2>
       <p>Account Type: <%= account.type[0].toUpperCase() + account.type.slice(1) %></p>
-      <% if (accountTransactions.length > 0) { %>
+      <p>Current Balance: <strong><%= user.currency %><%= account.currentBalance %></strong></p>
+      <% if (accountTransactions.length) { %>
         <p>Transactions</p>
         <ul>
           <% for (let i = 0; i < accountTransactions.length; i++) { %>
@@ -47,7 +48,7 @@
           <% } %>
         </ul>
       <% } else { %>
-        <p>No transactions so far</p>
+        <p>No transactions logged.</p>
       <% } %>
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>

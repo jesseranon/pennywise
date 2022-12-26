@@ -47,5 +47,22 @@ module.exports = {
   deleteForecast: async (req, res) => {
     //delete forecast from database
     //can also be used when converting forecasts into transactions
+    // 1. remove from user's forecasts array
+    // 2. delete from database
+    // 3. redirect to profile
+    console.log(`hello from forecastsController.deleteForecast`)
+    const targetForecastId = req.params.id
+    const userId = req.user._id
+    try {
+      const user = await User.findOne({
+        _id: userId
+      })
+      user.forecasts = user.forecasts.filter(f => f._id != targetForecastId)
+      await user.save()
+      Forecast.findOneAndDelete({ _id: targetForecastId })
+      res.redirect('/profile')
+    } catch (err) {
+      console.log(err)
+    }
   }
 };

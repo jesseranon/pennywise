@@ -73,19 +73,30 @@ module.exports = {
   },
   updateAccount: async (req, res) => {
     // this will allow the user to modify the name of the account.
-    const accountId = req.body.accountId
+    const targetAccountId = req.body.accountId
     const newAccountName = req.body.accountName
     try {
-      Account.findOneAndUpdate(
-        { _id: accountId },
-        {
-          $set: {
-            name: newAccountName
-          }
+      const targetAccount = await Account.findOne({
+        _id: targetAccountId
+      }).populate({
+        path: 'debits',
+        populate: {
+          path: 'category',
+          model: 'Category'
         }
-      )
+      }).populate({
+        path: 'credits',
+        populate: {
+          path: 'category',
+          model: 'Category'
+        }
+      })
+      targetAccount.name = newAccountName
+      await targetAccount.save()
+      res.render("account.ejs", { user: req.user, account: targetAccount })
     } catch (err) {
       console.log(err)
+      res.redirect("/profile")
     }
   },
   deleteAccount: async (req, res) => {

@@ -14,9 +14,9 @@
   <div class="row justify-content-center mt-5">
     <div class="col-6">
       <h2><%= account.name %></h2>
-      <p>Account Type: <%= account.type %></p>
-      <p>Transactions</p>
+      <p>Account Type: <%= account.type[0].toUpperCase() + account.type.slice(1) %></p>
       <% if (accountTransactions.length > 0) { %>
+        <p>Transactions</p>
         <ul>
           <% for (let i = 0; i < accountTransactions.length; i++) { %>
             <% let incDec = null %>
@@ -45,6 +45,8 @@
             </li>
           <% } %>
         </ul>
+      <% } else { %>
+        <p>No transactions so far</p>
       <% } %>
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>

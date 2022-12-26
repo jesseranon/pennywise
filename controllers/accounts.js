@@ -71,8 +71,22 @@ module.exports = {
       console.log(err);
     }
   },
-  modifyAccount: async (req, res) => {
+  updateAccount: async (req, res) => {
     // this will allow the user to modify the name of the account.
+    const accountId = req.body.accountId
+    const newAccountName = req.body.accountName
+    try {
+      Account.findOneAndUpdate(
+        { _id: accountId },
+        {
+          $set: {
+            name: newAccountName
+          }
+        }
+      )
+    } catch (err) {
+      console.log(err)
+    }
   },
   deleteAccount: async (req, res) => {
     // this will allow the user to delete an account they created.

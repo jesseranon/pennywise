@@ -38,13 +38,35 @@ module.exports = {
     },
     deleteTransaction: async (req, res) => {
         //delete a single transaction
-        const transactionId = null
         // 1. remove from any accounts that contain it in their debits or credits
         // 1.5 increment/decrement account by transaction amount
         // 2. remove from user's transactions
         // 3. delete transaction from db
+        const targetTransactionId = req.params.id
+        const userId = req.user._id
         try {
             // stuff
+            const accounts = Account.find({
+                user: userId,
+                $or: [
+                    {debits: targetTransactionId},
+                    {credits: targetTransactionId}
+                ]
+            }).exec()
+
+            accounts.then(accounts => {
+                console.log(`hello from transactionsController.deleteTransaction - accounts promise`)
+                accounts.forEach(account => {
+                    let transactionType = (account.debits.find(d => d._id == targetTransactionId).length ? 'debits' : 'credits')
+                    const accountType = account.balanceType
+
+                    if (transactionType === 'debits') {
+                        account.debits = account.debits.filter(d => d._id != targetTransactionId)
+                    }
+                    else account.credits = account.credits.filter(c => c._id != targetTransactionId)
+
+                })
+            })
         } catch (err) {
             console.log(err)
         }

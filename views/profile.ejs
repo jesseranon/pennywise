@@ -1,4 +1,5 @@
 <%- include('partials/header') -%>
+
 <% const totalAssets = user.accounts.reduce((accumulator, account) => { %>
   <% if (account.balanceType === 'asset') return accumulator += Number(account.currentBalance) %>
   <% return accumulator %>
@@ -7,6 +8,7 @@
 <% if (user.forecasts.length > 0) {%>
     <% sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
 <% } %>
+
 <div class="container">
   <div class="row mt-5">
       <% if (locals.messages.errors) { %>
@@ -39,8 +41,8 @@
                     <% plusMinus = '-' %>
                   <% } %>
                   <span><%= plusMinus %><%= user.currency %><%= currentForecast.amount %></span>
+                  <button class="edit-forecast btn btn-primary">Edit</button>
                   <form action="/forecasts/deleteForecast/<%= currentForecast._id %>" method="post">
-                    <button class="edit-forecast btn btn-primary">Edit</button>
                     <button class="delete-forecast btn btn-secondary">Delete</button>
                   </form>
                 </li>

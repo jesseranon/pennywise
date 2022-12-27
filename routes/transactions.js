@@ -11,7 +11,7 @@ router.get("/:id", ensureAuth, transactionsController.getTransaction)
 //put
 router.put("/:id", transactionsController.modifyTransaction)
 //delete
-router.delete("/:id", transactionsController.deleteTransaction)
+router.post("/deleteTransaction/:id", transactionsController.deleteTransaction)
 
 //get transaction form, pre-populate account paying from
 router.get("/post/:accountId", transactionsController.displayTransactionForm)

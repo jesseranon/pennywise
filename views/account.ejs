@@ -43,7 +43,9 @@
               <span><%= transaction.category.name %></span> |
               <span><%= incDec %><%= user.currency %><%= transaction.amount %></span>
               <button class="edit-transaction btn btn-primary">Edit</button>
-              <button class="delete-transaction btn btn-secondary">Delete</button>
+              <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
+                <button class="delete-transaction btn btn-secondary">Delete</button>
+              </form>
             </li>
           <% } %>
         </ul>

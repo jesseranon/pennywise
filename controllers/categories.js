@@ -16,23 +16,21 @@ module.exports = {
                 {name: cleanCategoryString, user: userId}
             )
             if (!foundCategory) {
-                foundCategory = await categoriesController.postCategory(req.user._id, category)
+                foundCategory = await categoriesController.postCategory(req.user._id, cleanCategoryString)
             }
             return foundCategory
         } catch (err) {
-            req.flash("errors", {
-                msg: "Unable to find or create category.",
-            });
-            return res.redirect("/profile");
+            return {error: 'cannot create category'};
         }
     },
-    postCategory: async (userId, categoryNameString) => {
+    postCategory: async (userId, categoryNameString, accountId = null) => {
         try {
             // use checkCategory (above)
             // create with user: req.user._id if it passes both checks
             const newCategory = new Category({
                 name: categoryNameString,
-                user: userId
+                user: userId,
+                account: accountId
             })
             newCategory.save()
             return newCategory

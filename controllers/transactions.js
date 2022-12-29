@@ -38,14 +38,9 @@ module.exports = {
     },
     deleteTransaction: async (req, res) => {
         //delete a single transaction
-        // 1. remove from any accounts that contain it in their debits or credits
-        // 1.5 increment/decrement account by transaction amount
-        // 2. remove from user's transactions
-        // 3. delete transaction from db
         const targetTransactionId = req.params.id
         const userId = req.user._id
         try {
-            // stuff
             const accounts = Account.find({
                 user: userId,
                 $or: [
@@ -53,25 +48,72 @@ module.exports = {
                     {credits: targetTransactionId}
                 ]
             }).exec()
-
+            
+            const targetTransaction = await Transaction.find({
+                user: userId,
+                _id: targetTransactionId
+            })
+            
+            const transactionAmount = targetTransaction.amount
+            
             accounts.then(accounts => {
                 console.log(`hello from transactionsController.deleteTransaction - accounts promise`)
-                accounts.forEach(account => {
-                    let transactionType = (account.debits.find(d => d._id == targetTransactionId).length ? 'debits' : 'credits')
+                accounts.forEach(async account => {
+                    console.log(`Account: ${account._id}`)
+                    console.log('debits', account.debits)
+                    console.log('credits', account.credits)
+                    let transactionType = (account.debits.find(id => id == targetTransactionId) ? 'debits' : 'credits')
+                    // console.log(`transaction type`, transactionType)
+                    let accountCurrentBalance = account.currentBalance
                     const accountType = account.balanceType
-
+                    
+                    // 1. remove from any accounts that contain it in their debits or credits
                     if (transactionType === 'debits') {
                         account.debits = account.debits.filter(d => d._id != targetTransactionId)
+                    } else {
+                        account.credits = account.credits.filter(c => c._id != targetTransactionId)
+                    } 
+                    
+                    // 1.5 increment/decrement account by transaction amount
+                    if (accountType === 'asset') {
+                        // inc/dec by transaction amount
+                        if (transactionType === 'debit') account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
+                        else account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
+                    } else {
+                        if (transactionType === 'debit') account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
+                        else account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
                     }
-                    else account.credits = account.credits.filter(c => c._id != targetTransactionId)
-
+                    await account.save()
                 })
+            }).catch(err => {
+                console.log(err)
+                res.redirect(req.get('referer'))
             })
+            
+            // 2. remove from user's transactions
+            const updatedTransactions = req.user.transactions.filter(t => t._id != targetTransactionId)
+            await User.findOneAndUpdate(
+                { _id: req.user._id },
+                { $set: 
+                    {
+                        transactions: updatedTransactions
+                    }
+                }
+            )
+                
+            // 3. delete transaction from db
+            await Transaction.deleteOne({
+                user: req.user._id,
+                _id: targetTransactionId
+            })
+            
+            console.log(`transaction delete requested for transaction ${req.params.id}`)
+            res.redirect(req.get('referer'))
+            
         } catch (err) {
             console.log(err)
+            res.redirect("/profile")
         }
-        console.log(`transaction delete requested for transaction ${req.params.id}`)
-        res.redirect("/profile")
     },
     postTransaction: async (req, res) => {
         // console.log(`hello from postTransaction in transactions controller`)

@@ -3,7 +3,7 @@ const User = require("../models/User")
 const Category = require("../models/Category")
 
 module.exports = {
-    checkCategory: async (userId, categoryString) => {
+    checkCategory: async (userId, categoryString, accountId) => {
         console.log(`hello from categoriesController.checkCategory`)
         try {
             // sanitize categoryString
@@ -16,23 +16,37 @@ module.exports = {
                 {name: cleanCategoryString, user: userId}
             )
             if (!foundCategory) {
-                foundCategory = await categoriesController.postCategory(req.user._id, cleanCategoryString)
+                foundCategory = await module.exports.postCategory(userId, cleanCategoryString, accountId)
             }
             return foundCategory
         } catch (err) {
+            console.log(err)
             return {error: 'cannot create category'};
         }
     },
     postCategory: async (userId, categoryNameString, accountId = null) => {
         try {
-            // use checkCategory (above)
-            // create with user: req.user._id if it passes both checks
+            // use params passed from checkCategory
+
+            // create and save new category
             const newCategory = new Category({
                 name: categoryNameString,
                 user: userId,
                 account: accountId
             })
-            newCategory.save()
+            await newCategory.save()
+
+
+            // push to user's categories array
+            await User.findOneAndUpdate(
+                { _id: userId },
+                { 
+                    $push: {
+                        categories: newCategory._id
+                    }
+                }
+            )
+
             return newCategory
         } catch (err) {
             return err

@@ -1,7 +1,7 @@
 const User = require("../models/User")
 const Account = require("../models/Account")
 const Category = require("../models/Category")
-const categoryController = require("./categories")
+const categoriesController = require("./categories")
 
 module.exports = {
   getAccount: async (req, res) => {
@@ -32,13 +32,15 @@ module.exports = {
   },
   createAccount: async (req, res) => {
     const userId = req.user.id
+    const cleanAccountName = req.body.createAccountName[0].toUpperCase() + req.body.createAccountName.slice(1).toLowerCase() 
+
     console.log(req.body.createAccountType)
     const assets = ['savings', 'checking', 'cash']
     const createAccountType = (assets.includes(req.body.createAccountType) ? 'asset' : 'liability')
 
     try {
       const newAccount = new Account({
-        name: req.body.createAccountName,
+        name: cleanAccountName,
         type: req.body.createAccountType,
         balanceType: createAccountType,
         currentBalance: req.body.createAccountBalance,
@@ -46,20 +48,16 @@ module.exports = {
       });
       await newAccount.save()
 
-      console.log(newAccount)
+      // console.log(newAccount)
       const newAccountPush = {
         accounts: newAccount._id
       }
 
       if (newAccount.balanceType === 'liability') {
         //create category {name: `${type} bill`} and put into push as categories
-        const newCategory = new Category({
-          name: `${newAccount.name} payment`,
-          account: newAccount._id,
-          user: userId
-        })
-        await newCategory.save()
-        newAccountPush.categories = newCategory._id
+        const newCategoryName = `${newAccount.name} payment`
+        const newCategory = await categoriesController.checkCategory(userId, newCategoryName, newAccount._id)
+        console.log(newCategory)
       }
 
       await User.findOneAndUpdate(

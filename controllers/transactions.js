@@ -47,7 +47,7 @@ module.exports = {
                     {debits: targetTransactionId},
                     {credits: targetTransactionId}
                 ]
-            }).exec()
+            }).populate('debits').populate('credits').exec()
             
             const targetTransaction = await Transaction.find({
                 user: userId,

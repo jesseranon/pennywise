@@ -40,6 +40,9 @@ module.exports = {
         //delete a single transaction
         const targetTransactionId = req.params.id
         const userId = req.user._id
+
+        console.log(`transaction delete requested for transaction ${req.params.id}`)
+        console.log(`user: ${req.user._id}`)
         try {
             const accounts = Account.find({
                 user: userId,
@@ -48,68 +51,85 @@ module.exports = {
                     {credits: targetTransactionId}
                 ]
             }).populate('debits').populate('credits').exec()
-            
-            const targetTransaction = await Transaction.find({
+
+            const targetTransaction = await Transaction.findOne({
                 user: userId,
                 _id: targetTransactionId
             })
-            
+
+            // console.log('target transaction: ')
+            // console.log(targetTransaction)
+            // console.log(targetTransaction)
+
             const transactionAmount = targetTransaction.amount
-            
+            // console.log(`target transaction amount: ${transactionAmount}`)
+
             accounts.then(accounts => {
                 console.log(`hello from transactionsController.deleteTransaction - accounts promise`)
                 accounts.forEach(async account => {
                     console.log(`Account: ${account._id}`)
-                    console.log('debits', account.debits)
-                    console.log('credits', account.credits)
-                    let transactionType = (account.debits.find(id => id == targetTransactionId) ? 'debits' : 'credits')
+                    console.log(`Current balance: ${account.currentBalance}`)
+                    // console.log('debits', account.debits)
+                    // console.log('credits', account.credits)
+                    console.log(`transaction amount reversing: ${transactionAmount}`)
+                    let transactionType = (account.debits.find(d => d._id == targetTransactionId) ? 'debits' : 'credits')
+                    // console.log(`running find on account debits for targetTransactionId`)
+                    // console.log(account.debits.find(d => d._id == targetTransactionId))
                     // console.log(`transaction type`, transactionType)
                     let accountCurrentBalance = account.currentBalance
                     const accountType = account.balanceType
-                    
+                    console.log(`account type: ${accountType}`)
+
                     // 1. remove from any accounts that contain it in their debits or credits
                     if (transactionType === 'debits') {
                         account.debits = account.debits.filter(d => d._id != targetTransactionId)
                     } else {
                         account.credits = account.credits.filter(c => c._id != targetTransactionId)
-                    } 
-                    
-                    // 1.5 increment/decrement account by transaction amount
+                    }
+
+                    // // 1.5 increment/decrement account by transaction amount
                     if (accountType === 'asset') {
-                        // inc/dec by transaction amount
-                        if (transactionType === 'debit') account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
-                        else account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
+                    //     // inc/dec by transaction amount
+                        // console.log(`account is an asset account`)
+                        if (transactionType === 'debit') {
+                            // console.log(`deleting this transaction should reduce the currentBalance`)
+                            account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
+                        } else {
+                            // console.log(`deleting this transaction should increase the currentBalance`)
+                            account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
+                        }
                     } else {
+                        // console.log(`account is a liability account`)
                         if (transactionType === 'debit') account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
                         else account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
                     }
+
                     await account.save()
                 })
             }).catch(err => {
                 console.log(err)
                 res.redirect(req.get('referer'))
             })
-            
+
             // 2. remove from user's transactions
             const updatedTransactions = req.user.transactions.filter(t => t._id != targetTransactionId)
             await User.findOneAndUpdate(
                 { _id: req.user._id },
-                { $set: 
+                { $set:
                     {
                         transactions: updatedTransactions
                     }
                 }
             )
-                
+
             // 3. delete transaction from db
             await Transaction.deleteOne({
                 user: req.user._id,
                 _id: targetTransactionId
             })
-            
-            console.log(`transaction delete requested for transaction ${req.params.id}`)
+
             res.redirect(req.get('referer'))
-            
+
         } catch (err) {
             console.log(err)
             res.redirect("/profile")
@@ -145,7 +165,7 @@ module.exports = {
             //     '$inc': {}
             // }
             // update['$push'][accountAction] = transactionId
-            // update['$inc'].accountBalance = 
+            // update['$inc'].accountBalance =
 
             // push transaction to mainAccount
             // update mainAccount.currentBalance
@@ -171,7 +191,7 @@ module.exports = {
                 if (accountAction === 'debits') {
                     mainAccount.currentBalance = Number(currentBalance) - Number(newTransaction.amount)
                 }
-                else mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount) 
+                else mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount)
             }
             await mainAccount.save()
 
@@ -194,7 +214,7 @@ module.exports = {
                     if (accountOtherAction === 'debits') {
                         secondAccount.currentBalance = Number(secondCurrentBalance) - Number(newTransaction.amount)
                     }
-                    else secondAccount.currentBalance = Number(secondCurrentBalance) + Number(newTransaction.amount) 
+                    else secondAccount.currentBalance = Number(secondCurrentBalance) + Number(newTransaction.amount)
                 }
                 await secondAccount.save()
             }

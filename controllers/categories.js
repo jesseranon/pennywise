@@ -27,7 +27,7 @@ module.exports = {
     postCategory: async (userId, categoryNameString, accountId = null) => {
         try {
             // use params passed from checkCategory
-
+            
             // create and save new category
             const newCategory = new Category({
                 name: categoryNameString,
@@ -35,8 +35,8 @@ module.exports = {
                 account: accountId
             })
             await newCategory.save()
-
-
+            
+            
             // push to user's categories array
             await User.findOneAndUpdate(
                 { _id: userId },
@@ -45,18 +45,26 @@ module.exports = {
                         categories: newCategory._id
                     }
                 }
-            )
-
-            return newCategory
-        } catch (err) {
-            return err
-        }
-    },
-    putCategory: async (userId, categoryId, categoryNameString) => {
-        // this function will be used to modify a category.name of a category created by the user
-    },
-    deleteCategory: async (userId, categoryId, categoryNameString) => {
-        // this function will be used to delete a category created by the user
-        // this will need to remove the instance of the categoryId from any transaction that uses it
+                )
+                
+                return newCategory
+            } catch (err) {
+                return err
+            }
+        },
+        putCategory: async (userId, categoryId, categoryNameString) => {
+            // this function will be used to modify a category.name of a category created by the user
+            try {
+                // check to see if category belongs to user
+                // if it belongs to user, accept changes
+                // if not, kick back to profile
+            } catch (err) {
+                console.log(err)
+                return {error: 'cannot create category'};
+            }
+        },
+        deleteCategory: async (userId, categoryId, categoryNameString) => {
+            // this function will be used to delete a category created by the user
+            // this will need to remove the instance of the categoryId from any transaction that uses it
     }
 }

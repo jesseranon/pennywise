@@ -57,14 +57,23 @@ module.exports = {
             try {
                 // check to see if category belongs to user
                 // if it belongs to user, accept changes
-                // if not, kick back to profile
+                await Category.findOneAndUpdate(
+                    {
+                        _id: categoryId,
+                        user: userId
+                    },
+                    {
+                        name: categoryNameString
+                    }
+                )
             } catch (err) {
+                // if not, kick back to profile
                 console.log(err)
                 return {error: 'cannot create category'};
             }
         },
-        deleteCategory: async (userId, categoryId, categoryNameString) => {
-            // this function will be used to delete a category created by the user
-            // this will need to remove the instance of the categoryId from any transaction that uses it
+        deleteCategory: async (userId, categoryId, categoryNameString = null) => {
+            // if target category is not associated with any transactions, delete it
+            // if it is, deny the deletion
     }
 }

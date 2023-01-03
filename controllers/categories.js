@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const User = require("../models/User")
 const Category = require("../models/Category")
+const Transaction = require("../models/Transaction")
 
 module.exports = {
     checkCategory: async (userId, categoryString, accountId) => {
@@ -72,8 +73,27 @@ module.exports = {
                 return {error: 'cannot create category'};
             }
         },
-        deleteCategory: async (userId, categoryId, categoryNameString = null) => {
+        deleteCategory: async (userId, categoryId) => {
             // if target category is not associated with any transactions, delete it
             // if it is, deny the deletion
+            // currently only prints associated transactions -- to complete later
+            try {
+                const targetCategory = await Category.findOne({
+                    _id: categoryId,
+                    user: userId
+                })
+
+                const associatedTransactions = await Transaction.find({
+                    user: userId,
+                    category: categoryId
+                }).exec()
+
+                associatedTransactions.then(transactions => {
+                    console.log(transactions.length)
+                })
+
+            } catch (err) {
+                return err
+            }
     }
 }

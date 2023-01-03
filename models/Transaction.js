@@ -31,7 +31,8 @@ const TransactionSchema = new mongoose.Schema({
         default: Date.now,
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category"
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

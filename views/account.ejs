@@ -14,7 +14,17 @@
 <div class="container">
   <div class="row justify-content-center mt-5">
     <div class="col-6">
-      <h2><%= account.name %> <button class="edit-account btn btn-primary">edit account name</button></h2>
+      <h2>
+        <% if (!account.debits.length && !account.debits.length) { %>
+          <form action="/account/deleteAccount/<%= account._id%>" method="post">
+            <button class="delete-account btn" action="submit"><i class="fa-solid fa-circle-minus"></i></button>
+          </form>
+        <% } %>
+        <%= account.name %> 
+        <form action="">
+          <button class="edit-account btn"><i class="fa-solid fa-pen"></i></button>
+        </form>
+      </h2>
       <p>Account Type: <%= account.type[0].toUpperCase() + account.type.slice(1) %></p>
       <p>Current Balance: <strong><%= user.currency %><%= account.currentBalance %></strong></p>
       <% if (accountTransactions.length) { %>
@@ -52,6 +62,10 @@
       <% } else { %>
         <p>No transactions logged.</p>
       <% } %>
+      <form action="">
+        <button class="btn btn-primary" id="track-transaction"><i class="fa-solid fa-receipt"></i></button>
+        <label for="track-transaction">Track a transaction</label>
+      </form>
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>
     </div>

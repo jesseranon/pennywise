@@ -101,5 +101,39 @@ module.exports = {
     // this will allow the user to delete an account they created.
     // this will need to remove any references to the account from a category
     // and remove it from the user's accounts array
+    // if there are transactions associated with an account, the account cannot be deleted
+    try {
+      const targetAccount = await Account.findOne({
+        _id: req.params.id,
+        user: req.user._id
+      })
+
+      if (targetAccount.debits.length || targetAccount.credits.length) {
+        res.redirect('/profile')
+      }
+
+      const user = await User.findOne({ _id: req.user._id, accounts: req.params.id })
+
+      const filteredAccounts = user.accounts.filter(account => account._id != req.params.id)
+
+      user.accounts = filteredAccounts
+
+      await user.save()
+      
+      await Category.deleteOne({
+        user: req.user._id,
+        account: req.params.id
+      })
+
+      await Account.deleteOne({
+        _id: req.params.id,
+        user: req.user._id
+      })
+
+      res.redirect('/profile')
+    } catch (err) {
+      console.log(err)
+      res.redirect("/profile")
+    }
   },
 };

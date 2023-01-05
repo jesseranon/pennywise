@@ -1,3 +1,8 @@
 <%- include('partials/header') -%>
-<%- include('partials/createforecast') -%>
+<% if (mode === 'create') { %>
+    <%- include('partials/createforecast', {user: user}) -%>
+<% } %>
+<% if (mode === 'edit') { %>
+    <%- include('partials/editforecast', {user: user, forecast: forecast}) -%>    
+<% } %>
 <%- include('partials/footer') -%>

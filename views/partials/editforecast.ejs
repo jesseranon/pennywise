@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    Edit Forecast
+    <form action="forecasts/updateForecast/<%= forecast._id%>" method="post">
+      <!-- Type -->
+      <p>
+        <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
+        <select name="accountingType" id="accountingType">
+          <option value="debit" <%= forecast.accountingType === 'debit' ? 'selected' : '' %>>
+            Get paid
+          </option>
+          <option value="credit" <%= forecast.accountingType === 'credit' ? 'selected' : '' %>>
+            Pay a bill
+          </option>
+        </select>
+      </p>
+      
+      
+      <!-- Transaction Amount -->
+      <p>
+        <label for="amount">
+          How much?
+        </label>
+        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="<%= forecast.amount %>" autocomplete="off">
+      </p>
+      
+      <!-- Category -->
+      <p>
+        <label for="category">
+          Which category is this for?
+        </label>
+        <input type="text" name="category" id="category" list="categories" autocomplete="off">
+        <datalist id="categories">
+          <% for (let i = 0; i < user.categories.length; i++) { %>
+            <option value="<%= user.categories[i].name %>" <%= forecast.category._id == user.categories[i]._id ? 'selected' : '' %> >
+          <% } %>
+        </datalist>
+      </p>
+
+      <!-- Date -->
+
+      <p>
+        <label for="date">
+          When is this going to happen?
+        </label>
+      </p>
+      <input type="date" name="date" id="date">
+
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

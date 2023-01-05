@@ -12,6 +12,7 @@ router.get('/', forecastsController.getCalendar)
 router.get('/createForecast', forecastsController.getForecastForm)
 router.post('/createForecast', forecastsController.postForecast)
 
+router.get('/updateForecast/:id', forecastsController.getUpdateForecastForm)
 router.put('/updateForecast/:id', forecastsController.updateForecast)
 
 router.post('/deleteForecast/:id', forecastsController.deleteForecast)

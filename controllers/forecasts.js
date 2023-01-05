@@ -11,7 +11,23 @@ module.exports = {
   },
   getForecastForm: async (req, res) => {
     const user = req.user
-    res.render("forecastform.ejs", {user})
+    res.render("forecastform.ejs", {user, mode: 'create'})
+  },
+  getUpdateForecastForm: async (req, res) => {
+    try {
+      console.log('hello from forecasts controller')
+      console.log('forecast id', req.params.id)
+
+      const user = await User.findOne({ _id: req.user._id, forecasts: req.params.id}).populate('categories')
+
+      const forecast = await Forecast.findOne({ user: user._id, _id: req.params.id }).populate('category')
+      console.log(user)
+      console.log(forecast)
+      res.render("forecastform.ejs", {user, mode: 'edit', forecast})
+    } catch (err) {
+      console.log(err)
+      res.redirect('/profile')
+    }
   },
   postForecast: async (req, res) => {
     // console.log(`hello from forecastsController.postForecast`)

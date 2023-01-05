@@ -27,12 +27,12 @@
       <!-- Category -->
       <p>
         <label for="category">
-          Which category is this for?
+          Which category is this for? Originally: <%= forecast.category.name %>
         </label>
         <input type="text" name="category" id="category" list="categories" autocomplete="off">
         <datalist id="categories">
           <% for (let i = 0; i < user.categories.length; i++) { %>
-            <option value="<%= user.categories[i].name %>" <%= forecast.category._id == user.categories[i]._id ? 'selected' : '' %> >
+            <option value="<%= user.categories[i].name %>" <%= forecast.category == user.categories[i]._id ? 'selected' : '' %> >
           <% } %>
         </datalist>
       </p>
@@ -41,11 +41,14 @@
 
       <p>
         <label for="date">
-          When is this going to happen?
+          When is this going to happen? Originally: <%= forecast.date.toLocaleDateString() %>
         </label>
       </p>
       <input type="date" name="date" id="date">
 
+      <a class="btn btn-secondary" href="/profile">
+        Cancel
+      </a>
       <button type="submit" class="btn btn-primary">
         Submit
       </button>

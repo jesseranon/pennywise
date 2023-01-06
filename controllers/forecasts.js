@@ -9,7 +9,7 @@ module.exports = {
   getCalendar: async (req, res) => {
     res.render("calendar.ejs")
   },
-  getForecastForm: async (req, res) => {
+  getCreateForecastForm: async (req, res) => {
     const user = req.user
     res.render("forecastform.ejs", {user, mode: 'create'})
   },
@@ -59,6 +59,13 @@ module.exports = {
   },
   updateForecast: async (req, res) => {
     //allows user to update date, amount, and/or category of forecast
+    console.log('hello from forecastController.updateForecast')
+    console.log(req.body)
+    try {
+      // stuff
+    } catch (err) {
+      res.redirect('back')
+    }
   },
   deleteForecast: async (req, res) => {
     //delete forecast from database

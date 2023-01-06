@@ -1,7 +1,14 @@
+<% const dateObj = forecast.date %>
+<% const forecastYear = dateObj.getFullYear().toString() %>
+<% let forecastMonth = (dateObj.getMonth() + 1).toString() %>
+<% if (forecastMonth.length < 2) forecastMonth = "0" + forecastMonth %>
+<% let forecastDate = dateObj.getDate().toString() %>
+<% if (forecastDate.length < 2) forecastDate = "0" + forecastDate %>
+
 <div class="container">
   <div class="row justify-content-center mt-5">
     Edit Forecast
-    <form action="forecasts/updateForecast/<%= forecast._id%>" method="post">
+    <form action="<%= forecast._id%>" method="post">
       <!-- Type -->
       <p>
         <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
@@ -15,13 +22,12 @@
         </select>
       </p>
       
-      
       <!-- Transaction Amount -->
       <p>
         <label for="amount">
           How much?
         </label>
-        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="<%= forecast.amount %>" autocomplete="off">
+        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="<%= forecast.amount %>" autocomplete="off" value="<%= forecast.amount %>">
       </p>
       
       <!-- Category -->
@@ -29,10 +35,10 @@
         <label for="category">
           Which category is this for? Originally: <%= forecast.category.name %>
         </label>
-        <input type="text" name="category" id="category" list="categories" autocomplete="off">
+        <input type="text" name="category" id="category" list="categories" autocomplete="off" value="<%= forecast.category.name %>">
         <datalist id="categories">
           <% for (let i = 0; i < user.categories.length; i++) { %>
-            <option value="<%= user.categories[i].name %>" <%= forecast.category == user.categories[i]._id ? 'selected' : '' %> >
+            <option value="<%= user.categories[i].name %>" >
           <% } %>
         </datalist>
       </p>
@@ -44,7 +50,7 @@
           When is this going to happen? Originally: <%= forecast.date.toLocaleDateString() %>
         </label>
       </p>
-      <input type="date" name="date" id="date">
+      <input type="date" name="date" id="date" value="<%= forecastYear + '-' + forecastMonth + '-' + forecastDate  %>">
 
       <a class="btn btn-secondary" href="/profile">
         Cancel

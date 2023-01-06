@@ -9,11 +9,11 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //Forecast routes
 router.get('/', forecastsController.getCalendar)
 
-router.get('/createForecast', forecastsController.getForecastForm)
+router.get('/createForecast', forecastsController.getCreateForecastForm)
 router.post('/createForecast', forecastsController.postForecast)
 
 router.get('/updateForecast/:id', forecastsController.getUpdateForecastForm)
-router.put('/updateForecast/:id', forecastsController.updateForecast)
+router.post('/updateForecast/:id', forecastsController.updateForecast)
 
 router.post('/deleteForecast/:id', forecastsController.deleteForecast)
 

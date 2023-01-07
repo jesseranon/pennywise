@@ -46,54 +46,54 @@ module.exports = {
                         categories: newCategory._id
                     }
                 }
-                )
+            )
                 
-                return newCategory
-            } catch (err) {
-                return err
-            }
-        },
-        putCategory: async (userId, categoryId, categoryNameString) => {
-            // this function will be used to modify a category.name of a category created by the user
-            try {
-                // check to see if category belongs to user
-                // if it belongs to user, accept changes
-                await Category.findOneAndUpdate(
-                    {
-                        _id: categoryId,
-                        user: userId
-                    },
-                    {
-                        name: categoryNameString
-                    }
-                )
-            } catch (err) {
-                // if not, kick back to profile
-                console.log(err)
-                return {error: 'cannot create category'};
-            }
-        },
-        deleteCategory: async (userId, categoryId) => {
-            // if target category is not associated with any transactions, delete it
-            // if it is, deny the deletion
-            // currently only prints associated transactions -- to complete later
-            try {
-                const targetCategory = await Category.findOne({
+            return newCategory
+        } catch (err) {
+            return err
+        }
+    },
+    putCategory: async (userId, categoryId, categoryNameString) => {
+        // this function will be used to modify a category.name of a category created by the user
+        try {
+            // check to see if category belongs to user
+            // if it belongs to user, accept changes
+            await Category.findOneAndUpdate(
+                {
                     _id: categoryId,
                     user: userId
-                })
+                },
+                {
+                    name: categoryNameString
+                }
+            )
+        } catch (err) {
+            // if not, kick back to profile
+            console.log(err)
+            return {error: 'cannot create category'};
+        }
+    },
+    deleteCategory: async (userId, categoryId) => {
+        // if target category is not associated with any transactions, delete it
+        // if it is, deny the deletion
+        // currently only prints associated transactions -- to complete later
+        try {
+            const targetCategory = await Category.findOne({
+                _id: categoryId,
+                user: userId
+            })
 
-                const associatedTransactions = await Transaction.find({
-                    user: userId,
-                    category: categoryId
-                }).exec()
+            const associatedTransactions = await Transaction.find({
+                user: userId,
+                category: categoryId
+            }).exec()
 
-                associatedTransactions.then(transactions => {
-                    console.log(transactions.length)
-                })
+            associatedTransactions.then(transactions => {
+                console.log(transactions.length)
+            })
 
-            } catch (err) {
-                return err
-            }
+        } catch (err) {
+            return err
+        }
     }
 }

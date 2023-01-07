@@ -23,6 +23,7 @@ module.exports = {
       const forecast = await Forecast.findOne({ user: user._id, _id: req.params.id }).populate('category')
       console.log(user)
       console.log(forecast)
+
       res.render("forecastform.ejs", {user, mode: 'edit', forecast})
     } catch (err) {
       console.log(err)
@@ -61,8 +62,39 @@ module.exports = {
     //allows user to update date, amount, and/or category of forecast
     console.log('hello from forecastController.updateForecast')
     console.log(req.body)
+
+    const { accountingType, amount, category, date } = req.body
+    
+    console.log(`
+      accountingType: ${accountingType},
+      amount: ${amount},
+      category: ${category},
+      date: ${date}
+    `)
+
+    const foundCategory = await Category.findOne({
+      name: category
+    })
+
+    const categoryId = foundCategory._id
+
+    await Forecast.findOneAndUpdate(
+      {
+        user: req.user._id,
+        _id: req.params.id
+      },
+      {
+        $set: {
+          accountingType,
+          amount,
+          category: categoryId,
+          date
+        }
+      }
+    )
     try {
       // stuff
+      res.redirect('/profile')
     } catch (err) {
       res.redirect('back')
     }

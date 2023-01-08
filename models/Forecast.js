@@ -20,6 +20,7 @@ const ForecastSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
+        //may need to set getter to add a timezone offset when forecast date is requested.
         default: null,
     },
     interval:  {

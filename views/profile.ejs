@@ -34,7 +34,7 @@
                 <% let plusMinus = null %>
                 <li class="col-6 mt-5">
                   <p>
-                    <%= currentForecast.date.toLocaleDateString() %>
+                    <%= currentForecast.date.toLocaleDateString('en-us') %>
                     <%= currentForecast.category.name %>
                     <% if (currentForecast.accountingType === 'debit') { %>
                       <% plusMinus = '+' %>

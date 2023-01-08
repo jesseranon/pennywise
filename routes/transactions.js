@@ -14,8 +14,13 @@ router.put("/:id", transactionsController.modifyTransaction)
 router.post("/deleteTransaction/:id", transactionsController.deleteTransaction)
 
 //get transaction form, pre-populate account paying from
-router.get("/post/:accountId", transactionsController.displayTransactionForm)
+router.get("/post/:accountId", transactionsController.getCreateTransactionForm)
 //post transaction to account
 router.post("/post/:accountId", transactionsController.postTransaction)
+
+//get update transaction form, pre-populate input fields with transaction data
+router.get("/update/:transactionId", transactionsController.getCreateTransactionForm)
+//post transaction to account
+router.post("/update/:transactionId", transactionsController.postTransaction)
 
 module.exports = router

@@ -8,7 +8,7 @@ const accountsController = require("./accounts")
 const categoriesController = require("./categories")
 
 module.exports = {
-    displayTransactionForm: async (req, res) => {
+    getCreateTransactionForm: async (req, res) => {
         //send up the transaction form
         const accountId = req.params.accountId
         const userId = req.user.id
@@ -20,6 +20,17 @@ module.exports = {
             console.log(`transaction form requested for account ${req.params.accountId}`)
             console.log(account)
             res.render("transactionform.ejs", {user:user, account: account})
+        } catch (err) {
+            console.error(err)
+            res.redirect("/profile")
+        }
+    },
+    getUpdateTransactionForm: async (req, res) => {
+        //send up the update transaction form
+        const transactionId = req.params.transactionId
+        const userId = req.user.id
+        try {
+            //stuff
         } catch (err) {
             console.error(err)
             res.redirect("/profile")

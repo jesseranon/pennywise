@@ -17,7 +17,7 @@
       <h2>
         <% if (!account.debits.length && !account.debits.length) { %>
           <form action="/account/deleteAccount/<%= account._id%>" method="post">
-            <button class="delete-account btn" action="submit"><i class="fa-solid fa-circle-minus"></i></button>
+            <button class="delete-account btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
           </form>
         <% } %>
         <%= account.name %> 
@@ -29,7 +29,7 @@
       <p>Current Balance: <strong><%= user.currency %><%= account.currentBalance %></strong></p>
       <% if (accountTransactions.length) { %>
         <p>Transactions</p>
-        <ul>
+        <ul class="transactions-list">
           <% for (let i = 0; i < accountTransactions.length; i++) { %>
             <% let incDec = null %>
             <% const transaction = accountTransactions[i]%>
@@ -49,12 +49,14 @@
               <% } %>
             <% } %>
             <li>
+              <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
+                <button class="delete-transaction btn btn-secondary" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
+              </form>
               <span><%= transaction.date.toLocaleDateString('en-us') %></span> |
               <span><%= transaction.category.name %></span> |
               <span><%= incDec %><%= user.currency %><%= transaction.amount %></span>
-              <button class="edit-transaction btn btn-primary">Edit</button>
-              <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
-                <button class="delete-transaction btn btn-secondary">Delete</button>
+              <form action="/transaction/update/<%= transaction._id %>" method="get">
+                <button class="edit-transaction btn btn-primary" type="submit"><i class="fa-solid fa-pen"></i></button>
               </form>
             </li>
           <% } %>
@@ -62,9 +64,9 @@
       <% } else { %>
         <p>No transactions logged.</p>
       <% } %>
-      <form action="">
-        <button class="btn btn-primary" id="track-transaction"><i class="fa-solid fa-receipt"></i></button>
+      <form action="/transaction/post/<%= account._id %>" method="get">
         <label for="track-transaction">Track a transaction</label>
+        <button class="btn btn-primary" id="track-transaction"><i class="fa-solid fa-receipt"></i></button>
       </form>
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>

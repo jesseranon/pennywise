@@ -31,6 +31,7 @@ module.exports = {
         const userId = req.user.id
         try {
             //stuff
+            res.render('/transactionform')
         } catch (err) {
             console.error(err)
             res.redirect("/profile")
@@ -42,7 +43,7 @@ module.exports = {
         //display a single transaction's details
         console.log(`transaction details requested for transaction ${req.params.id}`)
     },
-    modifyTransaction: async (req, res) => {
+    updateTransaction: async (req, res) => {
         //modify a single transaction's details
         console.log(`transaction modification requested for transaction ${req.params.id}`)
         res.redirect("/profile")

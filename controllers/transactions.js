@@ -85,9 +85,9 @@ module.exports = {
                     // console.log('credits', account.credits)
                     console.log(`transaction amount reversing: ${transactionAmount}`)
                     let transactionType = (account.debits.find(d => d._id == targetTransactionId) ? 'debits' : 'credits')
-                    // console.log(`running find on account debits for targetTransactionId`)
-                    // console.log(account.debits.find(d => d._id == targetTransactionId))
-                    // console.log(`transaction type`, transactionType)
+                    console.log(`running find on account debits for targetTransactionId`)
+                    console.log(account.debits.find(d => d._id == targetTransactionId))
+                    console.log(`transaction type`, transactionType)
                     let accountCurrentBalance = account.currentBalance
                     const accountType = account.balanceType
                     console.log(`account type: ${accountType}`)
@@ -102,16 +102,16 @@ module.exports = {
                     // // 1.5 increment/decrement account by transaction amount
                     if (accountType === 'asset') {
                     //     // inc/dec by transaction amount
-                        // console.log(`account is an asset account`)
-                        if (transactionType === 'debit') {
-                            // console.log(`deleting this transaction should reduce the currentBalance`)
+                        console.log(`account is an asset account`)
+                        if (transactionType === 'debits') {
+                            console.log(`deleting this transaction should reduce the currentBalance`)
                             account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
                         } else {
-                            // console.log(`deleting this transaction should increase the currentBalance`)
+                            console.log(`deleting this transaction should increase the currentBalance`)
                             account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
                         }
                     } else {
-                        // console.log(`account is a liability account`)
+                        console.log(`account is a liability account`)
                         if (transactionType === 'debit') account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
                         else account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
                     }

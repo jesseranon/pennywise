@@ -1,7 +1,12 @@
 <%- include('partials/header') -%>
 <div class="container">
     <div class="row mt-5">
-        <%- include('partials/createtransaction'), {user: user, account: account} -%>
+        <% if (mode === 'create') { %>
+            <%- include('partials/createtransaction'), { user: user, account: account } -%>
+            <% } %>
+        <% if (mode === 'edit') { %>    
+            <%- include('partials/edittransaction'), { user: user, transaction: transaction } -%>
+        <% } %>
     </div>
 </div>
 <%- include('partials/transactionfooter') -%>

@@ -1,0 +1,47 @@
+<% const dateObj = transaction.date %>
+<% const transactionYear = dateObj.getFullYear().toString() %>
+<% let transactionMonth = (dateObj.getMonth() + 1).toString() %>
+<% if (transactionMonth.length < 2) transactionMonth = "0" + transactionMonth %>
+<% let transactionDate = dateObj.getDate().toString() %>
+<% if (transactionDate.length < 2) transactionDate = "0" + transactionDate %>
+
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    Edit Transaction
+    <form action="<%= transaction._id%>" method="post">
+      
+      <!-- Transaction Amount -->
+      <p>
+        <label for="amount">
+          How much?
+        </label>
+        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="<%= transaction.amount %>" autocomplete="off" value="<%= transaction.amount %>">
+      </p>
+      
+      <!-- Category -->
+      <p>
+        <label for="category">
+          Which category is this for?
+        </label>
+        <input type="text" name="category" id="category" list="categories" autocomplete="off" value="<%= transaction.category.name %>">
+        <datalist id="categories">
+          <% for (let i = 0; i < user.categories.length; i++) { %>
+            <option value="<%= user.categories[i].name %>" >
+          <% } %>
+        </datalist>
+      </p>
+
+      <!-- Date -->
+      <p>
+          <%= transaction.date.toLocaleDateString() %>
+      </p>
+
+      <a class="btn btn-secondary" href="/profile">
+        Cancel
+      </a>
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>

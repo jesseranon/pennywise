@@ -19,7 +19,7 @@ module.exports = {
             const account = user.accounts.filter(account => account._id == accountId)[0]
             console.log(`transaction form requested for account ${req.params.accountId}`)
             console.log(account)
-            res.render("transactionform.ejs", {user:user, account: account})
+            res.render("transactionform.ejs", {user: user, mode: 'create', account: account})
         } catch (err) {
             console.error(err)
             res.redirect("/profile")
@@ -31,7 +31,22 @@ module.exports = {
         const userId = req.user.id
         try {
             //stuff
-            res.render('/transactionform')
+            console.log(`hello from getUpdateTransactionForm`)
+            const transaction = await Transaction.findOne({
+                user: userId,
+                _id: transactionId
+            })
+                .populate({
+                    path: 'user',
+                    populate: {
+                        path: 'categories',
+                        model: 'Category'
+                    }
+                })
+                .populate('category')
+
+            console.log(transaction)
+            res.render('transactionform.ejs', {user: transaction.user,  mode: 'edit', transaction})
         } catch (err) {
             console.error(err)
             res.redirect("/profile")

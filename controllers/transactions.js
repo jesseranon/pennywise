@@ -169,73 +169,35 @@ module.exports = {
                 user
             })
             await newTransaction.save()
-            const transactionId = newTransaction._id
 
-            // // set up dynamic update object
-            // const update = {
-            //     '$push': {},
-            //     '$inc': {}
-            // }
-            // update['$push'][accountAction] = transactionId
-            // update['$inc'].accountBalance =
-
-            // push transaction to mainAccount
-            // update mainAccount.currentBalance
             const mainAccount = await Account.findOne(
                 {
                     _id: accountId,
                     user
                 }
             )
-            // push newTransaction._id to mainAccount[accountAction]
-            console.log(accountAction)
-            mainAccount[accountAction].push(transactionId)
-            // increment account.currentBalance
-            const currentBalance = mainAccount.currentBalance
-            console.log(newTransaction.amount)
-            console.log(mainAccount.balanceType)
-            if (mainAccount.balanceType === 'asset') {
-                if (accountAction === 'debits') {
-                    mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount)
-                }
-                else mainAccount.currentBalance = Number(currentBalance) - Number(newTransaction.amount)
-            } else if (mainAccount.balanceType === 'liability') {
-                if (accountAction === 'debits') {
-                    mainAccount.currentBalance = Number(currentBalance) - Number(newTransaction.amount)
-                }
-                else mainAccount.currentBalance = Number(currentBalance) + Number(newTransaction.amount)
-            }
-            await mainAccount.save()
+            // // push newTransaction._id to mainAccount[accountAction]
+            // console.log(`main account`)
+            // console.log(mainAccount)
+            // console.log(accountAction)
+
+            await module.exports.postTransactionToAccount(mainAccount._id, newTransaction._id, user, accountAction)
 
             // if category is associated with an account,
             // push transactionId to the category.account
-            console.log(category.account, accountAction)
             if (category.account) {
+                // console.log(category.account, accountAction)
                 const accountOtherAction = (accountAction === 'debits' ? 'credits' : 'debits')
                 const secondAccount = await Account.findOne({_id: category.account, user: req.user._id})
-                console.log(secondAccount, accountOtherAction)
-                secondAccount[accountOtherAction].push(transactionId)
-                // push newTransaction._id to secondAccount[accountOtherAction]
-                const secondCurrentBalance = secondAccount.currentBalance
-                if (secondAccount.balanceType === 'asset') {
-                    if (accountOtherAction === 'debits') {
-                        secondAccount.currentBalance = Number(secondCurrentBalance) + Number(newTransaction.amount)
-                    }
-                    else secondAccount.currentBalance = Number(secondCurrentBalance) - Number(newTransaction.amount)
-                } else if (secondAccount.balanceType === 'liability') {
-                    if (accountOtherAction === 'debits') {
-                        secondAccount.currentBalance = Number(secondCurrentBalance) - Number(newTransaction.amount)
-                    }
-                    else secondAccount.currentBalance = Number(secondCurrentBalance) + Number(newTransaction.amount)
-                }
-                await secondAccount.save()
+                // console.log(secondAccount, accountOtherAction)
+                await module.exports.postTransactionToAccount(secondAccount, newTransaction, accountOtherAction)
             }
 
             await User.findOneAndUpdate(
                 {_id: user},
                 {
                     $push: {
-                        transactions: transactionId
+                        transactions: newTransaction._id
                     }
                 }
             )
@@ -245,4 +207,47 @@ module.exports = {
             res.redirect("/profile")
         }
     },
+    postTransactionToAccount: async (accountId, transactionId, userId, accountAction = 'debits') => {
+        // helper function to post transactionId to account.debits/account.credits
+        // calls the helper function to increment account.currentBalance
+        console.log(`postTransactionToAccount function`)
+        try {
+            const accountDoc = await Account.findOne({
+                user: userId,
+                _id: accountId
+            })
+            
+            const transactionDoc = await Transaction.findOne({
+                user: userId,
+                _id: transactionId
+            })
+
+            // console.log(`posting transaction ${transactionDoc}`)
+            // console.log(`to account ${accountDoc}`)
+            // console.log(`account currentBalance`, accountDoc.currentBalance)
+            let transactionAmount = Number(transactionDoc.amount)
+            // console.log(`transaction amount`, transactionAmount)
+            // console.log(`accountAction`, accountAction)
+            // console.log(`transactionAmount`, transactionAmount)
+
+            if (accountDoc.balanceType === 'asset' && accountAction === 'credits') {
+                transactionAmount = -transactionAmount
+            } else if (accountDoc.balanceType === 'liability' && accountAction === 'debits')  {
+                transactionAmount = -transactionAmount
+            }
+
+            accountDoc[accountAction].push(transactionDoc._id)
+
+            accountDoc.currentBalance = module.exports.incrementAccountCurrentBalance(Number(accountDoc.currentBalance), transactionAmount)
+
+            await accountDoc.save()
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    incrementAccountCurrentBalance: (accountCurrentBalance, incrementNumber) => {
+        // helper function that increments account.currentBalance
+        const incrementation = accountCurrentBalance + incrementNumber
+        return incrementation
+    }
 };

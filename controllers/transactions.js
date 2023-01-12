@@ -45,7 +45,7 @@ module.exports = {
                 })
                 .populate('category')
 
-            console.log(transaction)
+            // console.log(transaction)
             res.render('transactionform.ejs', {user: transaction.user,  mode: 'edit', transaction})
         } catch (err) {
             console.error(err)
@@ -60,7 +60,43 @@ module.exports = {
     },
     updateTransaction: async (req, res) => {
         //modify a single transaction's details
-        console.log(`transaction modification requested for transaction ${req.params.id}`)
+        console.log(`transaction modification requested for transaction ${req.params.transactionId}`)
+        try {
+            console.log(req.body.amount)
+            console.log(req.body.category)
+
+            const targetTransaction = await Transaction.findOne({
+                user: req.user._id,
+                _id: req.params.transactionId
+            }).populate('category')
+
+            // check to see if category is changed
+
+            const originalCategory = newTransaction.category.name
+            const newCategory = req.body.category
+
+            if (originalCategory != newCategory) {
+                // run categoriesController.checkCategory on newCategory
+                // set targetTransaction.category to newCategory._id
+            }
+
+            const originalAmount = Number(targetTransaction.amount)
+            const newAmount = Number(req.body.amount)
+
+            let amountChange = null
+
+            if (originalAmount != newAmount) {
+                amountChange = newAmount - originalAmount
+                // change targetTransaction.amount to newAmount
+                // save targetTransaction
+                
+                // find accounts affected by this transaction change
+                // increment their currentBalance according to the new change
+            }
+
+        } catch (err) {
+
+        }
         res.redirect("/profile")
     },
     deleteTransaction: async (req, res) => {
@@ -231,7 +267,7 @@ module.exports = {
                 user: userId,
                 _id: accountId
             })
-            
+
             const transactionDoc = await Transaction.findOne({
                 user: userId,
                 _id: transactionId

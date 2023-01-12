@@ -4,7 +4,7 @@ const Category = require("../models/Category")
 const Transaction = require("../models/Transaction")
 
 module.exports = {
-    checkCategory: async (userId, categoryString, accountId) => {
+    checkCategory: async (userId, categoryString, accountId = null) => {
         console.log(`hello from categoriesController.checkCategory`)
         try {
             // sanitize categoryString

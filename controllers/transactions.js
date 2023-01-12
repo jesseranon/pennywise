@@ -62,8 +62,10 @@ module.exports = {
         //modify a single transaction's details
         console.log(`transaction modification requested for transaction ${req.params.transactionId}`)
         try {
-            console.log(req.body.amount)
-            console.log(req.body.category)
+            const userId = req.user._id
+
+            // console.log(req.body.amount)
+            // console.log(req.body.category)
 
             const targetTransaction = await Transaction.findOne({
                 user: req.user._id,
@@ -71,31 +73,65 @@ module.exports = {
             }).populate('category')
 
             // check to see if category is changed
-
-            const originalCategory = newTransaction.category.name
+            const originalCategory = targetTransaction.category.name
             const newCategory = req.body.category
-
+            // if it is...
             if (originalCategory != newCategory) {
                 // run categoriesController.checkCategory on newCategory
                 // set targetTransaction.category to newCategory._id
+                console.log(`category has changed from ${originalCategory} to ${newCategory}`)
+                const foundCategory = await categoriesController.checkCategory(userId, newCategory)
+                targetTransaction.category = foundCategory._id
+                // await targetTransaction.save()
             }
 
+            // check to see if amount is changed
             const originalAmount = Number(targetTransaction.amount)
             const newAmount = Number(req.body.amount)
 
             let amountChange = null
 
             if (originalAmount != newAmount) {
+                /*
+                    if newAmount > originalAmount, change is positive
+                    if newAmount < originalAmount, change is negative
+                */
                 amountChange = newAmount - originalAmount
                 // change targetTransaction.amount to newAmount
+                targetTransaction.amount = newAmount
                 // save targetTransaction
-                
+                await targetTransaction.save()
+                console.log(`amount has changed from ${originalAmount} to ${newAmount}.`)
+                console.log(`a difference of ${amountChange}`)
                 // find accounts affected by this transaction change
+                const accounts = Account.find({
+                    user: userId,
+                    $or: [
+                        {debits: targetTransaction._id},
+                        {credits: targetTransaction._id}
+                    ]
+                }).exec()
+
+                accounts.then(accounts => {
+                    accounts.forEach(account => {
+                        console.log(account.currentBalance)
+                        const accountType = account.balanceType
+                        const accountAction = (account.debits.find(d => d === targetTransaction._id.toString()) ? 'debits' : 'credits')
+                        
+                        if (accountType === 'asset' && accountAction === 'credits') amountChange = -amountChange
+                        if (accountType === 'liability' && accountAction === 'debits') amountChange = -amountChange
+
+                        const newBalance = module.exports.incrementAccountCurrentBalance(account.currentBalance, amountChange)
+                        account.currentBalance = newBalance
+
+                        account.save()
+                    })
+                })
                 // increment their currentBalance according to the new change
             }
 
         } catch (err) {
-
+            console.log(err)
         }
         res.redirect("/profile")
     },
@@ -241,7 +277,7 @@ module.exports = {
                 const accountOtherAction = (accountAction === 'debits' ? 'credits' : 'debits')
                 const secondAccount = await Account.findOne({_id: category.account, user: req.user._id})
                 // console.log(secondAccount, accountOtherAction)
-                await module.exports.postTransactionToAccount(secondAccount, newTransaction, accountOtherAction)
+                await module.exports.postTransactionToAccount(secondAccount._id, newTransaction._id, user, accountOtherAction)
             }
 
             await User.findOneAndUpdate(

@@ -58,15 +58,7 @@
         </datalist>
       </p>
 
-      <button type="submit" class="btn btn-primary">
-        Submit
-      </button>
-
-      <!-- <button type="button" class="btn" disabled>
-        <p>
-          Balance will change to
-        </p><strong><%= user.currency %><span id="netEffect"><%= account.currentBalance %></span></strong>
-      </button> -->
+      <%- include('formsubmitcancelbuttons') -%>
     </form>
   </div>
 </div>

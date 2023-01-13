@@ -51,12 +51,7 @@
       </p>
       <input type="date" name="date" id="date" value="<%= forecastYear + '-' + forecastMonth + '-' + forecastDate  %>">
 
-      <a class="btn btn-secondary" href="/profile">
-        Cancel
-      </a>
-      <button type="submit" class="btn btn-primary">
-        Submit
-      </button>
+      <%- include('formsubmitcancelbuttons') -%>
     </form>
   </div>
 </div>

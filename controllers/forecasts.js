@@ -4,32 +4,10 @@ const Account = require("../models/Account")
 const Category = require("../models/Category")
 const Forecast = require("../models/Forecast")
 const { checkCategory } = require("./categories")
+const transactionsController = require("./transactions")
 
 module.exports = {
-  getCalendar: async (req, res) => {
-    res.render("calendar.ejs")
-  },
-  getCreateForecastForm: async (req, res) => {
-    const user = req.user
-    res.render("forecastform.ejs", {user, mode: 'create'})
-  },
-  getUpdateForecastForm: async (req, res) => {
-    try {
-      console.log('hello from forecasts controller')
-      console.log('forecast id', req.params.id)
-
-      const user = await User.findOne({ _id: req.user._id, forecasts: req.params.id}).populate('categories')
-
-      const forecast = await Forecast.findOne({ user: user._id, _id: req.params.id }).populate('category')
-      console.log(user)
-      console.log(forecast)
-
-      res.render("forecastform.ejs", {user, mode: 'edit', forecast})
-    } catch (err) {
-      console.log(err)
-      res.redirect('/profile')
-    }
-  },
+  //CrUD actions
   // TODO: re-order post, update, delete functions
   // TODO: rename to createForecast
   postForecast: async (req, res) => {
@@ -59,6 +37,9 @@ module.exports = {
       }
     )
     res.redirect("/profile")
+  },
+  getCalendar: async (req, res) => {
+    res.render("calendar.ejs")
   },
   updateForecast: async (req, res) => {
     //allows user to update date, amount, and/or category of forecast
@@ -121,5 +102,43 @@ module.exports = {
     } catch (err) {
       console.log(err)
     }
+  },
+  // form functions
+  getCreateForecastForm: async (req, res) => {
+    const user = req.user
+    res.render("forecastform.ejs", {user, mode: 'create'})
+  },
+  getUpdateForecastForm: async (req, res) => {
+    try {
+      console.log('hello from forecasts controller')
+      console.log('forecast id', req.params.id)
+
+      const user = await User.findOne({ _id: req.user._id, forecasts: req.params.id}).populate('categories')
+
+      const forecast = await Forecast.findOne({ user: user._id, _id: req.params.id }).populate('category')
+      console.log(user)
+      console.log(forecast)
+
+      res.render("forecastform.ejs", {user, mode: 'edit', forecast})
+    } catch (err) {
+      console.log(err)
+      res.redirect('/profile')
+    }
+  },
+  // convert to transaction form
+  getForecastToTransactionForm: async (req, res) => {
+    // needs access to user.populate('accounts').populate('categories') for accounts
+    // needs access to forecast.populate('category')
+    // use create transaction template
+    // user must be able to choose account
+    // // deposits must go into an asset account
+    // current balance must be displayed for the chosen account (dynamically update)
+    // deposit/spend action must be locked in
+    // user must be able to update amount
+    // category must be locked in
+  },
+  postForecastToTransaction: async (req, res) => {
+    // use transactionsController.postTransaction to post transaction
+    // once transaction is created, delete forecast
   }
 };

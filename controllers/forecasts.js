@@ -127,18 +127,40 @@ module.exports = {
   },
   // convert to transaction form
   getForecastToTransactionForm: async (req, res) => {
-    // needs access to user.populate('accounts').populate('categories') for accounts
-    // needs access to forecast.populate('category')
-    // use create transaction template
-    // user must be able to choose account
-    // // deposits must go into an asset account
-    // current balance must be displayed for the chosen account (dynamically update)
-    // deposit/spend action must be locked in
-    // user must be able to update amount
-    // category must be locked in
+    const userId = req.user._id
+    const forecastId = req.params.id
+    
+    try {
+      // needs access to user.populate('accounts').populate('categories') for accounts
+      const user = await User.findOne({
+        _id: userId,
+        forecasts: forecastId
+      }).populate('accounts').populate('categories')
+      // needs access to forecast.populate('category')
+      const forecast = await Forecast.findOne({
+        user: userId,
+        _id: forecastId
+      }).populate('category')
+      // user must be able to choose account
+      // // deposits must go into an asset account
+      // current balance must be displayed for the chosen account (dynamically update)
+      // deposit/spend action must be locked in
+      // user must be able to update amount
+      // category must be locked in
+      res.render('forecastform.ejs', {user, mode: 'convert', forecast})
+    } catch (err) {
+      console.log(err)
+      res.redirect('/profile')
+    }
   },
   postForecastToTransaction: async (req, res) => {
-    // use transactionsController.postTransaction to post transaction
-    // once transaction is created, delete forecast
+    try {
+      console.log(req.body)
+      // use transactionsController.postTransaction to post transaction
+      // once transaction is created, delete forecast
+    } catch (err) {
+      console.log(err)
+      res.redirect('/profile')
+    }
   }
 };

@@ -49,7 +49,9 @@
                   <form action="/forecasts/deleteForecast/<%= currentForecast._id %>" method="post">
                     <button class="delete-forecast btn btn-secondary"><i class="fa-solid fa-trash"></i></button>
                   </form>
-                  <button class="btn btn-primary convert-forecast"><i class="fa-solid fa-receipt"></i></button>
+                  <form action="/forecasts/convertForecast/<%= currentForecast._id %>" method="get">
+                    <button class="btn btn-primary convert-forecast"><i class="fa-solid fa-receipt"></i></button>
+                  </form>
                 </li>
               <% } %>
             </ul>

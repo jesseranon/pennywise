@@ -5,4 +5,7 @@
 <% if (mode === 'edit') { %>
     <%- include('partials/editforecast', {user: user, forecast: forecast}) -%>    
 <% } %>
+<% if (mode === 'convert') { %>
+    <%- include('partials/convertforecast', {user: user, forecast: forecast}) -%>    
+<% } %>
 <%- include('partials/footer') -%>

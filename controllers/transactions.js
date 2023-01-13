@@ -58,6 +58,7 @@ module.exports = {
         //display a single transaction's details
         console.log(`transaction details requested for transaction ${req.params.id}`)
     },
+    // TODO: re-order create, update, delete functions
     updateTransaction: async (req, res) => {
         //modify a single transaction's details
         console.log(`transaction modification requested for transaction ${req.params.transactionId}`)
@@ -234,6 +235,7 @@ module.exports = {
             res.redirect("/profile")
         }
     },
+    // TODO: rename to createTransaction
     postTransaction: async (req, res) => {
         // console.log(`hello from postTransaction in transactions controller`)
         try {

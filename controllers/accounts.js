@@ -116,6 +116,8 @@ module.exports = {
       if (targetAccount.name !== newAccountName) {
         // find any categories tied to the account
         // update the category name to the new one
+        // TODO: make newCategory is unique
+        // // use categoriesController.putCategory to do this
         await Category.findOneAndUpdate(
           {
             user: req.user._id,

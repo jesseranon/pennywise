@@ -30,6 +30,8 @@ module.exports = {
       res.redirect('/profile')
     }
   },
+  // TODO: re-order post, update, delete functions
+  // TODO: rename to createForecast
   postForecast: async (req, res) => {
     // console.log(`hello from forecastsController.postForecast`)
     // console.log(`incoming info`, req.body)

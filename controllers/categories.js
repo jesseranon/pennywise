@@ -25,6 +25,7 @@ module.exports = {
             return {error: 'cannot create category'};
         }
     },
+    // TODO: rename to createCategory
     postCategory: async (userId, categoryNameString, accountId = null) => {
         try {
             // use params passed from checkCategory
@@ -53,6 +54,7 @@ module.exports = {
             return err
         }
     },
+    // TODO: rename to updateCategory
     putCategory: async (userId, categoryId, categoryNameString) => {
         // this function will be used to modify a category.name of a category created by the user
         try {

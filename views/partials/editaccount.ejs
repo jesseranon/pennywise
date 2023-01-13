@@ -1,0 +1,43 @@
+<% const assets = ['savings', 'checking', 'cash'] %>
+<% const liabilities = ['credit-card', 'loan'] %>
+<% const transactions = account.debits.concat(account.credits) %>
+
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    Edit Account
+    <form action="<%= account._id %>" method="post">
+      <!-- Name -->
+      <p>
+        <label for="accountName">Name</label>
+        <input type="text" name="accountName" id="accountName" autocomplete="off" value="<%= account.name %>">
+      </p>
+      
+      
+      <!-- Type -->
+      <p>
+        <label for="accountType">Type</label>
+        <select name="accountType" id="accountType">
+          <% const accountType = account.balanceType === 'asset' ? assets : liabilities %>
+          <% for (let i = 0; i < accountType.length; i ++) { %>
+            <% accountTypeString = accountType[i].split('-').map(s => s[0].toUpperCase() + s.slice(1).toLowerCase()).join(' ') %>
+            <option value="<%= accountType[i] %>" <%= account.type == accountType[i] ? 'selected' : '' %> ><%= accountTypeString %></option>
+          <% } %>
+        </select>
+      </p>
+      
+      <!-- Beginning Balance -->
+      <!-- if account has no transactions, allow user to edit beginning balance -->
+      <% if (!transactions.length) { %>
+        <p>
+          <label for="accountBalance">Beginning balance</label>
+          <%= user.currency %><input type="number" step="0.01" min="0" name="accountBalance" id="accountBalance" placeholder="0.00" autocomplete="off" value="<%= account.currentBalance %>">
+        </p>
+      <% } %>
+      
+      <button type="submit" class="btn btn-primary">
+        Update Account
+      </button>
+
+    </form>
+  </div>
+</div>

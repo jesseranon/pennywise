@@ -1,0 +1,8 @@
+<%- include('partials/header') -%>
+    <% if (mode === 'create') { %>
+        <%- include('partials/createaccount', {user: user}) -%>
+    <% } %>
+    <% if (mode === 'edit') { %>
+        <%- include('partials/editaccount', {user: user, account: account}) -%>    
+    <% } %>
+<%- include('partials/footer') -%>

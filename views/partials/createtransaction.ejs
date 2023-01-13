@@ -18,7 +18,7 @@
     <p>
       Current Balance: <strong><%= user.currency %><span id="currentBalance"><%= account.currentBalance %></span></strong>
     </p>
-    <form action="../post/<%= account._id %>" method="post">
+    <form action="../post/<%= account._id %>/null" method="post">
       <!-- Type -->
       <input type="hidden" name="account" value="<%= account._id %>">
 

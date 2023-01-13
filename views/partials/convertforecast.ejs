@@ -21,15 +21,20 @@
       <!-- Transaction Amount -->
       <p>
         <label for="amount">
-          <%= forecastAction === 'debit' ? 'Getting paid' : 'Spending' %> how much?
+          <%= forecastAction === 'debits' ? 'Getting paid' : 'Spending' %> how much?
         </label>
         <input type="number" step="0.01" min="0" name="amount" id="amount" autocomplete="off" value="<%= forecast.amount %>">
       </p>
-      
+
       <!-- Category -->
       <p>
-        Category: <%= forecast.category.name %>
+        <label for="category">
+          Category: <%= forecast.category.name %>
+        </label>
+        <input type="hidden" name="category" id="category" value="<%= forecast.category.name %>">
       </p>
+
+      <input type="hidden" name="accountingType" id="accountingType" value="<%= forecast.accountingType %>">
 
       <%- include('formsubmitcancelbuttons') -%>
     </form>

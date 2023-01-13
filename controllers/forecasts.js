@@ -157,7 +157,7 @@ module.exports = {
     try {
       console.log(req.body)
       // use transactionsController.postTransaction to post transaction
-      // once transaction is created, delete forecast
+      res.redirect(307, `/transaction/post/${req.body.account}/${req.params.id}`)
     } catch (err) {
       console.log(err)
       res.redirect('/profile')

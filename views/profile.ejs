@@ -36,7 +36,7 @@
                   <p>
                     <%= currentForecast.date.toLocaleDateString('en-us') %>
                     <%= currentForecast.category.name %>
-                    <% if (currentForecast.accountingType === 'debit') { %>
+                    <% if (currentForecast.accountingType === 'debits') { %>
                       <% plusMinus = '+' %>
                     <% } else { %>
                       <% plusMinus = '-' %>

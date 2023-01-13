@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const Account = require("../models/Account")
 const Category = require("../models/Category")
+const Forecast = require("../models/Forecast")
 const Transaction = require("../models/Transaction")
 const User = require("../models/User")
 
@@ -237,7 +238,9 @@ module.exports = {
     },
     // TODO: rename to createTransaction
     postTransaction: async (req, res) => {
-        // console.log(`hello from postTransaction in transactions controller`)
+        console.log(`hello from postTransaction in transactions controller`)
+        console.log(req.body)
+
         try {
             const accountAction = req.body.accountingType
             const accountId = req.params.accountId
@@ -282,14 +285,23 @@ module.exports = {
                 await module.exports.postTransactionToAccount(secondAccount._id, newTransaction._id, user, accountOtherAction)
             }
 
-            await User.findOneAndUpdate(
-                {_id: user},
-                {
-                    $push: {
-                        transactions: newTransaction._id
-                    }
-                }
-            )
+            const userDoc = await User.findOneAndUpdate({
+                _id: user
+            })
+
+            userDoc.transactions.push(newTransaction._id)
+
+            if (req.params.forecastId != 'null') {
+                userDoc.forecasts = userDoc.forecasts.filter(f => f != req.params.forecastId)
+                console.log(userDoc.forecasts)
+                await Forecast.findOneAndDelete({
+                    user: user,
+                    _id: req.params.forecastId
+                })
+            }
+
+            await userDoc.save()
+
             res.redirect("/profile")
         } catch (err) {
             console.error(err)

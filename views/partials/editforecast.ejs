@@ -13,10 +13,10 @@
       <p>
         <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
         <select name="accountingType" id="accountingType">
-          <option value="debit" <%= forecast.accountingType === 'debit' ? 'selected' : '' %>>
+          <option value="debits" <%= forecast.accountingType === 'debits' ? 'selected' : '' %>>
             Get paid
           </option>
-          <option value="credit" <%= forecast.accountingType === 'credit' ? 'selected' : '' %>>
+          <option value="credits" <%= forecast.accountingType === 'credits' ? 'selected' : '' %>>
             Pay a bill
           </option>
         </select>

@@ -11,7 +11,7 @@ const ForecastSchema = new mongoose.Schema({
     },
     accountingType: {
         type: String,
-        default: 'credit'
+        default: 'credits'
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,

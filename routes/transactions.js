@@ -12,7 +12,7 @@ router.get("/:id", ensureAuth, transactionsController.getTransaction)
 
 //get transaction form, pre-populate account paying from
 router.get("/post/:accountId", transactionsController.getCreateTransactionForm)
-router.post("/post/:accountId", transactionsController.postTransaction)
+router.post("/post/:accountId/:forecastId", transactionsController.postTransaction)
 
 //get update transaction form, pre-populate input fields with transaction data
 router.get("/update/:transactionId", transactionsController.getUpdateTransactionForm)

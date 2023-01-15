@@ -1,0 +1,10 @@
+<% const today = new Date() %>
+<% const year = today.getFullYear().toString() %>
+<% const date = pad(today.getDate().toString()) %>
+<% const month = pad((today.getMonth() + 1).toString()) %>
+<% function pad(s) { %>
+    <% if (s.length < 2) s = '0' + s %>
+    <% return s %>
+<% } %>
+
+<input type="hidden" name="clientsidedate" id="clientsidedate" value="<%= year + '-' + month + '-' + date %>">

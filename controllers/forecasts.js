@@ -13,19 +13,29 @@ module.exports = {
   postForecast: async (req, res) => {
     // console.log(`hello from forecastsController.postForecast`)
     // console.log(`incoming info`, req.body)
-    const catCheck = await checkCategory(req.user._id, req.body.category)
+    // const catCheck = await checkCategory(req.user._id, req.body.category)
     
-    const amount = req.body.amount
-    const accountingType = req.body.accountingType
-    const category = catCheck._id
-    const date = req.body.date
-    const user = req.user._id
+    // const amount = req.body.amount
+    // const accountingType = req.body.accountingType
+    // const category = catCheck._id
+    // const date = req.body.date
+    // const user = req.user._id
+
+    console.log(req.body)
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = pad(today.getMonth() + 1)
+    const date = pad(today.getDate())
+    function pad(s) {
+      if (s.length < 2) s = '0' + s
+      return s
+    }
+    console.log(`server side date: ${year}-${month}-${date}`)
 
     // create a date that doesn't show up as the previous date if the user's locale is behind GMT
     // use time segment from new Date()
     // append it to the incoming date string to create an ISO Date format string
     // may have to have frontend generate timestring and send it up.
-    const now = (new Date()).toISOString()
     // console.log(`incoming date ${date}`)
     // console.log(`now: ${now}`)
     // const nowTimeSegment = now.slice(now.indexOf('T'))

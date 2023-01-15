@@ -52,7 +52,7 @@
               <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
                 <button class="delete-transaction btn btn-secondary" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
               </form>
-              <span><%= transaction.date.toLocaleDateString('en-us') %></span> |
+              <span><%= transaction.date.toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %></span> |
               <span><%= transaction.category.name %></span> |
               <span><%= incDec %><%= user.currency %><%= transaction.amount %></span>
               <form action="/transaction/update/<%= transaction._id %>" method="get">

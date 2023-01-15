@@ -21,21 +21,35 @@ module.exports = {
     const date = req.body.date
     const user = req.user._id
 
-    const newForecast = new Forecast({
-      amount,
-      accountingType,
-      category,
-      date,
-      user
-    })
-    await newForecast.save()
-    await User.findOneAndUpdate(
-      { _id: req.user._id},
-      { $push: {
-          forecasts: newForecast._id
-        }
-      }
-    )
+    // create a date that doesn't show up as the previous date if the user's locale is behind GMT
+    // use time segment from new Date()
+    // append it to the incoming date string to create an ISO Date format string
+    // may have to have frontend generate timestring and send it up.
+    const now = (new Date()).toISOString()
+    // console.log(`incoming date ${date}`)
+    // console.log(`now: ${now}`)
+    // const nowTimeSegment = now.slice(now.indexOf('T'))
+    // console.log(`time segment: ${nowTimeSegment}`)
+    // const forecastISOString = date + nowTimeSegment
+    // console.log(`forecastISOString: ${forecastISOString}`)
+    // const forecastDate = new Date(forecastISOString)
+    // console.log(`forecastDate: ${forecastDate}`)
+
+    // const newForecast = new Forecast({
+    //   amount,
+    //   accountingType,
+    //   category,
+    //   date: forecastDate,
+    //   user
+    // })
+    // await newForecast.save()
+    // await User.findOneAndUpdate(
+    //   { _id: req.user._id},
+    //   { $push: {
+    //       forecasts: newForecast._id
+    //     }
+    //   }
+    // )
     res.redirect("/profile")
   },
   getCalendar: async (req, res) => {

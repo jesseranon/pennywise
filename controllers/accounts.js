@@ -125,7 +125,7 @@ module.exports = {
           },
           {
             $set: {
-              name: newAccountName
+              name: `${newAccountName} payment`
             }
           }
         )

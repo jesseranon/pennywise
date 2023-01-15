@@ -292,11 +292,12 @@ module.exports = {
             userDoc.transactions.push(newTransaction._id)
 
             if (req.params.forecastId != 'null') {
-                userDoc.forecasts = userDoc.forecasts.filter(f => f != req.params.forecastId)
+                const forecastId = req.params.forecastId
+                userDoc.forecasts = userDoc.forecasts.filter(f => f != forecastId)
                 console.log(userDoc.forecasts)
                 await Forecast.findOneAndDelete({
                     user: user,
-                    _id: req.params.forecastId
+                    _id: forecastId
                 })
             }
 

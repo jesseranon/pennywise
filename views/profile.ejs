@@ -46,6 +46,7 @@
         <% if (user.accounts.length > 0) { %>
           <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
           <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
+          <p>Assets</p>
           <ul class="row list-unstyled">
             <% for(var i=0; i < assets.length; i++) {%>
               <li class="col-6 mt-5" id="<%= assets[i]._id %>">
@@ -58,6 +59,7 @@
               </li>
             <% } %>
           </ul>
+          <p>Liabilities</p>
           <ul class="row list-unstyled">
             <% for(var i=0; i<liabilities.length; i++) {%>
               <li class="col-6 mt-5" id="<%= liabilities[i]._id %>">

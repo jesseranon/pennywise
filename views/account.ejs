@@ -31,34 +31,7 @@
         <p>Transactions</p>
         <ul class="transactions-list">
           <% for (let i = 0; i < accountTransactions.length; i++) { %>
-            <% let incDec = null %>
-            <% const transaction = accountTransactions[i]%>
-            <% let transactionFoundInDebits = false %>
-            <% if (account.debits.length > 0) transactionFoundInDebits = account.debits.filter(t => t._id == transaction._id).length > 0 %>
-            <% if (account.balanceType == 'asset') { %>
-              <% if (transactionFoundInDebits) { %>
-                <% incDec = "+" %>
-              <% } else { %> 
-                <% incDec = "-" %>
-              <% } %>
-            <% } else { %>
-              <% if (transactionFoundInDebits) { %>
-                <% incDec = "-" %>
-              <% } else { %> 
-                <% incDec = "+" %>
-              <% } %>
-            <% } %>
-            <li>
-              <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
-                <button class="delete-transaction btn btn-secondary" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
-              </form>
-              <span><%= transaction.date.toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %></span> |
-              <span><%= transaction.category.name %></span> |
-              <span><%= incDec %><%= user.currency %><%= transaction.amount %></span>
-              <form action="/transaction/update/<%= transaction._id %>" method="get">
-                <button class="edit-transaction btn btn-primary" type="submit"><i class="fa-solid fa-pen"></i></button>
-              </form>
-            </li>
+            <%- include('components/transactionlineitem', {account: account, currency: user.currency, transaction: accountTransactions[i]}) -%>
           <% } %>
         </ul>
       <% } else { %>

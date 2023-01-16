@@ -8,6 +8,8 @@
 <% if (user.forecasts.length > 0) {%>
     <% sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
 <% } %>
+<% const today = new Date() %>
+<% const offset = today.getTimezoneOffset() %>
 
 <div class="container">
   <div class="row mt-5">
@@ -30,29 +32,7 @@
             
             <ul class="row list-unstyled">
               <% for (let i = 0; i < sortedForecasts.length; i++) {%>
-                <% const currentForecast = sortedForecasts[i] %>
-                <% let plusMinus = null %>
-                <li class="col-6 mt-5">
-                  <p>
-                    <%= currentForecast.date.toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %>
-                    <%= currentForecast.category.name %>
-                    <% if (currentForecast.accountingType === 'debits') { %>
-                      <% plusMinus = '+' %>
-                    <% } else { %>
-                      <% plusMinus = '-' %>
-                    <% } %>
-                    <span><%= plusMinus %><%= user.currency %><%= currentForecast.amount %></span>
-                  </p>
-                  <form action="/forecasts/updateForecast/<%= currentForecast._id %>" method="get">
-                    <button class="edit-forecast btn btn-secondary"><i class="fa-solid fa-pen"></i></button>
-                  </form>
-                  <form action="/forecasts/deleteForecast/<%= currentForecast._id %>" method="post">
-                    <button class="delete-forecast btn btn-secondary"><i class="fa-solid fa-trash"></i></button>
-                  </form>
-                  <form action="/forecasts/convertForecast/<%= currentForecast._id %>" method="get">
-                    <button class="btn btn-primary convert-forecast"><i class="fa-solid fa-receipt"></i></button>
-                  </form>
-                </li>
+                <%- include('components/forecasttile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
               <% } %>
             </ul>
           <% } else { %>

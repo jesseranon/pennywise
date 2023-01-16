@@ -8,3 +8,5 @@
 <% } %>
 
 <input type="hidden" name="clientsidedate" id="clientsidedate" value="<%= year + '-' + month + '-' + date %>">
+
+<input type="hidden" name="clientsideoffset" id="clientsideoffset" value="<%= (new Date().getTimezoneOffset())%>">

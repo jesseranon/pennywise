@@ -5,6 +5,8 @@ const Category = require("../models/Category")
 const Forecast = require("../models/Forecast")
 const { checkCategory } = require("./categories")
 const transactionsController = require("./transactions")
+const addMinutes = require('date-fns/addMinutes')
+const differenceInDays = require('date-fns/differenceInDays')
 
 module.exports = {
   //CrUD actions
@@ -13,29 +15,20 @@ module.exports = {
   postForecast: async (req, res) => {
     // console.log(`hello from forecastsController.postForecast`)
     // console.log(`incoming info`, req.body)
-    // const catCheck = await checkCategory(req.user._id, req.body.category)
+    const catCheck = await checkCategory(req.user._id, req.body.category)
     
-    // const amount = req.body.amount
-    // const accountingType = req.body.accountingType
-    // const category = catCheck._id
-    // const date = req.body.date
-    // const user = req.user._id
+    const amount = req.body.amount
+    const accountingType = req.body.accountingType
+    const category = catCheck._id
+    let date = req.body.date
+    const user = req.user._id
 
-    console.log(req.body)
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = pad(today.getMonth() + 1)
-    const date = pad(today.getDate())
-    function pad(s) {
-      if (s.length < 2) s = '0' + s
-      return s
-    }
-    console.log(`server side date: ${year}-${month}-${date}`)
+    // console.log(req.body)
 
-    // create a date that doesn't show up as the previous date if the user's locale is behind GMT
-    // use time segment from new Date()
-    // append it to the incoming date string to create an ISO Date format string
-    // may have to have frontend generate timestring and send it up.
+    // store date as UTC
+    const [year, month, day] = req.body.date.split('-')
+    date = new Date(Date.UTC(year, Number(month) - 1, day))
+
     // console.log(`incoming date ${date}`)
     // console.log(`now: ${now}`)
     // const nowTimeSegment = now.slice(now.indexOf('T'))
@@ -45,21 +38,21 @@ module.exports = {
     // const forecastDate = new Date(forecastISOString)
     // console.log(`forecastDate: ${forecastDate}`)
 
-    // const newForecast = new Forecast({
-    //   amount,
-    //   accountingType,
-    //   category,
-    //   date: forecastDate,
-    //   user
-    // })
-    // await newForecast.save()
-    // await User.findOneAndUpdate(
-    //   { _id: req.user._id},
-    //   { $push: {
-    //       forecasts: newForecast._id
-    //     }
-    //   }
-    // )
+    const newForecast = new Forecast({
+      amount,
+      accountingType,
+      category,
+      date,
+      user
+    })
+    await newForecast.save()
+    await User.findOneAndUpdate(
+      { _id: req.user._id},
+      { $push: {
+          forecasts: newForecast._id
+        }
+      }
+    )
     res.redirect("/profile")
   },
   getCalendar: async (req, res) => {

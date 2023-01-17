@@ -1,0 +1,8 @@
+<li class="col-6 mt-5" id="<%= account._id %>">
+    <a href="/account/<%= account._id%>">
+        <%= account.name %>
+    </a>
+    <% const thisBalance = account.currentBalance %>
+    <%= currency %><%= thisBalance %>
+    <a href="/transaction/post/<%= account._id %>" class="show-transaction-form">+</a>
+</li>

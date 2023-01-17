@@ -49,27 +49,13 @@
           <span>Assets</span>
           <ul class="row list-unstyled">
             <% for(var i=0; i < assets.length; i++) {%>
-              <li class="col-6 mt-5" id="<%= assets[i]._id %>">
-                <a href="/account/<%= assets[i]._id%>">
-                  <%= assets[i].name %>
-                </a>
-                <% const thisBalance = assets[i].currentBalance %>
-                <%= user.currency %><%= thisBalance %>
-                <a href="/transaction/post/<%= assets[i]._id %>" class="show-transaction-form">+</a>
-              </li>
+              <%- include('components/accounttile', { account: assets[i], currency: user.currency }) -%>
             <% } %>
           </ul>
           <span>Liabilities</span>
           <ul class="row list-unstyled">
             <% for(var i=0; i<liabilities.length; i++) {%>
-              <li class="col-6 mt-5" id="<%= liabilities[i]._id %>">
-                <a href="/account/<%= liabilities[i]._id%>">
-                  <%= liabilities[i].name %>
-                </a>
-                <% const thisBalance = liabilities[i].currentBalance %>
-                <%= user.currency %><%= thisBalance %>
-                <a href="/transaction/post/<%= liabilities[i]._id %>" class="show-transaction-form">+</a>
-              </li>
+              <%- include('components/accounttile', { account: liabilities[i], currency: user.currency }) -%>
             <% } %>
           </ul>
         <% } %>

@@ -1,7 +1,7 @@
 <% let plusMinus = null %>
 <li class="col-6 mt-5">
     <p>
-        <%= formatRelative(addMinutes(currentForecast.date, offset), today) %>
+        <%= formatRelative(addMinutes(currentForecast.date, offset), today).split(' at ')[0] %>
         <%= currentForecast.category.name %>
         <% if (currentForecast.accountingType === 'debits') { %>
             <% plusMinus = '+' %>

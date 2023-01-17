@@ -5,53 +5,49 @@
 <% let forecastDate = dateObj.getDate().toString() %>
 <% if (forecastDate.length < 2) forecastDate = "0" + forecastDate %>
 
-<div class="container">
-  <div class="row justify-content-center mt-5">
-    Edit Forecast
-    <form action="<%= forecast._id%>" method="post">
-      <!-- Type -->
-      <p>
-        <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
-        <select name="accountingType" id="accountingType">
-          <option value="debits" <%= forecast.accountingType === 'debits' ? 'selected' : '' %>>
-            Get paid
-          </option>
-          <option value="credits" <%= forecast.accountingType === 'credits' ? 'selected' : '' %>>
-            Pay a bill
-          </option>
-        </select>
-      </p>
-      
-      <!-- Transaction Amount -->
-      <p>
-        <label for="amount">
-          How much?
-        </label>
-        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="<%= forecast.amount %>" autocomplete="off" value="<%= forecast.amount %>">
-      </p>
-      
-      <!-- Category -->
-      <p>
-        <label for="category">
-          Which category is this for? Originally: <%= forecast.category.name %>
-        </label>
-        <input type="text" name="category" id="category" list="categories" autocomplete="off" value="<%= forecast.category.name %>">
-        <datalist id="categories">
-          <% for (let i = 0; i < user.categories.length; i++) { %>
-            <option value="<%= user.categories[i].name %>" >
-          <% } %>
-        </datalist>
-      </p>
+Edit Forecast
+<form action="<%= forecast._id%>" method="post">
+  <!-- Type -->
+  <p>
+    <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
+    <select name="accountingType" id="accountingType">
+      <option value="debits" <%= forecast.accountingType === 'debits' ? 'selected' : '' %>>
+        Get paid
+      </option>
+      <option value="credits" <%= forecast.accountingType === 'credits' ? 'selected' : '' %>>
+        Pay a bill
+      </option>
+    </select>
+  </p>
+  
+  <!-- Transaction Amount -->
+  <p>
+    <label for="amount">
+      How much?
+    </label>
+    <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="<%= forecast.amount %>" autocomplete="off" value="<%= forecast.amount %>">
+  </p>
+  
+  <!-- Category -->
+  <p>
+    <label for="category">
+      Which category is this for? Originally: <%= forecast.category.name %>
+    </label>
+    <input type="text" name="category" id="category" list="categories" autocomplete="off" value="<%= forecast.category.name %>">
+    <datalist id="categories">
+      <% for (let i = 0; i < user.categories.length; i++) { %>
+        <option value="<%= user.categories[i].name %>" >
+      <% } %>
+    </datalist>
+  </p>
 
-      <!-- Date -->
-      <p>
-        <label for="date">
-          When is this going to happen? Originally: <%= forecast.date.toLocaleDateString() %>
-        </label>
-      </p>
-      <input type="date" name="date" id="date" value="<%= forecastYear + '-' + forecastMonth + '-' + forecastDate  %>">
+  <!-- Date -->
+  <p>
+    <label for="date">
+      When is this going to happen? Originally: <%= forecast.date.toLocaleDateString() %>
+    </label>
+  </p>
+  <input type="date" name="date" id="date" value="<%= forecastYear + '-' + forecastMonth + '-' + forecastDate  %>">
 
-      <%- include('formsubmitcancelbuttons') -%>
-    </form>
-  </div>
-</div>
+  <%- include('formsubmitcancelbuttons') -%>
+</form>

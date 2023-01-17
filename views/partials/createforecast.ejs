@@ -1,55 +1,51 @@
-<div class="container">
-  <div class="row justify-content-center mt-5">
-    Create a Forecast
-    <form action="forecasts/createForecast" method="post">
-      <!-- Type -->
-      <p>
-        <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
-        <select name="accountingType" id="accountingType">
-          <option value="debits">
-            Get paid
-          </option>
-          <option value="credits">
-            Spend
-          </option>
-        </select>
-      </p>
-      
-      <!-- Transaction Amount -->
-      <p>
-        <label for="amount">
-          How much?
-        </label>
-        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="00.00" autocomplete="off">
-      </p>
-      
-      <!-- Category -->
-      <p>
-        <label for="category">
-          Which category is this for?
-        </label>
-        <input type="text" name="category" id="category" list="categories" autocomplete="off">
-        <datalist id="categories">
-          <% if (user.categories.length > 0) { %>
-            <% for (let i = 0; i < user.categories.length; i++) { %>
-              <option value="<%= user.categories[i].name %>">
-            <% } %>
-          <% } %>
-        </datalist>
-      </p>
+Create a Forecast
+<form action="forecasts/createForecast" method="post">
+  <!-- Type -->
+  <p>
+    <label for="accountingType">Are you expecting to pay a bill or get paid?</label>
+    <select name="accountingType" id="accountingType">
+      <option value="debits">
+        Get paid
+      </option>
+      <option value="credits">
+        Spend
+      </option>
+    </select>
+  </p>
+  
+  <!-- Transaction Amount -->
+  <p>
+    <label for="amount">
+      How much?
+    </label>
+    <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="00.00" autocomplete="off">
+  </p>
+  
+  <!-- Category -->
+  <p>
+    <label for="category">
+      Which category is this for?
+    </label>
+    <input type="text" name="category" id="category" list="categories" autocomplete="off">
+    <datalist id="categories">
+      <% if (user.categories.length > 0) { %>
+        <% for (let i = 0; i < user.categories.length; i++) { %>
+          <option value="<%= user.categories[i].name %>">
+        <% } %>
+      <% } %>
+    </datalist>
+  </p>
 
-      <!-- Date -->
+  <!-- Date -->
 
-      <p>
-        <label for="date">
-          When is this going to happen?
-        </label>
-      </p>
-      <input type="date" name="date" id="date">
+  <p>
+    <label for="date">
+      When is this going to happen?
+    </label>
+  </p>
+  <input type="date" name="date" id="date">
 
-      <%- include('../components/clientsidedayformaddin') -%>
+  <%- include('../components/clientsidedayformaddin') -%>
 
-      <%- include('formsubmitcancelbuttons') -%>
-    </form>
-  </div>
-</div>
+  <%- include('formsubmitcancelbuttons') -%>
+</form>

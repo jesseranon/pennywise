@@ -35,7 +35,7 @@ module.exports = {
       const user = User.findOne({
         _id: req.user._id
       })
-      res.render('accountform.ejs', {user, mode: 'create'})
+      res.render('accountForm.ejs', {user, mode: 'create'})
     } catch (err) {
       console.log(err)
       res.redirect('/profile')
@@ -49,7 +49,7 @@ module.exports = {
         _id: req.params.id
       })
       console.log(account)
-      res.render('accountform.ejs', {user, mode: 'edit', account: account} )
+      res.render('accountForm.ejs', {user, mode: 'edit', account: account} )
     } catch (err) {
       console.log(err)
       res.redirect('/profile')

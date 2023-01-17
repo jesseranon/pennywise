@@ -31,7 +31,7 @@
         <p>Transactions</p>
         <ul class="transactions-list">
           <% for (let i = 0; i < accountTransactions.length; i++) { %>
-            <%- include('components/transactionlineitem', {account: account, currency: user.currency, transaction: accountTransactions[i]}) -%>
+            <%- include('components/transactionLineItem', {account: account, currency: user.currency, transaction: accountTransactions[i]}) -%>
           <% } %>
         </ul>
       <% } else { %>

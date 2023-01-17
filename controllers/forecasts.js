@@ -112,7 +112,7 @@ module.exports = {
   // form functions
   getCreateForecastForm: async (req, res) => {
     const user = req.user
-    res.render("forecastform.ejs", {user, mode: 'create'})
+    res.render("forecastForm.ejs", {user, mode: 'create'})
   },
   getUpdateForecastForm: async (req, res) => {
     try {
@@ -125,7 +125,7 @@ module.exports = {
       console.log(user)
       console.log(forecast)
 
-      res.render("forecastform.ejs", {user, mode: 'edit', forecast})
+      res.render("forecastForm.ejs", {user, mode: 'edit', forecast})
     } catch (err) {
       console.log(err)
       res.redirect('/profile')
@@ -153,7 +153,7 @@ module.exports = {
       // deposit/spend action must be locked in
       // user must be able to update amount
       // category must be locked in
-      res.render('forecastform.ejs', {user, mode: 'convert', forecast})
+      res.render('forecastForm.ejs', {user, mode: 'convert', forecast})
     } catch (err) {
       console.log(err)
       res.redirect('/profile')

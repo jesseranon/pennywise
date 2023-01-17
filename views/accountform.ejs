@@ -1,8 +1,12 @@
 <%- include('partials/header') -%>
-    <% if (mode === 'create') { %>
-        <%- include('partials/createaccount', {user: user}) -%>
-    <% } %>
-    <% if (mode === 'edit') { %>
-        <%- include('partials/editaccount', {user: user, account: account}) -%>    
-    <% } %>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <% if (mode === 'create') { %>
+            <%- include('partials/createAccount', {user: user}) -%>
+        <% } %>
+        <% if (mode === 'edit') { %>
+            <%- include('partials/editAccount', {user: user, account: account}) -%>    
+        <% } %>
+    </div>
+</div>
 <%- include('partials/footer') -%>

@@ -1,11 +1,15 @@
 <%- include('partials/header') -%>
-<% if (mode === 'create') { %>
-    <%- include('partials/createforecast', {user: user}) -%>
-<% } %>
-<% if (mode === 'edit') { %>
-    <%- include('partials/editforecast', {user: user, forecast: forecast}) -%>    
-<% } %>
-<% if (mode === 'convert') { %>
-    <%- include('partials/convertforecast', {user: user, forecast: forecast}) -%>    
-<% } %>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <% if (mode === 'create') { %>
+            <%- include('partials/createForecast', {user: user}) -%>
+        <% } %>
+        <% if (mode === 'edit') { %>
+            <%- include('partials/editForecast', {user: user, forecast: forecast}) -%>    
+        <% } %>
+        <% if (mode === 'convert') { %>
+            <%- include('partials/convertForecast', {user: user, forecast: forecast}) -%>    
+        <% } %>
+    </div>
+</div>
 <%- include('partials/footer') -%>

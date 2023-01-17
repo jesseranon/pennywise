@@ -20,7 +20,7 @@ module.exports = {
             const account = user.accounts.filter(account => account._id == accountId)[0]
             console.log(`transaction form requested for account ${req.params.accountId}`)
             console.log(account)
-            res.render("transactionform.ejs", {user: user, mode: 'create', account: account})
+            res.render("transactionForm.ejs", {user: user, mode: 'create', account: account})
         } catch (err) {
             console.error(err)
             res.redirect("/profile")
@@ -47,7 +47,7 @@ module.exports = {
                 .populate('category')
 
             // console.log(transaction)
-            res.render('transactionform.ejs', {user: transaction.user,  mode: 'edit', transaction})
+            res.render('transactionForm.ejs', {user: transaction.user,  mode: 'edit', transaction})
         } catch (err) {
             console.error(err)
             res.redirect("/profile")

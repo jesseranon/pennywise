@@ -23,6 +23,7 @@
               <div class="alert alert-info"><%= el.msg %></div>
           <% }) %>    
       <% } %>
+
       <div class="col-6">
         <p><strong>User Name</strong>: <%= user.userName %></p>
         <p><strong>Email</strong>: <%= user.email %></p>
@@ -32,7 +33,7 @@
             
             <ul class="row list-unstyled">
               <% for (let i = 0; i < sortedForecasts.length; i++) {%>
-                <%- include('components/forecasttile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
+                <%- include('components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
               <% } %>
             </ul>
           <% } else { %>
@@ -42,6 +43,7 @@
           <!-- create forecast form -->
           <%- include('partials/createforecast') -%>
       </div>
+
       <div class="col-6">
         <% if (user.accounts.length > 0) { %>
           <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
@@ -49,20 +51,20 @@
           <span>Assets</span>
           <ul class="row list-unstyled">
             <% for(var i=0; i < assets.length; i++) {%>
-              <%- include('components/accounttile', { account: assets[i], currency: user.currency }) -%>
+              <%- include('components/accountTile', { account: assets[i], currency: user.currency }) -%>
             <% } %>
           </ul>
           <span>Liabilities</span>
           <ul class="row list-unstyled">
             <% for(var i=0; i<liabilities.length; i++) {%>
-              <%- include('components/accounttile', { account: liabilities[i], currency: user.currency }) -%>
+              <%- include('components/accountTile', { account: liabilities[i], currency: user.currency }) -%>
             <% } %>
           </ul>
         <% } %>
 
         <%- include('partials/createaccount') -%>
+      </div>
 
-      </div>  
     </div>
   </div>
 </div>

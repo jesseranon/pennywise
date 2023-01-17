@@ -23,20 +23,9 @@ module.exports = {
     let date = req.body.date
     const user = req.user._id
 
-    // console.log(req.body)
-
     // store date as UTC
     const [year, month, day] = req.body.date.split('-')
     date = new Date(Date.UTC(year, Number(month) - 1, day))
-
-    // console.log(`incoming date ${date}`)
-    // console.log(`now: ${now}`)
-    // const nowTimeSegment = now.slice(now.indexOf('T'))
-    // console.log(`time segment: ${nowTimeSegment}`)
-    // const forecastISOString = date + nowTimeSegment
-    // console.log(`forecastISOString: ${forecastISOString}`)
-    // const forecastDate = new Date(forecastISOString)
-    // console.log(`forecastDate: ${forecastDate}`)
 
     const newForecast = new Forecast({
       amount,

@@ -19,11 +19,12 @@ module.exports = {
                         model: 'Category'
                     }
                 })
-            res.render("profile.ejs", { 
+            const items = {
                 user,
                 formatRelative: formatRelative,
-                addMinutes: addMinutes 
-            });
+                addMinutes: addMinutes
+            }
+            res.render("profile.ejs", items);
         } catch (err) {
             console.log(err);
         }

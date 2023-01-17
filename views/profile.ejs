@@ -12,8 +12,8 @@
               <div class="alert alert-info"><%= el.msg %></div>
           <% }) %>    
       <% } %>
-      <p><strong>User Name</strong>: <%= user.userName %></p>
-      <p><strong>Email</strong>: <%= user.email %></p>
+
+      <%- include('components/profileGreeting', { user: user }) -%>
 
       <%- include('partials/forecastsDash', { user: user }) -%>
 
@@ -22,4 +22,5 @@
     </div>
   </div>
 </div>
+
 <%- include('partials/footer') -%>

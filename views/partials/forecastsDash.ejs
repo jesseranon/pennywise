@@ -1,0 +1,24 @@
+<% let sortedForecasts = null %>
+<% if (user.forecasts.length > 0) {%>
+    <% sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
+<% } %>
+<% const today = new Date() %>
+<% const offset = today.getTimezoneOffset() %>
+
+
+<div class="col-6">
+    <!-- Display available funds until next inflow net of forecasted outflows -->
+    
+    <% if (sortedForecasts) {%>
+        <ul class="row list-unstyled">
+            <% for (let i = 0; i < sortedForecasts.length; i++) {%>
+                <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
+            <% } %>
+        </ul>
+    <% } else { %>
+        <p>You have currently have <%= user.currency %><%= totalAssets %> in checking, savings, and cash.</p>
+        <p>Add a forecast to see how bills and commitments affect how much you actually have to spend until you next get paid.</p>
+    <% } %>
+    <!-- create forecast form -->
+    <%- include('createforecast') -%>
+</div>

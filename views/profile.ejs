@@ -1,12 +1,5 @@
 <%- include('partials/header') -%>
 
-<% let sortedForecasts = null %>
-<% if (user.forecasts.length > 0) {%>
-    <% sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
-<% } %>
-<% const today = new Date() %>
-<% const offset = today.getTimezoneOffset() %>
-
 <div class="container">
   <div class="row mt-5">
       <% if (locals.messages.errors) { %>
@@ -19,26 +12,10 @@
               <div class="alert alert-info"><%= el.msg %></div>
           <% }) %>    
       <% } %>
+      <p><strong>User Name</strong>: <%= user.userName %></p>
+      <p><strong>Email</strong>: <%= user.email %></p>
 
-      <div class="col-6">
-        <p><strong>User Name</strong>: <%= user.userName %></p>
-        <p><strong>Email</strong>: <%= user.email %></p>
-          <!-- Display available funds until next inflow net of forecasted outflows -->
-          
-          <% if (sortedForecasts) {%>
-            
-            <ul class="row list-unstyled">
-              <% for (let i = 0; i < sortedForecasts.length; i++) {%>
-                <%- include('components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
-              <% } %>
-            </ul>
-          <% } else { %>
-            <p>You have currently have <%= user.currency %><%= totalAssets %> in checking, savings, and cash.</p>
-            <p>Add a forecast to see how bills and commitments affect how much you actually have to spend until you next get paid.</p>
-          <% } %>
-          <!-- create forecast form -->
-          <%- include('partials/createforecast') -%>
-      </div>
+      <%- include('partials/forecastsDash', { user: user }) -%>
 
       <%- include('partials/accountsDash', { user: user }) -%>
 

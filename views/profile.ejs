@@ -1,9 +1,5 @@
 <%- include('partials/header') -%>
 
-<% const totalAssets = user.accounts.reduce((accumulator, account) => { %>
-  <% if (account.balanceType === 'asset') return accumulator += Number(account.currentBalance) %>
-  <% return accumulator %>
-<% }, 0) %>
 <% let sortedForecasts = null %>
 <% if (user.forecasts.length > 0) {%>
     <% sortedForecasts = user.forecasts.sort((a, b) => a.date - b.date) %>
@@ -44,26 +40,7 @@
           <%- include('partials/createforecast') -%>
       </div>
 
-      <div class="col-6">
-        <% if (user.accounts.length > 0) { %>
-          <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
-          <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
-          <span>Assets</span>
-          <ul class="row list-unstyled">
-            <% for(var i=0; i < assets.length; i++) {%>
-              <%- include('components/accountTile', { account: assets[i], currency: user.currency }) -%>
-            <% } %>
-          </ul>
-          <span>Liabilities</span>
-          <ul class="row list-unstyled">
-            <% for(var i=0; i<liabilities.length; i++) {%>
-              <%- include('components/accountTile', { account: liabilities[i], currency: user.currency }) -%>
-            <% } %>
-          </ul>
-        <% } %>
-
-        <%- include('partials/createaccount') -%>
-      </div>
+      <%- include('partials/accountsDash', { user: user }) -%>
 
     </div>
   </div>

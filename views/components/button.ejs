@@ -1,14 +1,19 @@
 <button
-    class="btn<%= (btnClass) ? ' ' + btnClass : '' %>"
-    <% if (btnType) { %>
-        <%= "type=" + btnType %>
+    class="btn<%= (btn.hasOwnProperty('class')) ? ' ' + btn.class : '' %>"
+    <% if (btn.hasOwnProperty('type')) { %>
+        <%= "type=" + btn.type %>
     <% } %>
-    <% if (btnFormAction) { %>
-        <%= "formaction=" + btnFormAction %>
+    <% if (btn.hasOwnProperty('formaction')) { %>
+        <%= "formaction=" + btn.formaction %>
     <% } %>
-    <% if (btnMethod) { %>
-        <%= "method=" + btnMethod %>
+    <% if (btn.hasOwnProperty('formmethod')) { %>
+        <%= "method=" + btn.formmethod %>
     <% } %>
 >
-    <%= (btnIcon) ? btnIcon : btnText %>
+    <% if (btn.hasOwnProperty('icon')) { %>
+        <%= btn.icon %>
+    <% } %>
+    <% if (btn.hasOwnProperty('text')) { %>
+        <%= btn.text %>
+    <% } %>
 </button>

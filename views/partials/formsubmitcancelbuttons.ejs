@@ -1,4 +1,10 @@
+<% const options = { btn: {} } %>
+<% const btn = options.btn %>
+<% btn.class = 'btn-primary' %>
+<% btn.type = 'submit' %>
+<% btn.text = 'Submit' %>
+
 <a class="btn btn-secondary" href="/profile">
     Cancel
 </a>
-<%- include('../components/button', { btnFormAction: 'url/url', btnClass: null, btnMethod: 'get', btnIcon: null, btnType: 'submit', btnText: 'Submit' }) -%>
+<%- include('../components/button', options) -%>

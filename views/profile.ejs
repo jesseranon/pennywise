@@ -1,4 +1,4 @@
-<%- include('partials/header') -%>
+<%- include('components/header') -%>
 
 <div class="container">
   <div class="row mt-5">
@@ -12,15 +12,13 @@
               <div class="alert alert-info"><%= el.msg %></div>
           <% }) %>    
       <% } %>
-
-      <%- include('components/profileGreeting', { user: user }) -%>
-
-      <%- include('partials/forecastsDash', { user: user }) -%>
-
-      <%- include('partials/accountsDash', { user: user }) -%>
-
     </div>
-  </div>
+
+    <%- include('components/profileGreeting', { user: user }) -%>
+
+    <%- include('partials/forecastsDash', { user: user }) -%>
+
+    <%- include('partials/accountsDash', { user: user }) -%>
 </div>
 
-<%- include('partials/footer') -%>
+<%- include('components/footer') -%>

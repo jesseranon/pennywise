@@ -1,0 +1,14 @@
+<button
+    class="btn<%= (btnClass) ? ' ' + btnClass : '' %>"
+    <% if (btnType) { %>
+        <%= "type=" + btnType %>
+    <% } %>
+    <% if (btnFormAction) { %>
+        <%= "formaction=" + btnFormAction %>
+    <% } %>
+    <% if (btnMethod) { %>
+        <%= "method=" + btnMethod %>
+    <% } %>
+>
+    <%= (btnIcon) ? btnIcon : btnText %>
+</button>

@@ -11,6 +11,7 @@ const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
 const accountsRoutes = require("./routes/accounts");
 const transactionsRoutes = require("./routes/transactions");
+const calendarRoutes = require("./routes/calendar");
 const forecastsRoutes = require("./routes/forecasts");
 
 //Use .env file in config folder
@@ -50,17 +51,17 @@ app.use(
 );
 
 // Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Use flash messages for errors, info, ect...
-app.use(flash());
+app.use(flash())
 
 //Setup Routes For Which The Server Is Listening
-app.use("/", mainRoutes);
-app.use("/account", accountsRoutes);
-app.use("/transaction", transactionsRoutes);
-app.use("/calendar", forecastsRoutes);
+app.use("/", mainRoutes)
+app.use("/account", accountsRoutes)
+app.use("/transaction", transactionsRoutes)
+app.use("/calendar", calendarRoutes)
 app.use("/forecasts", forecastsRoutes)
 
 const PORT = process.env.PORT || 8500

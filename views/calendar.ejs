@@ -64,47 +64,61 @@
                 </tbody>
               </table>
 
-              <!-- <table class="days-table w-100"> -->
-                <tr>
-                  <th>Sun</th>
-                  <th>Mon</th>
-                  <th>Tue</th>
-                  <th>Wed</th>
-                  <th>Thu</th>
-                  <th>Fri</th>
-                  <th>Sat</th>
-                </tr>
+              <table class="days-table w-100">
+                <thead>
+                  <tr>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                  </tr>
+                </thead>
               <!-- </table> -->
               <!-- <div class="frame">
                 <table class="dates-table w-100"> -->
-                  <tbody class="tbody">
-                    <!-- generate calendar tiles -->
-                    <% for (let i = 0; i < daysInMonth + 1; i ++) { %>
-                      <!-- get day of week -->
-                      <% let date = new Date(Date.UTC(currentYear, currentMonth, i + 1)) %>
-                      <% date = addMinutes(date, offset) %>
-                      <% const dayOfWeek = format(date, 'EEEE') %>
-                      <!-- if day is sunday, open a new row before generating tile -->
-                      <% if (dayOfWeek === 'Sunday' || i === 1) { %>
-                        <tr>
-                      <% } %>
-                      <!-- if first day is not Sunday, generate blank date tiles -->
-                      <% if (i === 1 && dayOfWeek !== 'Sunday') { %>
-                        <!-- find index of dayOfWeek.slice(0, 3) in daysOfWeek -->
-                        <!-- for (let i = 0; i < index + 1; i ++)  { -->
-                          <!-- <td class="date-tile blank"><td> -->
-                        <!-- } -->
-                      <% } else { %>
-                        <!-- <td class="date-tile" > -->
-                      <% } %>
-                      <!-- if day is saturday, generate tile then close row -->
-                      <% if (dayOfWeek === 'Saturday' { %>
-                        </tr>
-                      <% } %>
+                <tbody class="tbody">
+                  <!-- generate calendar tiles -->
+                  <% for (let i = 1; i < daysInMonth + 1; i ++) { %>
+                    <!-- get day of week -->
+                    <% let date = new Date(Date.UTC(currentYear, currentMonth, i + 1)) %>
+                    <% date = addMinutes(date, offset) %>
+                    <% const dayOfWeek = format(date, 'EEEE') %>
+                    <!-- if day is sunday, open a new row before generating tile -->
+                    <% if (dayOfWeek === 'Sunday' || i === 1) { %>
+                      <tr>
                     <% } %>
-                  </tbody>
-                <!-- </table>
-              </div> -->
+
+                    <% if (i === 1 && dayOfWeek !== 'Sunday') { %>
+                      <% const dIndex = daysOfWeek.indexOf(dayOfWeek.slice(0, 3)) %>
+                      <% for (let j = 0; j < dIndex; j++) { %>
+                        <td class="date-tile no-date"></td>
+                      <% } %>
+                    <% } else if (i === daysInMonth && dayOfWeek !== 'Sunday') { %>
+                        <% const dIndex = daysOfWeek.length - daysOfWeek.indexOf(daysOfWeek.slice(0, 3)) %>
+                        <% for (let j = dIndex; j < daysOfWeek.length; j++) { %>
+                          <td class="date-tile no-date"></td>
+                        <% } %>
+                    <% } else { %>
+                      <% const dateString = currentYear + '-' + pad((Number(currentMonth) + 1).toString()) + '-' + pad(i.toString()) %>
+                      <td class="date-tile"
+                        data-dateString=<%= dateString %>
+                        <%= (eventsStore.hasOwnProperty(dateString)) ? "data-forecasts-badge=" + eventsStore[dateString].length : '' %>
+                      >
+                        <%= i + 1 %>
+                      </td>
+                    <% } %>
+
+                    <!-- if day is saturday, generate tile then close row -->
+                    <% if (dayOfWeek === 'Saturday') { %>
+                      </tr>
+                    <% } %>
+                  <% } %>
+                </tbody>
+              </table>
+              <!-- </div> -->
               <button class="button" id="add-button">Add Event</button>
             </div>
           </div>

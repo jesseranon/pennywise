@@ -1,7 +1,139 @@
 <%- include('components/header') -%>
 
-<div class="container">
-  Calendar goes here
-</div>
+<!-- set current day -->
+<% const today = new Date() %>
+<% const currentYear = today.getFullYear() %>
+<% const currentMonth = today.getMonth() %>
+<% const currentDate = today.getDate() %>
+<!-- get offset -->
+<% const offset = (new Date()).getTimezoneOffset() %>
+
+
+
+<!-- number of days in current day's month -->
+<% const daysInMonth = getDaysInMonth(currentYear, currentMonth) %>
+
+<!-- months and days -->
+<% const months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ] %>
+<% const daysOfWeek = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ] %>
+
+<!-- loop through forecasts and transactions, store to badge object -->
+
+<% const eventsStore = {} %>
+
+<!-- add minutes to each forecast.date and store -->
+<% for (let i = 0; i < user.forecasts.length; i++) { %>
+  <% let utcAdjDate = addMinutes(user.forecasts[i].date, offset) %>
+  <% user.forecasts[i].date = utcAdjDate %>
+  <!-- convert date to YYYY-MM-DD string for storing in eventsStore -->
+  <% utcAdjDate = user.forecasts[i].date %>
+  <% const isoDateString = utcAdjDate.getFullYear() + '-' + pad(Number(utcAdjDate.getMonth() + 1).toString()) + '-' + pad(Number(utcAdjDate.getDate()).toString()) %>
+  <% if (!eventsStore.hasOwnProperty(isoDateString)) { %>
+    <% eventsStore[isoDateString] = [user.forecasts[i]] %>
+  <% } else { %>
+    <% eventsStore[isoDateString].push(user.forecasts[i]) %>
+  <% } %>
+<% } %>
+
+<!-- add transactions to store later -->
+
+<section class="ftco-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center mb-5">
+        <h2 class="heading-section">Calendar</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="content w-100">
+          <div class="calendar-container">
+            <div class="calendar">
+              <div class="year-header">
+                <span class="left-button fa fa-chevron-left" id="prev"> </span>
+                <span class="year" id="label"></span>
+                <span class="right-button fa fa-chevron-right" id="next"> </span>
+              </div>
+              <table class="months-table w-100">
+                <tbody>
+                  <tr class="months-row">
+                    <% for (let i = 0; i < months.length; i ++) { %>
+                      <td class="month<%= (i == currentMonth) ? ' currentMonth' : '' %>"><%= months[i] %></td>
+                    <% } %>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- <table class="days-table w-100"> -->
+                <tr>
+                  <th>Sun</th>
+                  <th>Mon</th>
+                  <th>Tue</th>
+                  <th>Wed</th>
+                  <th>Thu</th>
+                  <th>Fri</th>
+                  <th>Sat</th>
+                </tr>
+              <!-- </table> -->
+              <!-- <div class="frame">
+                <table class="dates-table w-100"> -->
+                  <tbody class="tbody">
+                    <!-- generate calendar tiles -->
+                    <% for (let i = 0; i < daysInMonth + 1; i ++) { %>
+                      <!-- get day of week -->
+                      <% let date = new Date(Date.UTC(currentYear, currentMonth, i + 1)) %>
+                      <% date = addMinutes(date, offset) %>
+                      <% const dayOfWeek = format(date, 'EEEE') %>
+                      <!-- if day is sunday, open a new row before generating tile -->
+                      <% if (dayOfWeek === 'Sunday' || i === 1) { %>
+                        <tr>
+                      <% } %>
+                      <!-- if first day is not Sunday, generate blank date tiles -->
+                      <% if (i === 1 && dayOfWeek !== 'Sunday') { %>
+                        <!-- find index of dayOfWeek.slice(0, 3) in daysOfWeek -->
+                        <!-- for (let i = 0; i < index + 1; i ++)  { -->
+                          <!-- <td class="date-tile blank"><td> -->
+                        <!-- } -->
+                      <% } else { %>
+                        <!-- <td class="date-tile" > -->
+                      <% } %>
+                      <!-- if day is saturday, generate tile then close row -->
+                      <% if (dayOfWeek === 'Saturday' { %>
+                        </tr>
+                      <% } %>
+                    <% } %>
+                  </tbody>
+                <!-- </table>
+              </div> -->
+              <button class="button" id="add-button">Add Event</button>
+            </div>
+          </div>
+          <div class="events-container">
+          </div>
+          <div class="dialog" id="dialog">
+            <h2 class="dialog-header"> Add New Event </h2>
+            <form class="form" id="form">
+              <div class="form-container" align="center">
+                <label class="form-label" id="valueFromMyButton" for="name">Event name</label>
+                <input class="input" type="text" id="name" maxlength="36">
+                <label class="form-label" id="valueFromMyButton" for="count">Number of people to invite</label>
+                <input class="input" type="number" id="count" min="0" max="1000000" maxlength="7">
+                <input type="button" value="Cancel" class="button" id="cancel-button">
+                <input type="button" value="OK" class="button button-white" id="ok-button">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- helper functions -->
+<!-- pad function for date strings -->
+<% function pad(s) { %>
+  <% if (s.length < 2) s = '0' + s %>
+  <% return s %>
+<% } %>
 
 <%- include('components/footer') -%>

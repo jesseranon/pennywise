@@ -121,15 +121,33 @@
 							<div class="events-container">
 							</div>
 							<div class="dialog" id="dialog">
-								<h2 class="dialog-header"> Add New Event </h2>
-								<form class="form" id="form">
+								<h2 class="dialog-header">Add New Forecast</h2>
+								<form class="form" id="form" action="/forecasts/createForecast" method="post">
 									<div class="form-container" align="center">
-										<label class="form-label" id="valueFromMyButton" for="name">Event name</label>
-										<input class="input" type="text" id="name" maxlength="36">
-										<label class="form-label" id="valueFromMyButton" for="count">Number of people to invite</label>
-										<input class="input" type="number" id="count" min="0" max="1000000" maxlength="7">
+                    <p>
+                      <label class="form-label" for="date">For date </label>
+                      <input class="form-control-sm" type="date" name="date" id="date" readonly aria-readonly>
+                    </p>
+										<label class="form-label" id="valueFromMyButton" for="category">Category</label>
+                    <input class="input" type="text" name="category" id="category" list="categories" autocomplete="off">
+										<datalist id="categories">
+                      <% if (user.categories.length > 0) { %>
+                        <% for (let i = 0; i < user.categories.length; i++) { %>
+                          <option value="<%= user.categories[i].name %>">
+                        <% } %>
+                      <% } %>
+                    </datalist>
+                    <p>
+                      <label class="form-label" id="valueFromMyButton" for="accountingType">Get Paid or Spend</label>
+                      <select class="form-control-sm" name="accountingType" id="accountingType" aria-label="Select Get Paid or Spend">
+                        <option value="debits">Get Paid</option>
+                        <option value="credits">Spend</option>
+                      </select>
+                    </p>
+										<label class="form-label" id="valueFromMyButton" for="count">Amount</label>
+										<input class="input" type="number" name="amount" id="amount" min="0" max="10000" step="0.01">
 										<input type="button" value="Cancel" class="button" id="cancel-button">
-										<input type="button" value="OK" class="button button-white" id="ok-button">
+										<input value="OK" class="button button-white" id="ok-button" type="submit">
 									</div>
 								</form>
 							</div>

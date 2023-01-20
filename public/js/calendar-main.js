@@ -8,6 +8,21 @@ const data = await getForecasts()
 const event_data = {events: data.events}
 const currency = data.currency
 
+const months = [ 
+    "January", 
+    "February", 
+    "March", 
+    "April", 
+    "May", 
+    "June", 
+    "July", 
+    "August", 
+    "September", 
+    "October", 
+    "November", 
+    "December" 
+]
+
 // Event handler for when a date is clicked
 function date_click(event) {
     $(".events-container").show(250);
@@ -49,48 +64,71 @@ function prev_year(event) {
     init_calendar(date);
 }
 
-// Event handler for clicking the new event button
+// Event handler for clicking the Add Event button
 function new_event(event) {
     // if a date isn't selected then do nothing
+    console.log(event.data)
     if($(".active-date").length===0)
         return;
     // remove red error input on click
     $("input").click(function(){
         $(this).removeClass("error-input");
     })
-    // empty inputs and hide events
+    // empty inputs/set input date and hide events
+    /*
+        need to figure out how to get date from .active-date
+        month -> .active-month.text()
+        date -> .active-date.text()
+        year -> #label.year.text()
+        */
+    const abbreviatedMonths = months.map(m => m.slice(0, 3))
+    const month = abbreviatedMonths.indexOf($('.active-month').text().slice(0,3)) + 1
+    const date = $('.active-date').text()
+    const year = $('#label.year').text()
+    const dateString = `${year}-${pad(month)}-${pad(date)}`
+    $("#date").val(dateString);
     $("#dialog input[type=text]").val('');
     $("#dialog input[type=number]").val('');
     $(".events-container").hide(250);
     $("#dialog").show(250);
     // Event handler for cancel button
     $("#cancel-button").click(function() {
-        $("#name").removeClass("error-input");
-        $("#count").removeClass("error-input");
+        $("#date").removeClass("error-input");
+        $("#category").removeClass("error-input");
+        $("#accountingType").removeClass("error-input");
+        $("#amount").removeClass("error-input");
         $("#dialog").hide(250);
         $(".events-container").show(250);
     });
     // Event handler for ok button
-    $("#ok-button").unbind().click({date: event.data.date}, function() {
-        const date = event.data.date;
-        const name = $("#name").val().trim();
-        const count = parseInt($("#count").val().trim());
-        const day = parseInt($(".active-date").html());
-        // Basic form validation
-        if(name.length === 0) {
-            $("#name").addClass("error-input");
-        }
-        else if(isNaN(count)) {
-            $("#count").addClass("error-input");
-        }
-        else {
-            $("#dialog").hide(250);
-            console.log("new event");
-            new_event_json(name, count, date, day);
-            date.setDate(day);
-            init_calendar(date);
-        }
-    });
+    // should submit form data to /forecasts/createForecast
+    /*
+        amount
+        accountingType
+        category
+        date
+        user will be in request.user already
+    */
+    // $("#ok-button").unbind().click({date: event.data.date}, function() {
+    //     const date = event.data.date;
+    //     const name = $("#name").val().trim();
+    //     const count = parseInt($("#count").val().trim());
+    //     const day = parseInt($(".active-date").html());
+    //     // Basic form validation
+    //     if(name.length === 0) {
+    //         $("#name").addClass("error-input");
+    //     }
+    //     else if(isNaN(count)) {
+    //         $("#count").addClass("error-input");
+    //     }
+    //     else {
+    //         $("#dialog").hide(250);
+    //         console.log("new event");
+    //         new_event_json(name, count, date, day);
+    //         date.setDate(day);
+    //         init_calendar(date);
+    //     }
+    // });
 }
 
     // Setup the calendar with the current date
@@ -117,7 +155,7 @@ function init_calendar(date) {
     const month = date.getMonth();
     const year = date.getFullYear();
     const day_count = days_in_month(month, year);
-    const row = $("<tr class='table-row'></tr>");
+    let row = $("<tr class='table-row'></tr>");
     const today = date.getDate();
     // Set date to 1 to find the first day of the month
     date.setDate(1);
@@ -186,8 +224,8 @@ function show_events(events, month, day) {
     // Clear the dates container
     $(".events-container").empty();
     $(".events-container").show(250);
-    console.log(`show_events function console:`)
-    console.log(event_data["events"]);
+    // console.log(`show_events function console:`)
+    // console.log(event_data["events"]);
     // If there are no events for this date, notify the user
     if(events.length===0) {
         const event_card = $("<div class='event-card'></div>");
@@ -230,21 +268,6 @@ function check_events(day, month, year) {
     return events;
 }
 
-const months = [ 
-    "January", 
-    "February", 
-    "March", 
-    "April", 
-    "May", 
-    "June", 
-    "July", 
-    "August", 
-    "September", 
-    "October", 
-    "November", 
-    "December" 
-];
-
 
 })(jQuery);
 
@@ -283,4 +306,11 @@ function convertDatesToLocale(array) {
         event["month"] = event.date.getMonth() + 1
         event["year"] = event.date.getFullYear()
     })
+}
+
+function pad(s) {
+    let str = s
+    if (typeof str !== 'string') str = str.toString()
+    if (str.length < 2) str = '0' + str
+    return str
 }

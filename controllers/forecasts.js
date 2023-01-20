@@ -13,36 +13,42 @@ module.exports = {
   // TODO: re-order post, update, delete functions
   // TODO: rename to createForecast
   postForecast: async (req, res) => {
-    // console.log(`hello from forecastsController.postForecast`)
-    // console.log(`incoming info`, req.body)
-    const catCheck = await checkCategory(req.user._id, req.body.category)
+    console.log(`hello from forecastsController.postForecast`)
+    console.log(`incoming info`, req.body)
+    try {
+      const catCheck = await checkCategory(req.user._id, req.body.category)
     
-    const amount = req.body.amount
-    const accountingType = req.body.accountingType
-    const category = catCheck._id
-    let date = req.body.date
-    const user = req.user._id
+      const amount = req.body.amount
+      const accountingType = req.body.accountingType
+      const category = catCheck._id
+      let date = req.body.date
+      const user = req.user._id
 
-    // store date as UTC
-    const [year, month, day] = req.body.date.split('-')
-    date = new Date(Date.UTC(year, Number(month) - 1, day))
+      // store date as UTC
+      const [year, month, day] = req.body.date.split('-')
+      date = new Date(Date.UTC(year, Number(month) - 1, day))
 
-    const newForecast = new Forecast({
-      amount,
-      accountingType,
-      category,
-      date,
-      user
-    })
-    await newForecast.save()
-    await User.findOneAndUpdate(
-      { _id: req.user._id},
-      { $push: {
-          forecasts: newForecast._id
+      const newForecast = new Forecast({
+        amount,
+        accountingType,
+        category,
+        date,
+        user
+      })
+      await newForecast.save()
+      await User.findOneAndUpdate(
+        { _id: req.user._id},
+        { $push: {
+            forecasts: newForecast._id
+          }
         }
-      }
-    )
-    res.redirect("/profile")
+      )
+      res.redirect("/profile")
+    } catch (err) {
+      console.log(err)
+      res.redirect("/profile")
+    }
+    
   },
   getCalendar: async (req, res) => {
     res.render("calendar.ejs")

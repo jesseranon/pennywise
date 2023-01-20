@@ -36,13 +36,13 @@ module.exports = {
         console.log(`hello from user controller`)
         try {
             const user = await User.findOne({ _id: req.user.id })
-                .populate({
-                    path: 'transactions',
-                    populate: {
-                        path: 'category',
-                        model: 'Category'
-                    }
-                })
+                // .populate({
+                //     path: 'transactions',
+                //     populate: {
+                //         path: 'category',
+                //         model: 'Category'
+                //     }
+                // })
                 .populate({
                     path: 'forecasts',
                     populate: {
@@ -50,11 +50,15 @@ module.exports = {
                         model: 'Category'
                     }
                 })
+                .populate({
+                    path: 'categories',
+                    model: 'Category'
+                })
 
-            console.log(user)
+            // console.log(user)
             const today = addMinutes(new Date(Date.UTC(2023, 0, 18)), 480)
-            console.log(today)
-            console.log(format(today, 'EEEE'))
+            // console.log(today)
+            // console.log(format(today, 'EEEE'))
             const items = {
                 user: user,
                 formatRelative: formatRelative,

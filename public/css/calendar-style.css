@@ -28,6 +28,8 @@
     --dark: #343a40;
     --main-accent: var(--green);
     --light-accent: var(--teal);
+    --dark-accent: #023020;
+    --complimentary-accent: orange;
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
     --breakpoint-md: 768px;
@@ -8233,7 +8235,7 @@
     font-size: 1rem; }
   
   .event-count {
-    color: #7e0cf5;
+    color: var(--dark-accent);
     text-align: right; }
   
   .event-name {
@@ -8336,7 +8338,7 @@
       outline: none; }
   
   #cancel-button {
-    background: #cd4dcc; }
+    background: var(--light-accent); }
   
   #add-button {
     display: block;
@@ -8417,8 +8419,8 @@
     border-color: var(--light-accent); }
   
   .event-date {
-    border-color: #7e0cf5;
-    background: #7e0cf5;
+    border-color: var(--dark-accent);
+    background: var(--dark-accent);
     color: #fff; }
     .event-date:after {
       position: absolute;
@@ -8435,7 +8437,7 @@
     color: #fff; }
   
   .event-date.active-date {
-    background: #7e0cf5; }
+    background: var(--light-accent); }
   
   /* input dialog */
   .dialog {

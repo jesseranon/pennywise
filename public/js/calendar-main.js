@@ -59,6 +59,7 @@ function prev_year(event) {
     $("#dialog").hide(250);
     const date = event.data.date;
     const new_year = date.getFullYear()-1;
+    if (new_year < new Date().getFullYear()) return
     $("year").html(new_year);
     date.setFullYear(new_year);
     init_calendar(date);
@@ -185,21 +186,6 @@ function days_in_month(month, year) {
     return (monthEnd - monthStart) / (1000 * 60 * 60 * 24);    
 }
 
-// Adds a json event to event_data
-/*
-    should just be an http request to createForecast
- */
-function new_event_json(name, count, date, day) {
-    const event = {
-        "occasion": name,
-        "invited_count": count,
-        "year": date.getFullYear(),
-        "month": date.getMonth()+1,
-        "day": day
-    };
-    event_data["events"].push(event);
-}
-
 // Display all events of the selected date in card views
 function show_events(events, month, day) {
     // Clear the dates container
@@ -210,7 +196,7 @@ function show_events(events, month, day) {
     // If there are no events for this date, notify the user
     if(events.length===0) {
         const event_card = $("<div class='event-card'></div>");
-        const event_name = $("<div class='event-name'>There are no events planned for "+month+" "+day+".</div>");
+        const event_name = $("<div class='event-name'>There are forecasts for "+month+" "+day+".</div>");
         $(event_card).css({ "border-left": "10px solid #FF1744" });
         $(event_card).append(event_name);
         $(".events-container").append(event_card);

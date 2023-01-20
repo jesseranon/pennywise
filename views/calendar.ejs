@@ -1,38 +1,3 @@
-<!-- set current day -->
-<% let today = new Date() %>
-<!-- get offset -->
-<% const offset = (new Date()).getTimezoneOffset() %>
-<% today = addMinutes(today, offset) %>
-<% const currentYear = today.getFullYear() %>
-<% const currentMonth = 5 %>
-<% const currentDate = today.getDate() %>
-<% todayString = currentYear + '-' + pad((Number(currentMonth) + 1).toString()) + '-' + pad(currentDate.toString()) %>
-
-<!-- months and days -->
-<% const months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ] %>
-<% const daysOfWeek = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ] %>
-
-<!-- number of days in current day's month -->
-<% const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth)) %>
-
-<!-- loop through forecasts and transactions, store to badge object -->
-<% const eventsStore = {} %>
-
-<!-- add minutes to each forecast.date and store -->
-<% for (let i = 0; i < user.forecasts.length; i++) { %>
-  <% let utcAdjDate = addMinutes(user.forecasts[i].date, offset) %>
-  <% user.forecasts[i].date = utcAdjDate %>
-  <!-- convert date to YYYY-MM-DD string for storing in eventsStore -->
-  <% utcAdjDate = user.forecasts[i].date %>
-  <% const isoDateString = utcAdjDate.getFullYear() + '-' + pad(Number(utcAdjDate.getMonth() + 1).toString()) + '-' + pad(Number(utcAdjDate.getDate()).toString()) %>
-  <% if (!eventsStore.hasOwnProperty(isoDateString)) { %>
-    <% eventsStore[isoDateString] = [user.forecasts[i]] %>
-  <% } else { %>
-    <% eventsStore[isoDateString].push(user.forecasts[i]) %>
-  <% } %>
-<% } %>
-<!-- add transactions to store later -->
-
 <!doctype html>
 <html lang="en">
   	<head>
@@ -131,9 +96,9 @@
 										<label class="form-label" id="valueFromMyButton" for="category">Category</label>
                     <input class="input" type="text" name="category" id="category" list="categories" autocomplete="off">
 										<datalist id="categories">
-                      <% if (user.categories.length > 0) { %>
-                        <% for (let i = 0; i < user.categories.length; i++) { %>
-                          <option value="<%= user.categories[i].name %>">
+                      <% if (categories.length > 0) { %>
+                        <% for (let i = 0; i < categories.length; i++) { %>
+                          <option value="<%= categories[i].name %>">
                         <% } %>
                       <% } %>
                     </datalist>

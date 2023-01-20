@@ -35,7 +35,7 @@ module.exports = {
     getCalendar: async (req, res) => {
         console.log(`hello from user controller`)
         try {
-            const user = await User.findOne({ _id: req.user.id })
+            const user = await User.findOne({ _id: req.user._id })
                 // .populate({
                 //     path: 'transactions',
                 //     populate: {
@@ -56,17 +56,8 @@ module.exports = {
                 })
 
             // console.log(user)
-            const today = addMinutes(new Date(Date.UTC(2023, 0, 18)), 480)
-            // console.log(today)
-            // console.log(format(today, 'EEEE'))
-            const items = {
-                user: user,
-                formatRelative: formatRelative,
-                addMinutes: addMinutes,
-                getDaysInMonth: getDaysInMonth,
-                format: format
-            }
-            res.render("calendar.ejs", items);
+            
+            res.render("calendar.ejs", {categories: user.categories});
         } catch (err) {
             console.log(err);
         }

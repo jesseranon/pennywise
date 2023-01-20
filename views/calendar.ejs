@@ -16,7 +16,6 @@
 <% const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth)) %>
 
 <!-- loop through forecasts and transactions, store to badge object -->
-
 <% const eventsStore = {} %>
 
 <!-- add minutes to each forecast.date and store -->
@@ -144,13 +143,15 @@
 		<script src="/js/popper.js"></script>
 		<script src="/js/bootstrap.min.js"></script>
 		<script src="/js/calendar-main.js"></script>
-
+    <script>
+      
+    </script>
 	</body>
 </html>
 
 <!-- helper functions -->
-  <!-- pad function for date strings -->
-  <% function pad(s) { %>
-    <% if (s.length < 2) s = '0' + s %>
-    <% return s %>
-  <% } %>
+<!-- pad function for date strings -->
+<% function pad(s) { %>
+  <% if (s.length < 2) s = '0' + s %>
+  <% return s %>
+<% } %>

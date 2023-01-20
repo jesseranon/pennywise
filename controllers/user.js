@@ -67,4 +67,30 @@ module.exports = {
             console.log(err);
         }
     },
+    getCalendarEvents: async (req, res) => {
+        console.log(`getCalendarEvents controller`)
+        // console.log(req.user)
+        try {
+            const user = await User.findOne({ _id: req.user.id })
+                .populate({
+                    path: 'transactions',
+                    populate: {
+                        path: 'category',
+                        model: 'Category'
+                    }
+                })
+                .populate({
+                    path: 'forecasts',
+                    populate: {
+                        path: 'category',
+                        model: 'Category'
+                    }
+                })
+            
+            res.json({currency: user.currency, events: user.forecasts})
+        } catch (err) {
+            console.log(err)
+        }
+        
+    }
 };

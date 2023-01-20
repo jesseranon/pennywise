@@ -7,4 +7,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //Calendar routes
 router.get('/', userController.getCalendar)
 
+router.get('/getCalendarEvents', userController.getCalendarEvents)
+
 module.exports = router

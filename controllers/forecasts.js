@@ -43,7 +43,7 @@ module.exports = {
           }
         }
       )
-      res.redirect("/profile")
+      res.redirect("back")
     } catch (err) {
       console.log(err)
       res.redirect("/profile")

@@ -109,26 +109,7 @@ function new_event(event) {
         date
         user will be in request.user already
     */
-    // $("#ok-button").unbind().click({date: event.data.date}, function() {
-    //     const date = event.data.date;
-    //     const name = $("#name").val().trim();
-    //     const count = parseInt($("#count").val().trim());
-    //     const day = parseInt($(".active-date").html());
-    //     // Basic form validation
-    //     if(name.length === 0) {
-    //         $("#name").addClass("error-input");
-    //     }
-    //     else if(isNaN(count)) {
-    //         $("#count").addClass("error-input");
-    //     }
-    //     else {
-    //         $("#dialog").hide(250);
-    //         console.log("new event");
-    //         new_event_json(name, count, date, day);
-    //         date.setDate(day);
-    //         init_calendar(date);
-    //     }
-    // });
+    // ok-button functionality removed
 }
 
     // Setup the calendar with the current date

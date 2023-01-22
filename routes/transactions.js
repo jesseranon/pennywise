@@ -15,6 +15,6 @@ router.post("/post/:accountId/:forecastId", ensureAuth, transactionsController.p
 router.get("/update/:transactionId", ensureAuth, transactionsController.getUpdateTransactionForm)
 router.put("/update/:transactionId", ensureAuth, transactionsController.updateTransaction)
 
-router.post("/deleteTransaction/:id", ensureAuth, transactionsController.deleteTransaction)
+router.delete("/deleteTransaction/:id", ensureAuth, transactionsController.deleteTransaction)
 
 module.exports = router

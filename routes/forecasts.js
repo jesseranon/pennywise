@@ -13,6 +13,6 @@ router.put('/updateForecast/:id', ensureAuth, forecastsController.updateForecast
 router.get('/convertForecast/:id', ensureAuth, forecastsController.getForecastToTransactionForm)
 router.post('/convertForecast/:id', ensureAuth, forecastsController.postForecastToTransaction)
 
-router.post('/deleteForecast/:id', forecastsController.deleteForecast)
+router.delete('/deleteForecast/:id', forecastsController.deleteForecast)
 
 module.exports = router

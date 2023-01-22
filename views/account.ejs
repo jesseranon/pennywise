@@ -16,7 +16,7 @@
     <div class="col-6">
       <h2>
         <% if (!account.debits.length && !account.debits.length) { %>
-          <form action="/account/deleteAccount/<%= account._id%>" method="post">
+          <form action="/account/deleteAccount/<%= account._id%>?_method=DELETE" method="POST">
             <button class="delete-account btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
           </form>
         <% } %>

@@ -14,7 +14,7 @@ router.post("/createAccount", ensureAuth, accountsController.createAccount)
 router.get("/:id", ensureAuth, accountsController.getAccount)
 
 // delete account
-router.post("/deleteAccount/:id", ensureAuth, accountsController.deleteAccount)
+router.delete("/deleteAccount/:id", ensureAuth, accountsController.deleteAccount)
 
 // modify account details
 router.get("/updateAccount/:id", ensureAuth, accountsController.getUpdateAccountForm)

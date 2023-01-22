@@ -13,7 +13,7 @@
     <form action="/forecasts/updateForecast/<%= currentForecast._id %>" method="get">
         <button class="edit-forecast btn btn-secondary"><i class="fa-solid fa-pen"></i></button>
     </form>
-    <form action="/forecasts/deleteForecast/<%= currentForecast._id %>" method="post">
+    <form action="/forecasts/deleteForecast/<%= currentForecast._id %>?_method=DELETE" method="post">
         <button class="delete-forecast btn btn-secondary"><i class="fa-solid fa-trash"></i></button>
     </form>
     <form action="/forecasts/convertForecast/<%= currentForecast._id %>" method="get">

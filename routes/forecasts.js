@@ -8,7 +8,7 @@ router.get('/createForecast', ensureAuth, forecastsController.getCreateForecastF
 router.post('/createForecast', ensureAuth, forecastsController.postForecast)
 
 router.get('/updateForecast/:id', ensureAuth, forecastsController.getUpdateForecastForm)
-router.post('/updateForecast/:id', ensureAuth, forecastsController.updateForecast)
+router.put('/updateForecast/:id', ensureAuth, forecastsController.updateForecast)
 
 router.get('/convertForecast/:id', ensureAuth, forecastsController.getForecastToTransactionForm)
 router.post('/convertForecast/:id', ensureAuth, forecastsController.postForecastToTransaction)

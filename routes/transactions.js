@@ -13,7 +13,7 @@ router.post("/post/:accountId/:forecastId", ensureAuth, transactionsController.p
 
 //get update transaction form, pre-populate input fields with transaction data
 router.get("/update/:transactionId", ensureAuth, transactionsController.getUpdateTransactionForm)
-router.post("/update/:transactionId", ensureAuth, transactionsController.updateTransaction)
+router.put("/update/:transactionId", ensureAuth, transactionsController.updateTransaction)
 
 router.post("/deleteTransaction/:id", ensureAuth, transactionsController.deleteTransaction)
 

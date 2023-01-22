@@ -15,9 +15,10 @@ router.get("/:id", ensureAuth, accountsController.getAccount)
 
 // delete account
 router.post("/deleteAccount/:id", ensureAuth, accountsController.deleteAccount)
+
 // modify account details
 router.get("/updateAccount/:id", ensureAuth, accountsController.getUpdateAccountForm)
-router.post("/updateAccount/:id", ensureAuth, accountsController.updateAccount)
+router.put("/updateAccount/:id", ensureAuth, accountsController.updateAccount)
 
 // update account - this doesn't need to be an option i don't think
 

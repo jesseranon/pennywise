@@ -6,7 +6,7 @@
 <% if (transactionDate.length < 2) transactionDate = "0" + transactionDate %>
 
 Edit Transaction
-<form action="<%= transaction._id%>" method="post">
+<form action="<%= transaction._id%>?_method=PUT" method="post">
   
   <!-- Transaction Amount -->
   <p>

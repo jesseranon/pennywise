@@ -3,7 +3,7 @@
 <% const transactions = account.debits.concat(account.credits) %>
 
 Edit Account
-<form action="<%= account._id %>" method="post">
+<form action="<%= account._id %>?_method=PUT" method="post">
   <!-- Name -->
   <p>
     <label for="accountName">Name</label>

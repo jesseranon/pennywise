@@ -6,7 +6,13 @@
             <%- include('partials/createForecast', {user: user}) -%>
         <% } %>
         <% if (mode === 'edit') { %>
-            <%- include('partials/editForecast', {user: user, forecast: forecast}) -%>    
+            <% const options = { btn: {} } %>
+            <% const btn = options.btn %>
+            <% btn.class = 'btn-primary' %>
+            <% btn.type = 'submit' %>
+            <% btn.icon = { class: "fa-solid fa-paper-plane" } %>
+            <% btn.text = 'Submit' %>
+            <%- include('partials/editForecast', {user: user, forecast: forecast, btn: options.btn}) -%>    
         <% } %>
         <% if (mode === 'convert') { %>
             <%- include('partials/convertForecast', {user: user, forecast: forecast}) -%>    

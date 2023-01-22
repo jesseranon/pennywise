@@ -1,12 +1,4 @@
-<% const options = { btn: {} } %>
-<% const btn = options.btn %>
-<% btn.class = 'btn-primary' %>
-<% btn.type = 'submit' %>
-<% btn.icon = { class: "fa-solid fa-paper-plane" } %>
-<% btn.text = 'Submit' %>
-<% btn.formaction = 'testurl' %>
-
 <a class="btn btn-secondary" href="/profile">
     Cancel
 </a>
-<%- include('../components/button', options) -%>
+<%- include('../components/button', btn ) -%>

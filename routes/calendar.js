@@ -5,8 +5,8 @@ const forecastsController = require("../controllers/forecasts");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Calendar routes
-router.get('/', userController.getCalendar)
+router.get('/', ensureAuth, userController.getCalendar)
 
-router.get('/getCalendarEvents', userController.getCalendarEvents)
+router.get('/getCalendarEvents', ensureAuth, userController.getCalendarEvents)
 
 module.exports = router

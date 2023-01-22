@@ -4,16 +4,14 @@ const forecastsController = require("../controllers/forecasts");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Forecast routes
-router.get('/', forecastsController.getCalendar)
+router.get('/createForecast', ensureAuth, forecastsController.getCreateForecastForm)
+router.post('/createForecast', ensureAuth, forecastsController.postForecast)
 
-router.get('/createForecast', forecastsController.getCreateForecastForm)
-router.post('/createForecast', forecastsController.postForecast)
+router.get('/updateForecast/:id', ensureAuth, forecastsController.getUpdateForecastForm)
+router.post('/updateForecast/:id', ensureAuth, forecastsController.updateForecast)
 
-router.get('/updateForecast/:id', forecastsController.getUpdateForecastForm)
-router.post('/updateForecast/:id', forecastsController.updateForecast)
-
-router.get('/convertForecast/:id', forecastsController.getForecastToTransactionForm)
-router.post('/convertForecast/:id', forecastsController.postForecastToTransaction)
+router.get('/convertForecast/:id', ensureAuth, forecastsController.getForecastToTransactionForm)
+router.post('/convertForecast/:id', ensureAuth, forecastsController.postForecastToTransaction)
 
 router.post('/deleteForecast/:id', forecastsController.deleteForecast)
 

@@ -8,13 +8,13 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 router.get("/:id", ensureAuth, transactionsController.getTransaction)
 
 //get transaction form, pre-populate account paying from
-router.get("/post/:accountId", transactionsController.getCreateTransactionForm)
-router.post("/post/:accountId/:forecastId", transactionsController.postTransaction)
+router.get("/post/:accountId", ensureAuth, transactionsController.getCreateTransactionForm)
+router.post("/post/:accountId/:forecastId", ensureAuth, transactionsController.postTransaction)
 
 //get update transaction form, pre-populate input fields with transaction data
-router.get("/update/:transactionId", transactionsController.getUpdateTransactionForm)
-router.post("/update/:transactionId", transactionsController.updateTransaction)
+router.get("/update/:transactionId", ensureAuth, transactionsController.getUpdateTransactionForm)
+router.post("/update/:transactionId", ensureAuth, transactionsController.updateTransaction)
 
-router.post("/deleteTransaction/:id", transactionsController.deleteTransaction)
+router.post("/deleteTransaction/:id", ensureAuth, transactionsController.deleteTransaction)
 
 module.exports = router

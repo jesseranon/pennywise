@@ -11,7 +11,7 @@ router.get("/", homeController.getIndex);
 router.get("/login", authController.getLogin);
 router.post("/login", authController.postLogin);
 router.get("/logout", authController.logout);
-router.get("/signup", authController.getSignup);
+router.get("/signup", ensureGuest, authController.getSignup);
 router.post("/signup", authController.postSignup);
 
 //profile/dashboard

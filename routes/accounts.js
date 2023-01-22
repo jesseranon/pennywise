@@ -9,8 +9,10 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 // post account
 router.get("/createAccount", accountsController.getCreateAccountForm)
 router.post("/createAccount", accountsController.createAccount)
+
 // get account
 router.get("/:id", ensureAuth, accountsController.getAccount)
+
 // delete account
 router.post("/deleteAccount/:id", accountsController.deleteAccount)
 // modify account details

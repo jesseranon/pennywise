@@ -1,26 +1,24 @@
 <%- include('components/header') -%>
-
-<%- include('components/navbar') -%>
-
 <div class="container">
-  <div class="row mt-5">
-      <% if (locals.messages.errors) { %>
-        <% messages.errors.forEach( el => { %>
-            <div class="alert alert-danger"><%= el.msg %></div>
-        <% }) %>    
-      <% } %>
-      <% if (locals.messages.info) { %>
-          <% messages.info.forEach( el => { %>
-              <div class="alert alert-info"><%= el.msg %></div>
-          <% }) %>    
-      <% } %>
-    </div>
 
+  <div class="row">
+    <%- include('components/navbar') -%>
+    
     <%- include('components/profileGreeting', { user: user }) -%>
 
+    <% if (locals.messages.errors) { %>
+      <% messages.errors.forEach( el => { %>
+          <div class="alert alert-danger"><%= el.msg %></div>
+      <% }) %>    
+    <% } %>
+    <% if (locals.messages.info) { %>
+        <% messages.info.forEach( el => { %>
+            <div class="alert alert-info"><%= el.msg %></div>
+        <% }) %>    
+    <% } %>
     <%- include('partials/forecastsDash', { user: user }) -%>
-
     <%- include('partials/accountsDash', { user: user }) -%>
+  </div>
 </div>
 
 <%- include('components/footer') -%>

@@ -1,5 +1,5 @@
 <% let plusMinus = null %>
-<li class="col-6 mt-5">
+<li class="col-6 mt-5 forecast-tile" data-type="forecast">
     <p>
         <%= formatRelative(addMinutes(currentForecast.date, offset), today).split(' at ')[0] %>
         <%= currentForecast.category.name %>
@@ -10,7 +10,7 @@
         <% } %>
         <span><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
     </p>
-    <form action="/forecasts/updateForecast/<%= currentForecast._id %>" method="get">
+    <!-- <form action="/forecasts/updateForecast/<%= currentForecast._id %>" method="get">
         <button class="edit-forecast btn btn-secondary"><i class="fa-solid fa-pen"></i></button>
     </form>
     <form action="/forecasts/deleteForecast/<%= currentForecast._id %>?_method=DELETE" method="post">
@@ -18,5 +18,5 @@
     </form>
     <form action="/forecasts/convertForecast/<%= currentForecast._id %>" method="get">
         <button class="btn btn-primary convert-forecast"><i class="fa-solid fa-receipt"></i></button>
-    </form>
+    </form> -->
 </li>

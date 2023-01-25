@@ -10,7 +10,7 @@
     <!-- Display available funds until next inflow net of forecasted outflows -->
     
     <% if (sortedForecasts) {%>
-        <ul class="row list-unstyled">
+        <ul class="row list-unstyled forecasts-dash">
             <% for (let i = 0; i < sortedForecasts.length; i++) {%>
                 <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
             <% } %>

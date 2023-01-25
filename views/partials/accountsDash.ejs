@@ -8,13 +8,13 @@
         <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
         <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
         <span>Assets</span>
-        <ul class="row list-unstyled">
+        <ul class="row list-unstyled accounts-dash">
             <% for(var i=0; i < assets.length; i++) {%>
                 <%- include('../components/accountTile', { account: assets[i], currency: user.currency }) -%>
             <% } %>
         </ul>
         <span>Liabilities</span>
-        <ul class="row list-unstyled">
+        <ul class="row list-unstyled accounts-dash">
             <% for(var i=0; i<liabilities.length; i++) {%>
                 <%- include('../components/accountTile', { account: liabilities[i], currency: user.currency }) -%>
             <% } %>

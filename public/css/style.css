@@ -2,6 +2,6 @@
     list-style-type: none
 }
 
-.card {
+.card, .list-group-item[id] {
     cursor: pointer;
 }

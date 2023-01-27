@@ -4,22 +4,29 @@
 <% }, 0) %>
 
 <div class="col-md-12 col-lg-2">
-    <% if (user.accounts.length > 0) { %>
-        <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
-        <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
-        <span>Assets</span>
-        <ul class="row list-group list-unstyled accounts-dash">
+    <ul class="list-group accounts-dash">
+        <% if (user.accounts.length > 0) { %>
+            <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
+            <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
+            <li class="list-group-item">
+                Assets
+            </li>
+
             <% for(var i=0; i < assets.length; i++) {%>
                 <%- include('../components/accountTile', { account: assets[i], currency: user.currency }) -%>
             <% } %>
-        </ul>
-        <span>Liabilities</span>
-        <ul class="row list-unstyled accounts-dash">
+
+            <li class="list-group-item">
+                Liabilities
+            </li>
+
             <% for(var i=0; i<liabilities.length; i++) {%>
                 <%- include('../components/accountTile', { account: liabilities[i], currency: user.currency }) -%>
             <% } %>
-        </ul>
-    <% } %>
 
-    <%- include('createAccount') -%>
+        <% } %>
+        
+        <%- include('../components/createAccountTile') -%>
+    </ul>
+
 </div>

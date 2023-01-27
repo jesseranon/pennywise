@@ -1,8 +1,6 @@
-<li class="col account-tile" id="<%= account._id %>">
-    <a href="/account/<%= account._id%>">
+<li class="list-group-item account-tile" id="<%= account._id %>">
         <%= account.name %>
-    </a>
-    <% const thisBalance = account.currentBalance %>
-    <%= currency %><%= thisBalance %>
-    <a href="/transaction/post/<%= account._id %>" class="show-transaction-form">+</a>
+        <% const thisBalance = account.currentBalance %>
+        <%= currency %><%= thisBalance %>
+        <a href="/transaction/post/<%= account._id %>" class="show-transaction-form">+</a>
 </li>

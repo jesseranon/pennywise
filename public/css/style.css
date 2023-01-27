@@ -1,3 +1,7 @@
 .transactions-list {
     list-style-type: none
 }
+
+.card {
+    cursor: pointer;
+}

@@ -1,15 +1,37 @@
 <% let plusMinus = null %>
-<li class="col-6 mt-5 forecast-tile" data-type="forecast">
-    <p>
-        <%= formatRelative(addMinutes(currentForecast.date, offset), today).split(' at ')[0] %>
-        <%= currentForecast.category.name %>
-        <% if (currentForecast.accountingType === 'debits') { %>
-            <% plusMinus = '+' %>
-        <% } else { %>
-            <% plusMinus = '-' %>
-        <% } %>
-        <span><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
-    </p>
+<% if (currentForecast.accountingType === 'debits') { %>
+    <% plusMinus = '+' %>
+<% } else { %>
+    <% plusMinus = '-' %>
+<% } %>
+
+<li class="col forecast-tile my-1" data-type="forecast">
+    
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title">
+                        <%= formatRelative(addMinutes(currentForecast.date, offset), today).split(' at ')[0] %>
+                    </h5>
+                </div>
+                <div class="col">
+                    <div class="card-text">
+                        <span><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <small class="text-muted">
+                <%= currentForecast.category.name %>    
+            </small>
+        </div>
+                
+    </div>
+
     <!-- <form action="/forecasts/updateForecast/<%= currentForecast._id %>" method="get">
         <button class="edit-forecast btn btn-secondary"><i class="fa-solid fa-pen"></i></button>
     </form>
@@ -19,4 +41,5 @@
     <form action="/forecasts/convertForecast/<%= currentForecast._id %>" method="get">
         <button class="btn btn-primary convert-forecast"><i class="fa-solid fa-receipt"></i></button>
     </form> -->
+
 </li>

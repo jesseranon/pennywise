@@ -6,19 +6,24 @@
 <% const offset = today.getTimezoneOffset() %>
 
 
-<div class="col-6">
-    <!-- Display available funds until next inflow net of forecasted outflows -->
-    
-    <% if (sortedForecasts) {%>
-        <ul class="row list-unstyled forecasts-dash">
-            <% for (let i = 0; i < sortedForecasts.length; i++) {%>
-                <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
+<!-- Display available funds until next inflow net of forecasted outflows -->
+
+<% if (sortedForecasts) {%>
+    <ul class="row col-md-12 col-lg-10 list-unstyled forecasts-dash">
+        <div class="row row-col-4 card-columns">
+            <% for (let i = 0; i < sortedForecasts.length + 1; i++) {%>
+                <% if (!sortedForecasts[i]) { %>
+                    <!-- create forecast tile -->
+                    <%- include('../components/createForecastTile') %>
+                <% } else { %>
+                    <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
+                <% } %>
             <% } %>
-        </ul>
-    <% } else { %>
+        </div>
+    </ul>
+<% } else { %>
+    <div class="row">
         <p>You have currently have <%= user.currency %><%= totalAssets %> in checking, savings, and cash.</p>
         <p>Add a forecast to see how bills and commitments affect how much you actually have to spend until you next get paid.</p>
-    <% } %>
-    <!-- create forecast form -->
-    <%- include('createForecast') -%>
-</div>
+    </div>
+<% } %>

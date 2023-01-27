@@ -3,12 +3,12 @@
     <% return accumulator %>
 <% }, 0) %>
 
-<div class="col-6">
+<div class="col-md-12 col-lg-2">
     <% if (user.accounts.length > 0) { %>
         <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
         <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
         <span>Assets</span>
-        <ul class="row list-unstyled accounts-dash">
+        <ul class="row list-group list-unstyled accounts-dash">
             <% for(var i=0; i < assets.length; i++) {%>
                 <%- include('../components/accountTile', { account: assets[i], currency: user.currency }) -%>
             <% } %>

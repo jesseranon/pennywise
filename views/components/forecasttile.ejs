@@ -5,28 +5,33 @@
     <% plusMinus = '-' %>
 <% } %>
 
-<li class="col forecast-tile my-1" data-type="forecast">
-    
-    <div class="card">
+<li class="col forecast-tile mb-1" data-type="forecast">
+
+    <div class="card h-100">
 
         <div class="card-body">
-            <div class="row">
+            <div class="row d-flex flex-column">
                 <div class="col">
-                    <h5 class="card-title">
+                    <h6 class="card-title d-flex justify-content-between">
                         <%= formatRelative(addMinutes(currentForecast.date, offset), today).split(' at ')[0] %>
-                    </h5>
+                        <button type="button" class="btn-close" data-delete="<%currentForecast._id%>" aria-label="Delete forecast"></button>
+                    </h6>
                 </div>
                 <div class="col">
                     <div class="card-text">
-                        <span><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
+                        <span class="<%= plusMinus === '+' ? 'forecast-increase' : 'forecast-decrease' %>"><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card-footer">
-            <small class="text-muted">
-                <%= currentForecast.category.name %>    
+        <div class="card-footer d-flex justify-content-between">
+            <small class="col-8 text-muted align-self-center">
+                <%= currentForecast.category.name %>
+            </small>
+            <small class="col-4 d-flex justify-content-between align-self-center">
+                <a href="#convert" class="btn btn-secondary btn-sm" role="button"><i class="fa-solid fa-file-invoice-dollar"></i></a>
+                <a href="#edit" class="btn btn-secondary btn-sm" role="button"><i class="fa-solid fa-pen"></i></a>
             </small>
         </div>
                 

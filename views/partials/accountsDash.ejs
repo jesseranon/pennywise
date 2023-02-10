@@ -3,30 +3,43 @@
     <% return accumulator %>
 <% }, 0) %>
 
-<div class="col-md-12 col-lg-2">
-    <ul class="list-group accounts-dash">
+<div class="col-md-12 col-lg-2 mb-5">
         <% if (user.accounts.length > 0) { %>
             <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
             <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
-            <li class="list-group-item">
-                Assets
-            </li>
 
-            <% for(var i=0; i < assets.length; i++) {%>
-                <%- include('../components/accountTile', { account: assets[i], currency: user.currency }) -%>
+            <% if (assets) { %>
+
+                <h5 class="list-group-item">
+                    Checking & Savings
+                </h5>
+
+                <ul class="list-group accounts-dash mb-2">
+                    <% for(var i=0; i < assets.length; i++) {%>
+                        <%- include('../components/accountTile', { account: assets[i], currency: user.currency }) -%>
+                    <% } %>
+                </ul>
+
             <% } %>
 
-            <li class="list-group-item">
-                Liabilities
-            </li>
+            <% if (liabilities) { %>
 
-            <% for(var i=0; i<liabilities.length; i++) {%>
-                <%- include('../components/accountTile', { account: liabilities[i], currency: user.currency }) -%>
+                <h5 class="list-group-item">
+                    Credit Cards & Loans
+                </h5>
+
+                <ul class="list-group accounts-dash mb-2">
+                    <% for(var i=0; i < liabilities.length; i++) {%>
+                        <%- include('../components/accountTile', { account: liabilities[i], currency: user.currency }) -%>
+                    <% } %>
+                </ul>
+
             <% } %>
 
         <% } %>
         
-        <%- include('../components/createAccountTile') -%>
-    </ul>
+        <ul class="list-group accounts-dash">
+            <%- include('../components/createAccountTile') -%>
+        </ul>
 
 </div>

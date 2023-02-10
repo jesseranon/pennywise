@@ -3,7 +3,8 @@
 <div class="container">
 
   <%- include('components/profileGreeting', { user: user }) -%>
-
+  <%- include('partials/deleteModal') -%>
+  
   <div class="row">
     
     <% if (locals.messages.errors) { %>

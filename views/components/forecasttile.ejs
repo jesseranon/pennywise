@@ -5,28 +5,28 @@
     <% plusMinus = '-' %>
 <% } %>
 
-<li class="col forecast-tile mb-1" data-type="forecast">
+<li class="col forecast-tile mb-1" data-type="forecast" data-forecast-id="<%= currentForecast._id %>">
 
     <div class="card h-100">
 
         <div class="card-body">
             <div class="row d-flex flex-column">
-                <div class="col">
-                    <h6 class="card-title d-flex justify-content-between">
+                <div class="col d-flex justify-content-between">
+                    <h6 class="card-title d-flex justify-content-between forecastDate">
                         <%= formatRelative(addMinutes(currentForecast.date, offset), today).split(' at ')[0] %>
-                        <button type="button" class="btn-close" data-delete="<%currentForecast._id%>" aria-label="Delete forecast"></button>
                     </h6>
+                    <button type="button" class="btn-close delete-forecast" data-bs-toggle="modal" data-bs-target="#deleteModal" data-delete="<%currentForecast._id%>" aria-label="Delete forecast"></button>
                 </div>
                 <div class="col">
                     <div class="card-text">
-                        <span class="<%= plusMinus === '+' ? 'forecast-increase' : 'forecast-decrease' %>"><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
+                        <span class="forecastAmount <%= plusMinus === '+' ? 'forecast-increase' : 'forecast-decrease' %>"><%= plusMinus %><%= currency %><%= currentForecast.amount %></span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="card-footer d-flex justify-content-between">
-            <small class="col-8 text-muted align-self-center">
+            <small class="col-8 text-muted align-self-center forecastCategory">
                 <%= currentForecast.category.name %>
             </small>
             <small class="col-4 d-flex justify-content-between align-self-center">
@@ -36,15 +36,5 @@
         </div>
                 
     </div>
-
-    <!-- <form action="/forecasts/updateForecast/<%= currentForecast._id %>" method="get">
-        <button class="edit-forecast btn btn-secondary"><i class="fa-solid fa-pen"></i></button>
-    </form>
-    <form action="/forecasts/deleteForecast/<%= currentForecast._id %>?_method=DELETE" method="post">
-        <button class="delete-forecast btn btn-secondary"><i class="fa-solid fa-trash"></i></button>
-    </form>
-    <form action="/forecasts/convertForecast/<%= currentForecast._id %>" method="get">
-        <button class="btn btn-primary convert-forecast"><i class="fa-solid fa-receipt"></i></button>
-    </form> -->
 
 </li>

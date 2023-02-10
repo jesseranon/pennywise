@@ -14,8 +14,50 @@ accountsDash.addEventListener('click', e => {
     }
 })
 
-transactionsDash.addEventListener('click', e => {
-    if (e.target.matches('li.transaction-tile') || e.target.closest('.transaction-tile')) {
-        console.log('show transaction modal')
-    }
+// transactionsDash.addEventListener('click', e => {
+//     if (e.target.matches('li.transaction-tile') || e.target.closest('.transaction-tile')) {
+//         console.log('show transaction modal')
+//     }
+// })
+
+// MODALS
+
+
+// DELETE MODAL
+const deleteForecastButtons = document.querySelectorAll('.delete-forecast')
+
+const deleteModal = document.querySelector('#deleteModal')
+
+const deleteModalTextDocType = deleteModal.querySelector('#deleteModalTextDocType')
+const deleteModalTextDate = deleteModal.querySelector('#deleteModalTextDate')
+const deleteModalTextCategory = deleteModal.querySelector('#deleteModalTextCategory')
+const deleteModalTextAmount = deleteModal.querySelector('#deleteModalTextAmount')
+
+const deleteModalText = [deleteModalTextDocType, deleteModalTextDate, deleteModalTextCategory, deleteModalTextAmount]
+
+deleteForecastButtons.forEach(b => {
+    b.addEventListener('click', e => {
+        console.log(`delete forecast button clicked`)
+        // get forecast info
+        const clickedForecast =  e.target.closest('.forecast-tile')
+        const forecastDate = clickedForecast.querySelector('.forecastDate').innerText
+        const forecastCategory = clickedForecast.querySelector('.forecastCategory').innerText
+        const forecastAmount = clickedForecast.querySelector('.forecastAmount').innerText
+        const forecastId = clickedForecast.getAttribute('data-forecast-id').innerText
+        // // populate spans in modal with forecast info
+        deleteModalTextDocType.innerText = `forecast`
+        deleteModalTextDate.innerText = forecastDate
+        deleteModalTextCategory.innerText = forecastCategory
+        deleteModalTextAmount.innerText = forecastAmount
+    })
+})
+
+const closeModalButtons = document.querySelectorAll('button[data-bs-dismiss="modal"]')
+
+closeModalButtons.forEach(b => {
+    b.addEventListener('click', e => {
+        // console.log('close modal button clicked')
+        // clear delete modal spans
+        deleteModalText.forEach(e => e.innerText = "")
+    })
 })

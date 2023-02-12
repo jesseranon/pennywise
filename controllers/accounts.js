@@ -2,6 +2,9 @@ const User = require("../models/User")
 const Account = require("../models/Account")
 const Category = require("../models/Category")
 const categoriesController = require("./categories")
+const formatRelative = require('date-fns/formatRelative')
+const addMinutes = require('date-fns/addMinutes')
+const format = require('date-fns/format')
 
 module.exports = {
   getAccount: async (req, res) => {
@@ -25,7 +28,7 @@ module.exports = {
         }
       })
       console.log(targetAccount)
-      res.render("account.ejs", { user: req.user, account: targetAccount })
+      res.render("account.ejs", { user: req.user, account: targetAccount, formatRelative, addMinutes })
     } catch (err) {
       res.redirect("/profile")
     }

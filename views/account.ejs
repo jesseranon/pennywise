@@ -11,11 +11,15 @@
   <% accountTransactions.sort((a, b) => a.date - b.date) %>
 <% } %>
 
-<div class="container">
-  <div class="row justify-content-center mt-5">
-    <div class="col-6">
-      <h2>
-        <% if (!account.debits.length && !account.debits.length) { %>
+<% const today = new Date() %>
+<% const offset = today.getTimezoneOffset() %>
+
+<div class="container d-flex flex-column align-items-center">
+
+  <div class="row d-flex justify-content-between my-5 col-sm-12 col-lg-8">
+    <div class="col-8 d-flex flex-column justify-content-between">
+      <h2 class="d-flex align-items-center">
+        <% if (!accountTransactions.length) { %>
           <form action="/account/deleteAccount/<%= account._id%>?_method=DELETE" method="POST">
             <button class="delete-account btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
           </form>
@@ -26,25 +30,28 @@
         </form>
       </h2>
       <p>Account Type: <%= account.type[0].toUpperCase() + account.type.slice(1) %></p>
-      <p>Current Balance: <strong><%= user.currency %><%= account.currentBalance %></strong></p>
+    </div>
+    <div class="col-4 d-flex flex-column justify-content-between align-items-end">
+      <h2><%= user.currency %><%= account.currentBalance %></h2>
+      <p>Available Balance</p>
+    </div>
+  </div>
+  <div class="row col-sm-12 col-lg-8">
+    <p>Transactions</p>
+    <%- include('components/createTransactionTile') -%>
+    <ul class="list-group transactionsDash my-2">
       <% if (accountTransactions.length) { %>
-        <p>Transactions</p>
-        <ul class="transactions-list">
-          <% for (let i = 0; i < accountTransactions.length; i++) { %>
-            <%- include('components/transactionLineItem', {account: account, currency: user.currency, transaction: accountTransactions[i]}) -%>
-          <% } %>
-        </ul>
-      <% } else { %>
-        <p>No transactions logged.</p>
+        <% for (let i = 0; i < accountTransactions.length; i++) { %>
+          <%- include('components/transactionLineItem', {account: account, balanceType: account.balanceType, currency: user.currency, transaction: accountTransactions[i], offset, formatRelative, addMinutes}) -%>
+        <% } %>
       <% } %>
-      <form action="/transaction/post/<%= account._id %>" method="get">
-        <label for="track-transaction">Track a transaction</label>
-        <button class="btn btn-primary" id="track-transaction"><i class="fa-solid fa-receipt"></i></button>
-      </form>
+    </ul>
+
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>
     </div>
   </div>
+
 </div>
 
 <%- include('components/footer') -%>

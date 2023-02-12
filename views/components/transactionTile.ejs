@@ -1,0 +1,41 @@
+<% let incDec = null %>
+<% let transactionFoundInDebits = false %>
+<% if (account.debits.length > 0) { %>
+    <% transactionFoundInDebits = account.debits.filter(t => t._id == transaction._id).length > 0 %>
+<% } %>
+<% if (balanceType == 'asset') { %>
+    <% if (transactionFoundInDebits) { %>
+        <% incDec = "+" %>
+    <% } else { %> 
+        <% incDec = "-" %>
+    <% } %>
+<% } else { %>
+    <% if (transactionFoundInDebits) { %>
+        <% incDec = "-" %>
+    <% } else { %> 
+        <% incDec = "+" %>
+    <% } %>
+<% } %>
+
+
+
+<li class="list-group-item">
+    <div class="row d-flex w-100 justify-content-between align-items-center">
+        <div class="col-2 d-flex align-items-center justify-content-between">
+            <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
+                <button class="delete-transaction btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
+            </form>
+            <span><%= addMinutes(transaction.date, offset).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %></span>
+
+        </div>
+        <div class="col-8">
+            <span><%= transaction.category.name %></span>
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-between">
+            <span><%= incDec %><%= currency %><%= transaction.amount %></span>
+            <form action="/transaction/update/<%= transaction._id %>" method="get">
+                <button class="edit-transaction btn btn-primary" type="submit"><i class="fa-solid fa-pen"></i></button>
+            </form>
+        </div>
+    </div>
+</li>

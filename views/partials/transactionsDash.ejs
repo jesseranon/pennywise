@@ -1,0 +1,17 @@
+<% const today = new Date() %>
+<% const offset = today.getTimezoneOffset() %>
+
+<div class="col-md-12 col-lg-10">
+
+    <h5 class="dash-heading">Transactions</h5>
+
+    <ul class="list-unstyled transactions-dash">
+        <%- include('../components/createTransactionTile') -%>
+        <% if (accountTransactions) {%>
+            <% for (let i = 0; i < accountTransactions.length; i++) {%>
+                    <%- include('../components/transactionTile', {currentTransaction: accountTransactions[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
+            <% } %>
+        <% } %>
+    </ul>
+
+</div>

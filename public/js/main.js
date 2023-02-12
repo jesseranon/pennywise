@@ -32,6 +32,7 @@ const deleteModalTextDocType = deleteModal.querySelector('#deleteModalTextDocTyp
 const deleteModalTextDate = deleteModal.querySelector('#deleteModalTextDate')
 const deleteModalTextCategory = deleteModal.querySelector('#deleteModalTextCategory')
 const deleteModalTextAmount = deleteModal.querySelector('#deleteModalTextAmount')
+const deleteModalDeleteButton = deleteModal.querySelector('#deleteModalDeleteBtn')
 
 const deleteModalText = [deleteModalTextDocType, deleteModalTextDate, deleteModalTextCategory, deleteModalTextAmount]
 
@@ -43,12 +44,13 @@ deleteForecastButtons.forEach(b => {
         const forecastDate = clickedForecast.querySelector('.forecastDate').innerText
         const forecastCategory = clickedForecast.querySelector('.forecastCategory').innerText
         const forecastAmount = clickedForecast.querySelector('.forecastAmount').innerText
-        const forecastId = clickedForecast.getAttribute('data-forecast-id').innerText
+        const forecastId = clickedForecast.getAttribute('data-forecast-id')
         // // populate spans in modal with forecast info
         deleteModalTextDocType.innerText = `forecast`
         deleteModalTextDate.innerText = forecastDate
         deleteModalTextCategory.innerText = forecastCategory
         deleteModalTextAmount.innerText = forecastAmount
+        deleteModalDeleteButton.setAttribute('href', `/forecasts/deleteForecast/${forecastId}`)
     })
 })
 
@@ -59,5 +61,7 @@ closeModalButtons.forEach(b => {
         // console.log('close modal button clicked')
         // clear delete modal spans
         deleteModalText.forEach(e => e.innerText = "")
+        // remove href from delete button
+        deleteModalDeleteButton.removeAttribute('href')
     })
 })

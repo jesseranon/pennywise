@@ -1,0 +1,1 @@
+export const accountsDash = (selector, scope = document) => scope.querySelector(selector)

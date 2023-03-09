@@ -7,7 +7,7 @@
 
 <li class="col forecast-tile mb-1" data-type="forecast" data-forecast-id="<%= currentForecast._id %>">
 
-    <div class="card h-100">
+    <div class="card h-100" data-forecast-id="<%= %>">
 
         <div class="card-body">
             <div class="row d-flex flex-column">
@@ -30,8 +30,8 @@
                 <%= currentForecast.category.name %>
             </small>
             <small class="col-4 d-flex justify-content-between align-self-center">
-                <a href="#convert" class="btn btn-secondary btn-sm" role="button"><i class="fa-solid fa-file-invoice-dollar"></i></a>
-                <a href="#edit" class="btn btn-secondary btn-sm" role="button"><i class="fa-solid fa-pen"></i></a>
+                <a href="forecasts/convertForecast/<%= currentForecast._id %>" class="btn btn-secondary btn-sm convert-forecast" role="button"><i class="fa-solid fa-file-invoice-dollar"></i></a>
+                <a href="forecasts/updateForecast/<%= currentForecast._id %>" class="btn btn-secondary btn-sm edit-forecast" role="button"><i class="fa-solid fa-pen"></i></a>
             </small>
         </div>
                 

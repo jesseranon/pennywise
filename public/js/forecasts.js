@@ -1,0 +1,1 @@
+export const forecastsDash = (selector, scope = document) => scope.querySelector(selector)

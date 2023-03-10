@@ -43,7 +43,7 @@ module.exports = {
           }
         }
       )
-      res.redirect("back")
+      res.redirect("/profile")
     } catch (err) {
       console.log(err)
       res.redirect("/profile")
@@ -117,7 +117,10 @@ module.exports = {
   },
   // form functions
   getCreateForecastForm: async (req, res) => {
-    const user = req.user
+    const user = await User.findOne({
+      _id: req.user._id
+    }).populate('categories')
+    console.log(user)
     res.render("forecastForm.ejs", {user, mode: 'create'})
   },
   getUpdateForecastForm: async (req, res) => {

@@ -10,7 +10,7 @@
                 <%= currency %><%= thisBalance %>
             </span>
             <span>
-                <i class="fa-solid fa-chevron-right align-self-center"></i>
+                <%- include('./button/createTransactionaButton', { accountId: account._id }) -%>
             </span>
         </div>
     </li>

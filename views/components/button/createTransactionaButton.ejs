@@ -1,0 +1,7 @@
+<% const options = { btn: {} } %>
+<% const btn = options.btn %>
+<% btn.class = 'btn-primary btn-sm' %>
+<% btn.icon = { class: "fa-solid fa-receipt" } %>
+<% href = "/transaction/post/" + accountId %>
+
+<%- include('aButton', { btn, href }) -%>

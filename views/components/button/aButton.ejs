@@ -1,0 +1,11 @@
+<a
+    class="btn<%= (btn.hasOwnProperty('class')) ? ' ' + btn.class : '' %>"
+    role="button"
+    href="<%= href %>"
+>
+    <% if (btn.hasOwnProperty('icon')) { %>
+        <i class="<%= btn.icon.class %>"></i>
+    <% } %>
+    <%= (btn.hasOwnProperty('icon') && btn.hasOwnProperty('text')) ? ' ' : '' %>
+    <%= (btn.hasOwnProperty('text')) ? btn.text : '' %>
+</a>

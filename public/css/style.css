@@ -18,3 +18,7 @@ li[data-create="forecast"] {
     left: 0;
     z-index: 1;
 }
+
+.account-tile {
+    border-radius: 0 0 0 0 !important;
+}

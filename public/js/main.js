@@ -3,9 +3,6 @@ const accountsDash = document.querySelector('.accounts-dash')
 const transactionsDash = document.querySelector('.transactions-dash')
 
 forecastsDash.addEventListener('click', e => {
-    // if (e.target.matches('li.forecast-tile') || e.target.closest('.forecast-tile')) {
-    //     console.log('show forecast modal')
-    // }
     if (e.target.closest('[data-create="forecast"]')) location.href('/forecasts/createForecast')
 })
 
@@ -20,9 +17,6 @@ accountsDash.addEventListener('click', e => {
 //         console.log('show transaction modal')
 //     }
 // })
-
-// MODALS
-const mainModal = document.querySelector('#mainModal')
 
 // DELETE MODAL
 const deleteForecastButtons = document.querySelectorAll('.delete-forecast')
@@ -39,14 +33,13 @@ const deleteModalText = [deleteModalTextDocType, deleteModalTextDate, deleteModa
 
 deleteForecastButtons.forEach(b => {
     b.addEventListener('click', e => {
-        console.log(`delete forecast button clicked`)
         // get forecast info
         const clickedForecast =  e.target.closest('.forecast-tile')
         const forecastDate = clickedForecast.querySelector('.forecastDate').innerText
         const forecastCategory = clickedForecast.querySelector('.forecastCategory').innerText
         const forecastAmount = clickedForecast.querySelector('.forecastAmount').innerText
         const forecastId = clickedForecast.getAttribute('data-forecast-id')
-        // // populate spans in modal with forecast info
+        // populate spans in modal with forecast info
         deleteModalTextDocType.innerText = `forecast`
         deleteModalTextDate.innerText = forecastDate
         deleteModalTextCategory.innerText = forecastCategory

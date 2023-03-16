@@ -8,7 +8,7 @@
             <% const assets = user.accounts.filter(account => account.balanceType === 'asset') %>
             <% const liabilities = user.accounts.filter(account => account.balanceType === 'liability') %>
 
-            <% if (assets) { %>
+            <% if (assets.length) { %>
 
                 <h5 class="list-group-item">
                     Checking & Savings
@@ -22,7 +22,7 @@
 
             <% } %>
 
-            <% if (liabilities) { %>
+            <% if (liabilities.length) { %>
 
                 <h5 class="list-group-item">
                     Credit Cards & Loans

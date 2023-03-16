@@ -12,14 +12,12 @@
 <div class="col-md-12 col-lg-10">
 
     <h5 class="dash-heading">Forecasts</h5>
-
     
         <ul class="list-unstyled forecasts-dash">
             <% if (sortedForecasts) {%>
                 <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-4 card-columns">
                     <% for (let i = 0; i < sortedForecasts.length + 1; i++) {%>
                         <% if (!sortedForecasts[i]) { %>
-                            <!-- create forecast tile -->
                             <%- include('../components/createForecastTile') %>
                         <% } else { %>
                             <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>

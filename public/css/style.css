@@ -22,3 +22,11 @@ li[data-create="forecast"] {
 .account-tile {
     border-radius: 0 0 0 0 !important;
 }
+
+.forecast-increase {
+    color: green;
+}
+
+.forecast-decrease {
+    color: red;
+}

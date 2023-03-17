@@ -7,6 +7,7 @@
 <% const totalAssets = user.accounts.reduce(function(accumulator, account) { %>
     <%  return (account.balanceType === 'asset') ? accumulator + Number(account.currentBalance) : accumulator %>
 <%  }, 0) %>
+<% let runningTotal = totalAssets %>
 
 <!-- Display available funds until next inflow net of forecasted outflows -->
 <div class="col-md-12 col-lg-10">
@@ -17,10 +18,16 @@
             <% if (sortedForecasts) {%>
                 <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-4 card-columns">
                     <% for (let i = 0; i < sortedForecasts.length + 1; i++) {%>
+                        <% const currentForecast = sortedForecasts[i] %>
                         <% if (!sortedForecasts[i]) { %>
                             <%- include('../components/createForecastTile') %>
                         <% } else { %>
-                            <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
+                            <% if (currentForecast.accountingType === 'debits') { %>
+                                <% runningTotal += Number(currentForecast.amount) %>
+                            <% } else { %>
+                                <% runningTotal -= Number(currentForecast.amount) %>
+                            <% } %>
+                            <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes, runningTotal: parseFloat(runningTotal).toFixed(2) }) -%>
                         <% } %>
                     <% } %>
                 </div>

@@ -1,10 +1,18 @@
 :root {
+    /* colorhub - psilocybin */
     --brand: #5ee7a6;
     --darkest: #514738;
     --dark: #75664f;
     --mid: #c3cbdd;
     --light: #eae9e5;
     --lightest: #f3f3f5;
+
+    /* coolors */
+    --pigment-green: #429a49ff;
+    --peach: #f3b391ff;
+    --desert-sand: #f6d4baff;
+    --cornsilk: #fefadcff;
+    --naples-yellow: #ffde65ff;
 }
 
 body {

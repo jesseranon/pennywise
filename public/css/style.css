@@ -1,3 +1,12 @@
+:root {
+    --brand: #5ee7a6;
+    --darkest: #514738;
+    --dark: #75664f;
+    --mid: #c3cbdd;
+    --light: #eae9e5;
+    --lightest: #f3f3f5;
+}
+
 body {
     background-color: #FAF9F6;
 }

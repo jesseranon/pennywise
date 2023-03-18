@@ -4,7 +4,24 @@ const transactionsDash = document.querySelector('.transactions-dash')
 
 forecastsDash.addEventListener('click', e => {
     if (e.target.closest('[data-create="forecast"]')) location.href('/forecasts/createForecast')
+    if (e.target.closest('a')) {
+        const anchor = e.target.closest('a')
+        console.log(`anchor action`, anchor.dataset.action)
+    }
 })
+
+//MODAL
+const modal = document.querySelector('#mainModal')
+// populate
+// // set content
+// // fetch necessary categories from appropriate get*Form controller
+// // set submit button href/actions
+
+// display modal
+
+// close modal behaviors
+// // erase content
+// // remove href/actions from submit button
 
 accountsDash.addEventListener('click', e => {
     if (e.target.matches('li.account-tile') || e.target.closest('.account-tile')) {
@@ -59,3 +76,23 @@ closeModalButtons.forEach(b => {
         deleteModalDeleteButton.removeAttribute('href')
     })
 })
+
+function renderModal(data) {
+    console.log('invoke render modal')
+    //set #mainModalTitle innerText
+    //set #mainModalBody elements
+    // // use renderModalForm
+    //set #mainModalSubmit button/anchor
+}
+
+function renderModalForm() {
+    //create form
+    //if action === create form
+    //if action === edit form
+    //if action === convert
+    //if action === delete
+}
+
+function closeModal() {
+
+}

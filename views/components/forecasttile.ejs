@@ -31,10 +31,12 @@
                 <%= currentForecast.category.name %>
             </small>
             <small class="col-4 d-flex justify-content-between align-self-center">
-                <a href="forecasts/convertForecast/<%= currentForecast._id %>" class="btn btn-secondary btn-sm convert-forecast" role="button"><i class="fa-solid fa-file-invoice-dollar"></i></a>
-                <a href="forecasts/updateForecast/<%= currentForecast._id %>" class="btn btn-secondary btn-sm edit-forecast" role="button"><i class="fa-solid fa-pen"></i></a>
+                <a class="btn btn-secondary btn-sm convert-forecast" role="button" data-action="convert"><i class="fa-solid fa-file-invoice-dollar"></i></a>
+                <a class="btn btn-secondary btn-sm edit-forecast" role="button" data-action="edit"><i class="fa-solid fa-pen"></i></a>
             </small>
         </div>
+        <!-- href="forecasts/convertForecast/<%= currentForecast._id %>" -->
+        <!-- href="forecasts/updateForecast/<%= currentForecast._id %>" -->
                 
     </div>
 

@@ -8,6 +8,7 @@
     <ul class="list-unstyled transactions-dash">
         <%- include('../components/createTransactionTile') -%>
         <% if (accountTransactions) {%>
+            <% accountTransactions = accountTransactions.sort((a, b) => b.date - a.date) %>
             <% for (let i = 0; i < accountTransactions.length; i++) {%>
                     <%- include('../components/transactionTile', {currentTransaction: accountTransactions[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes}) -%>
             <% } %>

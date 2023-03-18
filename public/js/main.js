@@ -18,6 +18,37 @@ accountsDash.addEventListener('click', e => {
 //     }
 // })
 
+//Modal
+
+// render modal behavior
+// target #mainModal
+
+function renderModal() {
+    //set #mainModalTitle
+    //set #mainModalBody using renderModalBody()
+    //set #mainModalSubmitButton action/href using setModalSubmit() ?
+}
+
+function renderModalBody() {
+    //if create
+    //if update
+    //if convertForecast
+    //if delete
+}
+
+function setModalSubmit() {
+
+}
+
+// close modal behavior
+// // erase #mainModalTitle
+// // erase #mainModalBody
+// // un-set #mainModalSubmitButton action/href
+
+function resetModal() {
+
+}
+
 // DELETE MODAL
 const deleteForecastButtons = document.querySelectorAll('.delete-forecast')
 

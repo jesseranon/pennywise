@@ -28,8 +28,6 @@ const dataActions = ['edit', 'update', 'convert', 'delete'];
 // render modal behavior
 // target #mainModal
 
-
-
 async function renderMainModal(type, action, tileElement = null) {
     try {
         renderMainModalBody(type, action, tileElement)
@@ -59,9 +57,17 @@ function renderMainModalBody(type, action, infoObj = null) {
     }
 }
 
-//CREATE FORMS
+/*
+    CREATE FORMS
+    top level:
+    - setCreateForm
+    calls:
+    - setCreateAccountForm
+    - setCreateForecastForm
+    - setCreateTransactionForm
+*/
 
-async function setCreateForm(type, infoObj = null) {
+function setCreateForm(type, infoObj = null) {
     if (type === 'transaction') {
         setCreateTransactionForm(infoObj)
     } else {
@@ -82,7 +88,7 @@ function setCreateAccountForm() {
     //setForm(fields)
 }
 
-async function setCreateForecastForm() {
+function setCreateForecastForm() {
     try {
         // const accounts = await (need to create controller endpoint for getting user accounts)
         // const categories = await (need to create controller endpoint for getting user categories)
@@ -113,8 +119,15 @@ function setCreateTransactionForm(infoObj = null) {
     //setForm(fields)
 }
 
-// UPDATE FORMS
-
+/*
+    UPDATE FORMS
+    top level:
+    - setUpdateForm
+    calls:
+    - setUpdateAccountForm
+    - setUpdateForecastForm
+    - setUpdateTransactionForm
+*/
 function setUpdateForm(type, infoObj) {
     //generate fields object
     //call setForm() w/ fields object
@@ -139,18 +152,31 @@ function setUpdateTransactionForm(infoObj) {
     console.log(`update transaction form`)
 }
 
-//DELETE PROMPT
+/*
+    DELETE PROMPT
+    - sends a delete prompt with the given object's values
+    - click the delete button to send delete put
+*/
 
 function setDeletePrompt(type, infoObj) {
     //call setMainModalSubmit() to set delete action link
     console.log(`delete ${type} prompt`)
 }
 
-//FORM HELPERS
-
-function setMainModalSubmit() {
-
-}
+/*
+    FORM HELPERS
+    top level:
+    - renderForm: calls all others
+    middle:
+    - renderFormGroup: wraps form inputs into form-groups
+    bottom level:
+    - renderFormLabel
+    - renderTextInput
+    - renderNumberInput
+    - renderDateInput
+    - renderSelectOptionInput
+    - renderDatalistInput
+*/
 
 function renderForm(fieldsObj) {
     /* fields object
@@ -342,15 +368,6 @@ function renderDatalistInput(fieldObject) {
     return datalistInput
 }
 
-// const testFormInput = setFormTextInput({
-//     name: "createAccountName",
-//     value: null,
-//     id: "createAccountName",
-//     autocomplete: "off"
-// })
-
-// setFormLabel(testFormInput, "Name")
-
 function renderFormLabel(fieldObject) {
     //wrap element in label
     const label = document.createElement('label')
@@ -360,6 +377,11 @@ function renderFormLabel(fieldObject) {
     return label
 }
 
+function setMainModalSubmit() {
+
+}
+
+// CLOSE MODAL
 // close modal behavior
 // // erase #mainModalTitle
 // // erase #mainModalBody
@@ -405,49 +427,51 @@ function resetMainModal() {
 //     })
 // })
 
-const testFormFieldsObject = {
-    formAction: "#",
-    formMethod: "GET",
-    textInput: {
-        label: "Name",
-        selectOptions: null,
-        name: "createAccountName",
-        id: "createAccountName"
-    },
-    selectOption: {
-        label: "Account Type",
-        name: "createAccountType",
-        id: "createAccountType",
-        options: {
-            savings: null,
-            checking: null,
-            cash: null,
-            "credit-card": "Credit Card",
-            loan: null
-        }
-    },
-    numberInput: {
-        label: "Beginning Balance",
-        name: "createAccountBalance",
-        id: "createAccountBalance"
-    }
-}
+// MODULAR FORM FIELDS RENDER FUNCTIONS TESTING
 
-const testFormFieldsObject2 = {
-    formAction: "#",
-    formMethod: "GET",
-    datalist: {
-        label: "Choose Category",
-        selectOptions: Object.assign({
-            id: "categories"
-            },
-            categories
-        ),
-        name: "category",
-        id: "category",
-        list: "categories",
+// const testFormFieldsObject = {
+//     formAction: "#",
+//     formMethod: "GET",
+//     textInput: {
+//         label: "Name",
+//         selectOptions: null,
+//         name: "createAccountName",
+//         id: "createAccountName"
+//     },
+//     selectOption: {
+//         label: "Account Type",
+//         name: "createAccountType",
+//         id: "createAccountType",
+//         options: {
+//             savings: null,
+//             checking: null,
+//             cash: null,
+//             "credit-card": "Credit Card",
+//             loan: null
+//         }
+//     },
+//     numberInput: {
+//         label: "Beginning Balance",
+//         name: "createAccountBalance",
+//         id: "createAccountBalance"
+//     }
+// }
 
-    }
-}
+// const testFormFieldsObject2 = {
+//     formAction: "#",
+//     formMethod: "GET",
+//     datalist: {
+//         label: "Choose Category",
+//         selectOptions: Object.assign({
+//             id: "categories"
+//             },
+//             categories
+//         ),
+//         name: "category",
+//         id: "category",
+//         list: "categories",
 
-renderForm(testFormFieldsObject2)
+//     }
+// }
+
+// renderForm(testFormFieldsObject2)

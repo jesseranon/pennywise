@@ -1,9 +1,9 @@
 <%- include('components/header') -%>
 
-<div class="container">
+<div class="container" data-user-id="<%= user._id %>">
 
-  <%- include('components/profileGreeting', { user: user }) -%>
-  <%- include('partials/deleteModal') -%>
+  <%- include('components/profileGreeting', { user }) -%>
+  <%- include('partials/modal') -%>
   
   <div class="row">
     
@@ -15,16 +15,19 @@
     <% if (locals.messages.info) { %>
         <% messages.info.forEach( el => { %>
             <div class="alert alert-info"><%= el.msg %></div>
-        <% }) %>    
+        <% }) %>
     <% } %>
 
-    <%- include('partials/accountsDash', { user: user }) -%>
+    <%- include('partials/accountsDash', { user }) -%>
 
-    <%- include('partials/forecastsDash', { user: user }) -%>
+    <%- include('partials/forecastsDash', { user }) -%>
   
   </div>
 
 </div>
-
+<script>
+  var categories = <%- JSON.stringify(user.categories.map(cat => cat.name)) %>
+  var accounts = <%- JSON.stringify(user.accounts.map(acc => acc._id)) %>
+</script>
 <script type="module" src="/js/main.js"></script>
 <%- include('components/footer') -%>

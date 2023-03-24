@@ -8,7 +8,7 @@ const format = require('date-fns/format')
 
 module.exports = {
     getProfile: async (req, res) => {
-        console.log(`hello from user controller`)
+
         try {
             const user = await User.findOne({ _id: req.user.id })
                 .populate('accounts')
@@ -27,6 +27,7 @@ module.exports = {
                 formatRelative: formatRelative,
                 addMinutes: addMinutes
             }
+
             res.render("profile.ejs", items);
         } catch (err) {
             console.log(err);
@@ -87,5 +88,29 @@ module.exports = {
             console.log(err)
         }
         
+    },
+    getCategories: async (req, res) => {
+        try {
+            const user = await User.findOne({ _id: req.user.id })
+                .populate({
+                    path: 'categories',
+                    model: 'Category'
+                })
+            res.json({ categories: user.categories })
+        } catch (err) {
+            console.log(err)
+        }
+    },
+    getAccounts: async (req, res) => {
+        try {
+            const user = await User.findOne({ _id: req.user.id })
+                .populate({
+                    path: 'accounts',
+                    model: 'Account'
+                })
+            res.json({ accounts: user.accounts })
+        } catch (err) {
+            console.log(err)
+        }
     }
 };

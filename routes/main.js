@@ -16,5 +16,7 @@ router.post("/signup", authController.postSignup);
 
 //profile/dashboard
 router.get("/profile", ensureAuth, userController.getProfile);
+router.get("/profile/accounts", ensureAuth, userController.getAccounts);
+router.get("/profile/categories", ensureAuth, userController.getCategories);
 
 module.exports = router;

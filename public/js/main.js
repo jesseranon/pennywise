@@ -4,7 +4,8 @@ const transactionsDash = document.querySelector('.transactions-dash')
 const mainModal = document.querySelector('#mainModal')
 const categoriesObj = {}
 categories.forEach(category => {
-    categoriesObj[category] = null
+    console.log(category)
+    categoriesObj[category] = category
 })
 
 const dataActions = ['edit', 'update', 'convert', 'delete'];
@@ -18,7 +19,9 @@ const dataActions = ['edit', 'update', 'convert', 'delete'];
             if (action === 'create') {
                 renderMainModal(type, action)
             }
-            else if (dataActions.includes(action)) renderMainModal(type, action, tileElement)
+            else if (dataActions.includes(action)) {
+                renderMainModal(type, action, tileElement)
+            }
         })
     }
 })
@@ -28,10 +31,13 @@ const dataActions = ['edit', 'update', 'convert', 'delete'];
 // render modal behavior
 // target #mainModal
 
-async function renderMainModal(type, action, tileElement = null) {
+function renderMainModal(type, action, tileElement = null) {
+    if (tileElement) console.log(tileElement)
     try {
+        //renderMainModalTitle
         renderMainModalBody(type, action, tileElement)
     } catch (err) {
+        console.error(err)
 
     }
     //set #mainModalTitle
@@ -40,19 +46,20 @@ async function renderMainModal(type, action, tileElement = null) {
 }
 
 function renderMainModalBody(type, action, infoObj = null) {
-    const body = mainModal.querySelector('#mainModalBody')
+    const mainModalBody = mainModal.querySelector('#mainModalBody')
+    console.log(mainModalBody)
     switch (action) { //body.appendChild(result)
         case 'create':
-            setCreateForm(type)
+            mainModalBody.appendChild(setCreateForm(type))
             break
         case 'edit':
-            setUpdateForm(type, infoObj)
+            mainModalBody.appendChild(setUpdateForm(type, infoObj))
             break
         case 'convert':
-            setCreateForm('transaction', infoObj)
+            mainModalBody.appendChild(setCreateForm('transaction', infoObj))
             break
         case 'delete':
-            setDeletePrompt(type, infoObj)
+            mainModalBody.appendChild(setDeletePrompt(type, infoObj))
             break
     }
 }
@@ -69,9 +76,11 @@ function renderMainModalBody(type, action, infoObj = null) {
 
 function setCreateForm(type, infoObj = null) {
     if (type === 'transaction') {
-        setCreateTransactionForm(infoObj)
-    } else {
-        setCreateForecastForm(infoObj)
+        return setCreateTransactionForm(infoObj)
+    } else if (type === 'forecast') {
+        return setCreateForecastForm(infoObj)
+    } else if (type === 'account') {
+        return setCreateAccountForm()
     }
 }
 
@@ -83,27 +92,53 @@ function setCreateAccountForm() {
         balanceType: null,
         amount: null
     }
-    //call setForm() w/ fields object
+    //return renderForm(fields)
     console.log(`create account form`)
     //setForm(fields)
 }
 
 function setCreateForecastForm() {
-    try {
-        // const accounts = await (need to create controller endpoint for getting user accounts)
-        // const categories = await (need to create controller endpoint for getting user categories)
-        const fields = {
-            amount: null,
-            accountingType: null,
-            category: null,
-            date: null,
+    // const accounts = await (need to create controller endpoint for getting user accounts)
+    // const categories = await (need to create controller endpoint for getting user categories)
+    console.log(`create forecast form`)
+    const fields = {
+        selectOption: {
+            label: "Are you expecting to pay something or to get paid?",
+            name: "accountingType",
+            id: "accountingType",
+            options: {
+                credits: "Pay something",
+                debits: "Get paid"
+            }
+        },
+        numberInput: {
+            label: "How much?",
+            name: "amount",
+            id: "amount"
+        },
+        datalist: {
+            label: "Which category is this for?",
+            selectOptions: Object.assign(
+                {
+                    id: "categories"
+                },
+                categoriesObj
+            ),
+            name: "category",
+            id: "category",
+            list: "categories"
+        },
+        dateInput: {
+            label: "When is this going to happen?",
+            name: "date",
+            id: "date"
         }
-        console.log(`create forecast form`)
-        //setForm(fields)
-    } catch (err) {
-
     }
+    return renderForm(fields)
+
     
+    //setForm(fields)
+
 }
 
 function setCreateTransactionForm(infoObj = null) {
@@ -115,8 +150,9 @@ function setCreateTransactionForm(infoObj = null) {
         category: null,
         date: null
     }
+    //return renderForm(fields)
+    
     console.log(`create transaction${infoObj.forecast ? ' and convert forecast' : ''} form`)
-    //setForm(fields)
 }
 
 /*
@@ -141,14 +177,17 @@ function setUpdateAccountForm(infoObj) {
         name,
         type
     }
+    //return renderForm(fields)
     console.log(`update account form`)
 }
 
 function setUpdateForecastForm(infoObj) {
+    //return renderForm(fields)
     console.log(`update forecast form`)
 }
 
 function setUpdateTransactionForm(infoObj) {
+    //return renderForm(fields)
     console.log(`update transaction form`)
 }
 
@@ -176,6 +215,7 @@ function setDeletePrompt(type, infoObj) {
     - renderDateInput
     - renderSelectOptionInput
     - renderDatalistInput
+    - setMainModalSubmit
 */
 
 function renderForm(fieldsObj) {
@@ -191,9 +231,18 @@ function renderForm(fieldsObj) {
                 etc
         }
         /* example
+        textInput: {
+            label,
+            selectOptions,
+            ... rest
+        }
         numberInput: {
                 name: amount,
                 value: null
+        }
+        dateInput: {
+            label,
+            rest
         }
         datalist: {
             id: "string",
@@ -270,8 +319,7 @@ function renderForm(fieldsObj) {
     }
 
     // // render form buttons
-    //return form element
-    console.log(formElement)
+    return formElement
 }
 
 function renderFormGroup(...elements) {
@@ -397,35 +445,7 @@ function resetMainModal() {
     mainModal.querySelector('#mainModalBody').innerHTML = ''
 }
 
-// // DELETE MODAL
-// const deleteForecastButtons = document.querySelectorAll('.delete-forecast')
-
-// const deleteModal = document.querySelector('#deleteModal')
-
-// const deleteModalTextDocType = deleteModal.querySelector('#deleteModalTextDocType')
-// const deleteModalTextDate = deleteModal.querySelector('#deleteModalTextDate')
-// const deleteModalTextCategory = deleteModal.querySelector('#deleteModalTextCategory')
-// const deleteModalTextAmount = deleteModal.querySelector('#deleteModalTextAmount')
-// const deleteModalDeleteButton = deleteModal.querySelector('#deleteModalDeleteBtn')
-
-// const deleteModalText = [deleteModalTextDocType, deleteModalTextDate, deleteModalTextCategory, deleteModalTextAmount]
-
-// deleteForecastButtons.forEach(b => {
-//     b.addEventListener('click', e => {
-//         // get forecast info
-//         const clickedForecast =  e.target.closest('.forecast-tile')
-//         const forecastDate = clickedForecast.querySelector('.forecastDate').innerText
-//         const forecastCategory = clickedForecast.querySelector('.forecastCategory').innerText
-//         const forecastAmount = clickedForecast.querySelector('.forecastAmount').innerText
-//         const forecastId = clickedForecast.getAttribute('data-forecast-id')
-//         // populate spans in modal with forecast info
-//         deleteModalTextDocType.innerText = `forecast`
-//         deleteModalTextDate.innerText = forecastDate
-//         deleteModalTextCategory.innerText = forecastCategory
-//         deleteModalTextAmount.innerText = forecastAmount
-//         deleteModalDeleteButton.setAttribute('href', `/forecasts/deleteForecast/${forecastId}`)
-//     })
-// })
+/** DEPRECATE BELOW THIS LINE WHEN FINISHED **/
 
 // MODULAR FORM FIELDS RENDER FUNCTIONS TESTING
 
@@ -475,3 +495,33 @@ function resetMainModal() {
 // }
 
 // renderForm(testFormFieldsObject2)
+
+// // DELETE MODAL
+// const deleteForecastButtons = document.querySelectorAll('.delete-forecast')
+
+// const deleteModal = document.querySelector('#deleteModal')
+
+// const deleteModalTextDocType = deleteModal.querySelector('#deleteModalTextDocType')
+// const deleteModalTextDate = deleteModal.querySelector('#deleteModalTextDate')
+// const deleteModalTextCategory = deleteModal.querySelector('#deleteModalTextCategory')
+// const deleteModalTextAmount = deleteModal.querySelector('#deleteModalTextAmount')
+// const deleteModalDeleteButton = deleteModal.querySelector('#deleteModalDeleteBtn')
+
+// const deleteModalText = [deleteModalTextDocType, deleteModalTextDate, deleteModalTextCategory, deleteModalTextAmount]
+
+// deleteForecastButtons.forEach(b => {
+//     b.addEventListener('click', e => {
+//         // get forecast info
+//         const clickedForecast =  e.target.closest('.forecast-tile')
+//         const forecastDate = clickedForecast.querySelector('.forecastDate').innerText
+//         const forecastCategory = clickedForecast.querySelector('.forecastCategory').innerText
+//         const forecastAmount = clickedForecast.querySelector('.forecastAmount').innerText
+//         const forecastId = clickedForecast.getAttribute('data-forecast-id')
+//         // populate spans in modal with forecast info
+//         deleteModalTextDocType.innerText = `forecast`
+//         deleteModalTextDate.innerText = forecastDate
+//         deleteModalTextCategory.innerText = forecastCategory
+//         deleteModalTextAmount.innerText = forecastAmount
+//         deleteModalDeleteButton.setAttribute('href', `/forecasts/deleteForecast/${forecastId}`)
+//     })
+// })

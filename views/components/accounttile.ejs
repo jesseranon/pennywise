@@ -1,7 +1,7 @@
 <% const thisBalance = account.currentBalance %>
 <a href="/account/<%= account._id %>">
 
-    <li class="list-group-item account-tile d-flex justify-content-between" id="<%= account._id %>">
+    <li class="list-group-item account-tile d-flex justify-content-between" data-type="account" data-action="read" data-account-id="<%= account._id %>">
         <div>
             <%= account.name %>
         </div>

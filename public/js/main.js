@@ -14,12 +14,14 @@ const dataActions = ['edit', 'update', 'convert', 'delete'];
     if (dash) {
         dash.addEventListener('click', async e => {
             const action = e.target.closest('[data-action]').dataset.action || null
-            const tileElement = e.target.closest('[data-type]')
+            let tileElement = e.target.closest('[data-type]')
             const type = tileElement.dataset.type
-            if (action === 'create') {
+            if (type === 'transaction') {
+                tileElement = e.target.closest('[data-account-id]')
+                renderMainModal(type, action, tileElement)
+            } else if (action === 'create') {
                 renderMainModal(type, action)
-            }
-            else if (dataActions.includes(action)) {
+            } else if (dataActions.includes(action)) {
                 renderMainModal(type, action, tileElement)
             }
         })
@@ -50,7 +52,7 @@ function renderMainModalBody(type, action, infoObj = null) {
     console.log(mainModalBody)
     switch (action) { //body.appendChild(result)
         case 'create':
-            mainModalBody.appendChild(setCreateForm(type))
+            mainModalBody.appendChild(setCreateForm(type, infoObj))
             break
         case 'edit':
             mainModalBody.appendChild(setUpdateForm(type, infoObj))
@@ -97,7 +99,7 @@ function setCreateAccountForm() {
     //setForm(fields)
 }
 
-function setCreateForecastForm() {
+function setCreateForecastForm(valuesObject = null) {
     // const accounts = await (need to create controller endpoint for getting user accounts)
     // const categories = await (need to create controller endpoint for getting user categories)
     console.log(`create forecast form`)
@@ -134,23 +136,50 @@ function setCreateForecastForm() {
             id: "date"
         }
     }
+    if (valuesObject) {
+        fields.selectOption.value = valuesObject.accountingType
+        fields.numberInput.value = valuesObject.amount
+        fields.datalist.value = valuesObject.category
+        fields.dateInput.value = values.Object.date
+    }
     return renderForm(fields)
-
-    
-    //setForm(fields)
-
 }
 
-function setCreateTransactionForm(infoObj = null) {
-    console.log(infoObj)
+function setCreateTransactionForm(infoElement = null) {
+    const accountId = infoElement?.dataset.accountId
     const fields = {
-        accountId: null,
-        amount: null,
-        accountingType: null,
-        category: null,
-        date: null
+        hiddenInput: {
+            name: "account",
+            value: accountId
+        },
+        selectOption: {
+            label: "Are you putting money into this account, or spending out of it?",
+            name: "accountingType",
+            id: "accountingType",
+            options: {
+                debits: "deposit",
+                credits: "spend"
+            }
+        },
+        numberInput: {
+            label: "How much?",
+            name: "amount",
+            id: "amount"
+        },
+        datalist: {
+            label: "Which category is this for?",
+            selectOptions: Object.assign(
+                {
+                    id: "categories"
+                },
+                categoriesObj
+            ),
+            name: "category",
+            id: "category",
+            list: "categories"
+        }
     }
-    //return renderForm(fields)
+    return renderForm(fields)
     
     console.log(`create transaction${infoObj.forecast ? ' and convert forecast' : ''} form`)
 }
@@ -244,6 +273,10 @@ function renderForm(fieldsObj) {
             label,
             rest
         }
+        hiddenInput: {
+            name,
+            value
+        }
         datalist: {
             id: "string",
             options: [ "string", "string2", "string3" ]
@@ -293,6 +326,12 @@ function renderForm(fieldsObj) {
                         renderFormLabel(fieldsObj[field]),
                         renderDateInput(fieldsObj[field])
                     )
+                )
+                break
+            case 'hiddenInput':
+                //call renderDateInput
+                formElement.appendChild(
+                    renderHiddenInput(fieldsObj[field])
                 )
                 break
             case 'selectOption':
@@ -352,7 +391,12 @@ function renderTextInput(fieldObject) {
 }
 
 function renderHiddenInput(fieldObject) {
+    const hiddenInput = document.createElement('input')
+    hiddenInput.setAttribute("type", "hidden")
+    hiddenInput.setAttribute("name", fieldObject.name)
+    hiddenInput.setAttribute("value", fieldObject.value)
 
+    return hiddenInput
 }
 
 function renderNumberInput(fieldObject) {

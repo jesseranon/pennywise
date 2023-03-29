@@ -1,5 +1,5 @@
 const forecastsDash = document.querySelector('.forecasts-dash')
-const accountsDash = document.querySelector('.accounts-dash')
+const accountsDash = document.querySelectorAll('.accounts-dash')
 const transactionsDash = document.querySelector('.transactions-dash')
 const mainModal = document.querySelector('#mainModal')
 const categoriesObj = {}
@@ -8,9 +8,9 @@ categories.forEach(category => {
     categoriesObj[category] = category
 })
 
-const dataActions = ['edit', 'update', 'convert', 'delete'];
+const dataActions = ['edit', 'convert', 'delete'];
 
-[forecastsDash, accountsDash, transactionsDash].forEach(dash => {
+[forecastsDash, ...accountsDash, transactionsDash].forEach(dash => {
     if (dash) {
         dash.addEventListener('click', async e => {
             const action = e.target.closest('[data-action]').dataset.action || null
@@ -31,20 +31,24 @@ const dataActions = ['edit', 'update', 'convert', 'delete'];
 //Modal
 
 // render modal behavior
-// target #mainModal
 
 function renderMainModal(type, action, tileElement = null) {
     if (tileElement) console.log(tileElement)
     try {
-        //renderMainModalTitle
+        //set #mainModalTitle
+        renderMainModalTitle(type, action)
+        //set #mainModalBody using renderModalBody()
         renderMainModalBody(type, action, tileElement)
+        //set #mainModalSubmitButton action/href using setModalSubmit() ?
     } catch (err) {
         console.error(err)
-
     }
-    //set #mainModalTitle
-    //set #mainModalBody using renderModalBody()
-    //set #mainModalSubmitButton action/href using setModalSubmit() ?
+    
+}
+
+function renderMainModalTitle(type, action) {
+    const mainModalTitle = mainModal.querySelector('#mainModalTitle')
+    mainModalTitle.innerText = `${action[0].toUpperCase() + action.slice(1)} ${type[0].toUpperCase() + type.slice(1)}`
 }
 
 function renderMainModalBody(type, action, infoObj = null) {
@@ -58,12 +62,16 @@ function renderMainModalBody(type, action, infoObj = null) {
             mainModalBody.appendChild(setUpdateForm(type, infoObj))
             break
         case 'convert':
-            mainModalBody.appendChild(setCreateForm('transaction', infoObj))
+            mainModalBody.appendChild(setUpdateForm('transaction', infoObj))
             break
         case 'delete':
             mainModalBody.appendChild(setDeletePrompt(type, infoObj))
             break
     }
+}
+
+function setMainModalSubmit() {
+    //target the submit button
 }
 
 /*
@@ -76,26 +84,46 @@ function renderMainModalBody(type, action, infoObj = null) {
     - setCreateTransactionForm
 */
 
-function setCreateForm(type, infoObj = null) {
+function setCreateForm(type, infoObject = null) {
     if (type === 'transaction') {
-        return setCreateTransactionForm(infoObj)
+        return setCreateTransactionForm(infoObject)
     } else if (type === 'forecast') {
-        return setCreateForecastForm(infoObj)
+        return setCreateForecastForm(infoObject)
     } else if (type === 'account') {
-        return setCreateAccountForm()
+        return setCreateAccountForm(infoObject)
     }
 }
 
-function setCreateAccountForm() {
+function setCreateAccountForm(valuesObject) {
+    console.log(`hello from setCreateAccountForm`)
     //generate fields object
     const fields = {
-        name: null,
-        accountType: null,
-        balanceType: null,
-        amount: null
+        textInput: {
+            label: "Give this account a name",
+            selectOptions: null,
+            name: "createAccountName",
+            id: "createAccountName"
+        },
+        selectOption: {
+            label: "Account type",
+            name: "createAccountType",
+            id: "createAccountType",
+            options: {
+                savings: "Savings",
+                checking: "Checking",
+                cash: "Cash",
+                "credit-card": "Credit Card",
+                loan: "Loan"
+            }
+        },
+        numberInput: {
+            label: "Beginning Balance",
+            name: "createAccountBalance",
+            id: "createAccountBalance"
+        }
     }
-    //return renderForm(fields)
-    console.log(`create account form`)
+    // if (valuesObject) {//do stuff}
+    return renderForm(fields)
     //setForm(fields)
 }
 
@@ -146,7 +174,7 @@ function setCreateForecastForm(valuesObject = null) {
 }
 
 function setCreateTransactionForm(infoElement = null) {
-    const accountId = infoElement?.dataset.accountId
+    const accountId = infoElement?.dataset?.accountId
     const fields = {
         hiddenInput: {
             name: "account",
@@ -157,7 +185,7 @@ function setCreateTransactionForm(infoElement = null) {
             name: "accountingType",
             id: "accountingType",
             options: {
-                debits: "deposit",
+                debits: "deposit/pay down",
                 credits: "spend"
             }
         },
@@ -180,8 +208,6 @@ function setCreateTransactionForm(infoElement = null) {
         }
     }
     return renderForm(fields)
-    
-    console.log(`create transaction${infoObj.forecast ? ' and convert forecast' : ''} form`)
 }
 
 /*
@@ -226,9 +252,18 @@ function setUpdateTransactionForm(infoObj) {
     - click the delete button to send delete put
 */
 
-function setDeletePrompt(type, infoObj) {
+function setDeletePrompt(type, tileElement ) {
+    console.log('delete prompt')
+    console.log(tileElement)
+    const div = document.createElement('div')
+    const paragraph = document.createElement('p')
+    paragraph.innerHTML = `Are you sure you want to delete the ${type}`
+    if (type === 'forecast') {
+        paragraph.innerHTML += ` set on ${tileElement.querySelector('.forecastDate').innerText} for ${tileElement.querySelector('.forecastCategory').innerText} in the amount of ${tileElement.querySelector('.forecastAmount').innerText.slice(1)}?`
+    }
+    div.appendChild(paragraph)
+    return div
     //call setMainModalSubmit() to set delete action link
-    console.log(`delete ${type} prompt`)
 }
 
 /*
@@ -266,8 +301,8 @@ function renderForm(fieldsObj) {
             ... rest
         }
         numberInput: {
-                name: amount,
-                value: null
+                name,
+                id
         }
         dateInput: {
             label,
@@ -275,7 +310,8 @@ function renderForm(fieldsObj) {
         }
         hiddenInput: {
             name,
-            value
+            value,
+            id
         }
         datalist: {
             id: "string",
@@ -467,10 +503,6 @@ function renderFormLabel(fieldObject) {
     label.classList.add("form-label")
     label.innerText = fieldObject.label
     return label
-}
-
-function setMainModalSubmit() {
-
 }
 
 // CLOSE MODAL

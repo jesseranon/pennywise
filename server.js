@@ -62,7 +62,7 @@ app.use("/", mainRoutes)
 app.use("/account", accountsRoutes)
 app.use("/transaction", transactionsRoutes)
 app.use("/calendar", calendarRoutes)
-app.use("/forecasts", forecastsRoutes)
+app.use("/forecast", forecastsRoutes)
 
 const PORT = process.env.PORT || 8500
 

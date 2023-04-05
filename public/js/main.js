@@ -7,6 +7,8 @@ categories.forEach(category => {
     console.log(category)
     categoriesObj[category] = category
 })
+const mainModalSubmitButton = document.querySelector('#mainModalSubmitButton')
+
 
 const dataActions = ['edit', 'convert', 'delete'];
 
@@ -29,7 +31,6 @@ const dataActions = ['edit', 'convert', 'delete'];
 })
 
 //Modal
-
 // render modal behavior
 
 function renderMainModal(type, action, tileElement = null) {
@@ -40,6 +41,7 @@ function renderMainModal(type, action, tileElement = null) {
         //set #mainModalBody using renderModalBody()
         renderMainModalBody(type, action, tileElement)
         //set #mainModalSubmitButton action/href using setModalSubmit() ?
+        setMainModalSubmit()
     } catch (err) {
         console.error(err)
     }
@@ -54,24 +56,40 @@ function renderMainModalTitle(type, action) {
 function renderMainModalBody(type, action, infoObj = null) {
     const mainModalBody = mainModal.querySelector('#mainModalBody')
     console.log(mainModalBody)
+    let formElement = null
+    let objectId = null
     switch (action) { //body.appendChild(result)
         case 'create':
-            mainModalBody.appendChild(setCreateForm(type, infoObj))
+            formElement = setCreateForm(type, infoObj)
             break
         case 'edit':
-            mainModalBody.appendChild(setUpdateForm(type, infoObj))
+            formElement = setUpdateForm(type, infoObj)
             break
         case 'convert':
-            mainModalBody.appendChild(setUpdateForm('transaction', infoObj))
+            formElement = setUpdateForm('transaction', infoObj)
             break
         case 'delete':
-            mainModalBody.appendChild(setDeletePrompt(type, infoObj))
+            formElement = setDeletePrompt(type, infoObj)
             break
+    }
+    if (formElement.children.length > 0) {
+        if (infoObj) {
+            if (type === 'account') return
+            if (type === 'transaction') return
+            if (type === 'forecast') objectId = infoObj.dataset.forecastId
+        }
+        formElement.setAttribute("action", `${type}/${(action === 'edit') ? 'update' : action}${(objectId) ? '/'+objectId : ''}`)
+        console.log(formElement)
+        mainModalBody.appendChild(formElement)
+    } else {
+        alert("for some reason the modal didn't render a form")
     }
 }
 
 function setMainModalSubmit() {
     //target the submit button
+    mainModalSubmitButton.setAttribute("form", "form1")
+    mainModalSubmitButton.setAttribute("value", "Submit")
 }
 
 /*
@@ -94,7 +112,7 @@ function setCreateForm(type, infoObject = null) {
     }
 }
 
-function setCreateAccountForm(valuesObject) {
+function setCreateAccountForm(valuesObject = null) {
     console.log(`hello from setCreateAccountForm`)
     //generate fields object
     const fields = {
@@ -124,13 +142,10 @@ function setCreateAccountForm(valuesObject) {
     }
     // if (valuesObject) {//do stuff}
     return renderForm(fields)
-    //setForm(fields)
 }
 
 function setCreateForecastForm(valuesObject = null) {
-    // const accounts = await (need to create controller endpoint for getting user accounts)
-    // const categories = await (need to create controller endpoint for getting user categories)
-    console.log(`create forecast form`)
+    // console.log(`create forecast form`)
     const fields = {
         selectOption: {
             label: "Are you expecting to pay something or to get paid?",
@@ -252,17 +267,28 @@ function setUpdateTransactionForm(infoObj) {
     - click the delete button to send delete put
 */
 
-function setDeletePrompt(type, tileElement ) {
-    console.log('delete prompt')
-    console.log(tileElement)
-    const div = document.createElement('div')
-    const paragraph = document.createElement('p')
-    paragraph.innerHTML = `Are you sure you want to delete the ${type}`
-    if (type === 'forecast') {
-        paragraph.innerHTML += ` set on ${tileElement.querySelector('.forecastDate').innerText} for ${tileElement.querySelector('.forecastCategory').innerText} in the amount of ${tileElement.querySelector('.forecastAmount').innerText.slice(1)}?`
+function setDeletePrompt(type, tileElement) {
+    const paragraph = {
+        type
     }
-    div.appendChild(paragraph)
-    return div
+    console.log(`setDeletePrompt has Element`)
+    console.log(tileElement.dataset)
+    const fields = {
+        paragraph
+    }
+    // let id = null
+    // if (type === 'transaction') id = tileElement.dataset.forecastId
+    // const formAction = `${type}/delete/`
+    // for dates
+    if (tileElement.querySelector('.forecastDate')) paragraph.date = tileElement.querySelector('.forecastDate').innerText
+    
+    // for amounts
+    if (tileElement.querySelector('.forecastAmount')) paragraph.amount = tileElement.querySelector('.forecastAmount').innerText.slice(1)
+
+    // for categories
+    if (tileElement.querySelector('.forecastCategory')) paragraph.category = tileElement.querySelector('.forecastCategory').innerText
+    
+    return renderForm(fields)
     //call setMainModalSubmit() to set delete action link
 }
 
@@ -326,10 +352,21 @@ function renderForm(fieldsObj) {
                 key2: value2
             }
         }
+        paragraph: {
+            type
+            amount
+            date
+            category
+            name
+            subtype
+        }
     */
     const formElement = document.createElement('form')
-    const {formAction, formMethod, ...fields} = fieldsObj
-    console.log(fields)
+    formElement.setAttribute("id", "form1")
+    formElement.setAttribute("method", "post")
+    
+    const {formAction, ...fields} = fieldsObj
+    // console.log(fields)
     //set attributes to form
     //append fields according to type
     // // render form group
@@ -390,6 +427,13 @@ function renderForm(fieldsObj) {
                 //call renderFormTextInput
                 //call renderDatalist
                 break
+            case 'paragraph':
+                formElement.appendChild(
+                    renderFormGroup(
+                        renderDeleteParagraph(fieldsObj[field])
+                    )
+                )
+                break
         }
     }
 
@@ -404,7 +448,7 @@ function renderFormGroup(...elements) {
         console.log(element)
         formGroup.appendChild(element)
     })
-    console.log(formGroup)
+    // console.log(formGroup)
     return formGroup
 }
 
@@ -422,7 +466,7 @@ function renderTextInput(fieldObject) {
         console.log(fieldObject[attr])
         if (fieldObject[attr] != null) textInput.setAttribute(attr, fieldObject[attr])
     }
-    console.log(textInput)
+    // console.log(textInput)
     return textInput
 }
 
@@ -448,7 +492,7 @@ function renderNumberInput(fieldObject) {
     for (const attr in rest) {
         if (fieldObject[attr]) numberInput.setAttribute(attr, fieldObject[attr])
     }
-    console.log(numberInput)
+    // console.log(numberInput)
     return numberInput
 }
 
@@ -461,7 +505,7 @@ function renderDateInput(fieldObject) {
     for (const attr in rest) {
         if (fieldObject[attr]) dateInput.setAttribute(attr, fieldObject[attr])
     }
-    console.log(dateInput)
+    // console.log(dateInput)
     return dateInput
 }
 
@@ -478,7 +522,7 @@ function renderSelectOptionInput(fieldObject) {
         optionElement.innerText = v ? v : k[0].toUpperCase() + k.slice(1)
         selectInput.appendChild(optionElement)
     }
-    console.log(selectInput)
+    // console.log(selectInput)
     return selectInput
 }
 
@@ -492,7 +536,7 @@ function renderDatalistInput(fieldObject) {
         optionElement.value = v
         datalistInput.appendChild(optionElement)
     }
-    console.log(datalistInput)
+    // console.log(datalistInput)
     return datalistInput
 }
 
@@ -503,6 +547,28 @@ function renderFormLabel(fieldObject) {
     label.classList.add("form-label")
     label.innerText = fieldObject.label
     return label
+}
+
+function renderDeleteParagraph(fieldObject) {
+    const paragraph = document.createElement('p')
+    paragraph.innerHTML += `Are you sure you want to delete the`
+    //for accounts
+    if (fieldObject.hasOwnProperty("subType")) paragraph.innenrHTML += ` ${fieldObject.subType}`
+
+    paragraph.innerHTML += ` ${fieldObject.type}`
+
+    //for accounts
+    if (fieldObject.hasOwnProperty("name")) paragraph.innerHTML += ` ${fieldObject.name}`
+    
+    if (fieldObject.hasOwnProperty("date")) paragraph.innerHTML += ` on ${fieldObject.date}`
+
+    if (fieldObject.hasOwnProperty("category")) paragraph.innerHTML += ` for ${fieldObject.category}`
+
+    if (fieldObject.hasOwnProperty("amount")) paragraph.innerHTML += ` in the amount of ${fieldObject.amount}`
+
+    paragraph.innerHTML += `?`
+
+    return paragraph
 }
 
 // CLOSE MODAL
@@ -519,6 +585,8 @@ closeModalButtons.forEach(b => {
 function resetMainModal() {
     mainModal.querySelector('#mainModalTitle').innerHTML = ''
     mainModal.querySelector('#mainModalBody').innerHTML = ''
+    mainModalSubmitButton.removeAttribute("form")
+    mainModalSubmitButton.removeAttribute("value")
 }
 
 /** DEPRECATE BELOW THIS LINE WHEN FINISHED **/

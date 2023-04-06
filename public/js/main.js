@@ -208,7 +208,8 @@ function setCreateTransactionForm(infoElement = null) {
             options: {
                 debits: "deposit/pay down",
                 credits: "spend"
-            }
+            },
+            selected: null
         },
         numberInput: {
             label: "How much?",
@@ -230,7 +231,9 @@ function setCreateTransactionForm(infoElement = null) {
     }
 
     if (infoElement) {
-        fields.selectOption.value = 'credits'
+        if (infoElement.querySelector('.forecast-decrease')) fields.selectOption.selected = 'credits'
+        else if (infoElement.querySelector('.forecast-increase')) fields.selectOption.selected = 'debits'
+
         fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.split('$')[1]
         fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText 
     }
@@ -518,7 +521,7 @@ function renderDateInput(fieldObject) {
 }
 
 function renderSelectOptionInput(fieldObject) {
-    const {label, name, id, options} = fieldObject
+    const {label, name, id, options, selected} = fieldObject
     const selectInput = document.createElement('select')
     selectInput.classList.add('form-select')
     selectInput.setAttribute('name', name)
@@ -528,6 +531,7 @@ function renderSelectOptionInput(fieldObject) {
         const optionElement = document.createElement('option')
         optionElement.value = k
         optionElement.innerText = v ? v : k[0].toUpperCase() + k.slice(1)
+        if (selected && selected == k) optionElement.setAttribute('selected', 'selected')
         selectInput.appendChild(optionElement)
     }
     // console.log(selectInput)

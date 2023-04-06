@@ -9,7 +9,7 @@ router.post('/create', ensureAuth, forecastsController.postForecast)
 
 // get updateForecast to be removed after modal is implemented.
 router.get('/update/:id', ensureAuth, forecastsController.getUpdateForecastForm)
-router.put('/update/:id', ensureAuth, forecastsController.updateForecast)
+router.post('/update/:id', ensureAuth, forecastsController.updateForecast)
 
 // get convertForecast to be removed after modal is implemented.
 router.get('/convert/:id', ensureAuth, forecastsController.getForecastToTransactionForm)

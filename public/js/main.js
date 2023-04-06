@@ -184,10 +184,14 @@ function setCreateForecastForm(valuesObject = null) {
         }
     }
     if (valuesObject) {
-        fields.selectOption.value = valuesObject.accountingType
-        fields.numberInput.value = valuesObject.amount
-        fields.datalist.value = valuesObject.category
-        fields.dateInput.value = values.Object.date
+        console.log(`create forecast form`)
+        console.log(valuesObject)
+        // fields.selectOption.value = valuesObject.accountingType < needs to add selected attribute
+        fields.numberInput.value = valuesObject.querySelector('.forecastAmount').innerText.slice(2)
+        fields.datalist.value = valuesObject.querySelector('.forecastCategory').innerText
+
+        const [month, day, year] = valuesObject.querySelector('.forecastDate').innerText.split('/')
+        fields.dateInput.value = `${year}-${month}-${day}`
     }
     return renderForm(fields)
 }
@@ -278,6 +282,7 @@ function setUpdateAccountForm(infoObj) {
 function setUpdateForecastForm(infoObj) {
     //return renderForm(fields)
     console.log(`update forecast form`)
+    return setCreateForecastForm(infoObj)
 }
 
 function setUpdateTransactionForm(infoObj) {

@@ -24,6 +24,13 @@ const dataActions = ['edit', 'convert', 'delete'];
             } else if (action === 'create') {
                 renderMainModal(type, action)
             } else if (dataActions.includes(action)) {
+                if (action === 'convert') {
+                    let accountId = null
+                    const assets = accounts.filter(account => account.balanceType === 'asset')
+                    if (assets.length) accountId = assets[0]._id
+                    else accountId = accounts[0]._id
+                    tileElement.setAttribute("data-account-id", accountId)
+                }
                 renderMainModal(type, action, tileElement)
             }
         })
@@ -72,6 +79,7 @@ function renderMainModalBody(type, action, infoObj = null) {
             formElement = setDeletePrompt(type, infoObj)
             break
     }
+    console.log(formElement)
     if (formElement.children.length > 0) {
         if (infoObj) {
             if (type === 'account') return
@@ -103,13 +111,9 @@ function setMainModalSubmit() {
 */
 
 function setCreateForm(type, infoObject = null) {
-    if (type === 'transaction') {
-        return setCreateTransactionForm(infoObject)
-    } else if (type === 'forecast') {
-        return setCreateForecastForm(infoObject)
-    } else if (type === 'account') {
-        return setCreateAccountForm(infoObject)
-    }
+    if (type === 'transaction') return setCreateTransactionForm(infoObject)
+    else if (type === 'forecast') return setCreateForecastForm(infoObject)
+    else if (type === 'account') return setCreateAccountForm(infoObject)
 }
 
 function setCreateAccountForm(valuesObject = null) {
@@ -189,7 +193,9 @@ function setCreateForecastForm(valuesObject = null) {
 }
 
 function setCreateTransactionForm(infoElement = null) {
-    const accountId = infoElement?.dataset?.accountId
+    const accountId = infoElement.dataset.accountId
+    console.log(`set create transaction form func`)
+    console.log(infoElement)
     const fields = {
         hiddenInput: {
             name: "account",
@@ -222,6 +228,13 @@ function setCreateTransactionForm(infoElement = null) {
             list: "categories"
         }
     }
+
+    if (infoElement) {
+        fields.selectOption.value = 'credits'
+        fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.split('$')[1]
+        fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText 
+    }
+
     return renderForm(fields)
 }
 
@@ -237,16 +250,12 @@ function setCreateTransactionForm(infoElement = null) {
 function setUpdateForm(type, infoObj) {
     //generate fields object
     //call setForm() w/ fields object
-    if (type === 'forecast') setUpdateForecastForm(infoObj)
-    if (type === 'account') setUpdateAccountForm(infoObj)
-    if (type === 'transaction') setUpdateTransactionForm(infoObj)
+    if (type === 'forecast') return setUpdateForecastForm(infoObj)
+    if (type === 'account') return setUpdateAccountForm(infoObj)
+    if (type === 'transaction') return setUpdateTransactionForm(infoObj)
 }
 
 function setUpdateAccountForm(infoObj) {
-    const fields = {
-        name,
-        type
-    }
     //return renderForm(fields)
     console.log(`update account form`)
 }
@@ -259,6 +268,7 @@ function setUpdateForecastForm(infoObj) {
 function setUpdateTransactionForm(infoObj) {
     //return renderForm(fields)
     console.log(`update transaction form`)
+    return setCreateTransactionForm(infoObj)
 }
 
 /*
@@ -310,8 +320,6 @@ function setDeletePrompt(type, tileElement) {
 
 function renderForm(fieldsObj) {
     /* fields object
-        formAction: url (string),
-        formMethod: get/post (string),
         fieldType: {
                 label: "label" (string)
                 name: "fieldName" (string),
@@ -365,7 +373,7 @@ function renderForm(fieldsObj) {
     formElement.setAttribute("id", "form1")
     formElement.setAttribute("method", "post")
     
-    const {formAction, ...fields} = fieldsObj
+    const {...fields} = fieldsObj
     // console.log(fields)
     //set attributes to form
     //append fields according to type

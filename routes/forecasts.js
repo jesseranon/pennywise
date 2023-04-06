@@ -4,7 +4,7 @@ const forecastsController = require("../controllers/forecasts");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Forecast routes
-router.get('/create', ensureAuth, forecastsController.getCreateForecastForm)
+// router.get('/create', ensureAuth, forecastsController.getCreateForecastForm)
 router.post('/create', ensureAuth, forecastsController.postForecast)
 
 // get updateForecast to be removed after modal is implemented.

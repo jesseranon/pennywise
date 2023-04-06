@@ -8,7 +8,7 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //Account Routes - simplified for now
 // post account
 //get createAccount to be removed after modal is implemented.
-router.get("/create", ensureAuth, accountsController.getCreateAccountForm)
+// router.get("/create", ensureAuth, accountsController.getCreateAccountForm)
 router.post("/create", ensureAuth, accountsController.createAccount)
 
 // get account

@@ -83,7 +83,7 @@ function renderMainModalBody(type, action, infoObj = null) {
     if (formElement.children.length > 0) {
         if (infoObj) {
             if (type === 'account') return
-            if (type === 'transaction') return
+            if (type === 'transaction') objectId = infoObj.dataset.accountId
             if (type === 'forecast') objectId = infoObj.dataset.forecastId
         }
         formElement.setAttribute("action", `${type}/${(action === 'edit') ? 'update' : action}${(objectId) ? '/'+objectId : ''}`)
@@ -234,8 +234,20 @@ function setCreateTransactionForm(infoElement = null) {
         if (infoElement.querySelector('.forecast-decrease')) fields.selectOption.selected = 'credits'
         else if (infoElement.querySelector('.forecast-increase')) fields.selectOption.selected = 'debits'
 
-        fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.split('$')[1]
-        fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText 
+        const number = infoElement.querySelector('.forecastAmount')
+        if (number) fields.numberInput.value = number.innerText.split('$')[1]
+
+        const category = infoElement.querySelector('.forecastCategory')
+        if (category) fields.datalist.value = category.innerText
+
+        console.log(`create transaction account name`)
+        let accountLabel = "For "
+        const accountName = infoElement.querySelector('.account-name')
+        if (accountName) {
+            fields.hiddenInput.label = accountLabel + accountName.innerText
+            console.log(accountName.innerText)
+        }
+        else fields.hiddenInput.label = accountLabel + document.querySelector('.accounts-dash').querySelector('.account-name').innerText
     }
 
     return renderForm(fields)
@@ -415,7 +427,10 @@ function renderForm(fieldsObj) {
             case 'hiddenInput':
                 //call renderDateInput
                 formElement.appendChild(
-                    renderHiddenInput(fieldsObj[field])
+                    renderFormGroup(
+                        renderFormLabel(fieldsObj[field]),
+                        renderHiddenInput(fieldsObj[field])
+                    )
                 )
                 break
             case 'selectOption':
@@ -456,8 +471,7 @@ function renderFormGroup(...elements) {
     const formGroup = document.createElement('div')
     formGroup.classList.add("form-group")
     elements.forEach(element => {
-        console.log(element)
-        formGroup.appendChild(element)
+        if (element) formGroup.appendChild(element)
     })
     // console.log(formGroup)
     return formGroup

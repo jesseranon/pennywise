@@ -9,7 +9,6 @@ categories.forEach(category => {
 })
 const mainModalSubmitButton = document.querySelector('#mainModalSubmitButton')
 
-
 const dataActions = ['edit', 'convert', 'delete'];
 
 [forecastsDash, ...accountsDash, transactionsDash].forEach(dash => {
@@ -148,7 +147,7 @@ function setCreateAccountForm(valuesObject = null) {
     return renderForm(fields)
 }
 
-function setCreateForecastForm(valuesObject = null) {
+function setCreateForecastForm(infoElement = null) {
     // console.log(`create forecast form`)
     const fields = {
         selectOption: {
@@ -183,14 +182,14 @@ function setCreateForecastForm(valuesObject = null) {
             id: "date"
         }
     }
-    if (valuesObject) {
+    if (infoElement) {
         console.log(`create forecast form`)
-        console.log(valuesObject)
+        console.log(infoElement)
         // fields.selectOption.value = valuesObject.accountingType < needs to add selected attribute
-        fields.numberInput.value = valuesObject.querySelector('.forecastAmount').innerText.slice(2)
-        fields.datalist.value = valuesObject.querySelector('.forecastCategory').innerText
+        fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.slice(2)
+        fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText
 
-        const [month, day, year] = valuesObject.querySelector('.forecastDate').innerText.split('/')
+        const [month, day, year] = infoElement.querySelector('.forecastDate').innerText.split('/')
         fields.dateInput.value = `${year}-${month}-${day}`
     }
     return renderForm(fields)

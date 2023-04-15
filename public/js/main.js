@@ -82,7 +82,11 @@ function renderMainModalBody(type, action, infoObj = null) {
     if (formElement.children.length > 0) {
         if (infoObj) {
             if (type === 'account') return
-            if (type === 'transaction') objectId = infoObj.dataset.accountId
+            if (type === 'transaction') {
+                let suffix = ''
+                if (action === 'create') suffix += '/null'
+                objectId = infoObj.dataset.accountId + suffix
+            }
             if (type === 'forecast') objectId = infoObj.dataset.forecastId
         }
         formElement.setAttribute("action", `${type}/${(action === 'edit') ? 'update' : action}${(objectId) ? '/'+objectId : ''}`)

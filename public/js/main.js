@@ -130,7 +130,9 @@ function setCreateAccountForm(valuesObject = null) {
             name: "createAccountName",
             id: "createAccountName"
         },
-        selectOption: {
+    }
+    if (!valuesObject) {
+        fields.selectOption = {
             label: "Account type",
             name: "createAccountType",
             id: "createAccountType",
@@ -141,14 +143,16 @@ function setCreateAccountForm(valuesObject = null) {
                 "credit-card": "Credit Card",
                 loan: "Loan"
             }
-        },
-        numberInput: {
+        }
+        fields.numberInput = {
             label: "Beginning Balance",
             name: "createAccountBalance",
             id: "createAccountBalance"
         }
+    } else {
+        console.log('update account', valuesObject)
+        fields.textInput.label = "Give this account a new name"
     }
-    // if (valuesObject) {//do stuff}
     return renderForm(fields)
 }
 
@@ -281,6 +285,7 @@ function setUpdateForm(type, infoObj) {
 function setUpdateAccountForm(infoObj) {
     //return renderForm(fields)
     console.log(`update account form`)
+    return setCreateAccountForm(infoObj)
 }
 
 function setUpdateForecastForm(infoObj) {

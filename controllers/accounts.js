@@ -109,9 +109,7 @@ module.exports = {
     // will also allow the user to modify the account type,
     // limited other types that share a balanceType of the account
     const targetAccountId = req.params.id
-    const newAccountName = req.body.accountName
-    const newType = req.body.accountType
-    const newBalance = req.body.accountBalance
+    const newAccountName = req.body.createAccountName
     try {
       const targetAccount = await Account.findOne({
         user: req.user._id,
@@ -141,18 +139,6 @@ module.exports = {
         )
         // change the targetAccount name
         targetAccount.name = newAccountName
-      }
-
-      // if targetAccount type is changed,
-      if (targetAccount.type !== newType) {
-        // just change the type.
-        targetAccount.type = newType
-      }
-
-      // if targetAccount currentBalance has been changed
-      if (!targetAccount.debits.length && !targetAccount.credits.length && newBalance) {
-        //update targetAccount currentBalance
-        targetAccount.currentBalance = newBalance
       }
 
       await targetAccount.save()

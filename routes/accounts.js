@@ -20,7 +20,7 @@ router.post("/delete/:id", ensureAuth, accountsController.deleteAccount)
 // modify account details
 //get updateAccount to be removed after modal is implemented.
 router.get("/update/:id", ensureAuth, accountsController.getUpdateAccountForm)
-router.put("/update/:id", ensureAuth, accountsController.updateAccount)
+router.post("/update/:id", ensureAuth, accountsController.updateAccount)
 
 // update account - this doesn't need to be an option i don't think
 

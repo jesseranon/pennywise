@@ -27,9 +27,9 @@
           </button>
         <% } %>
         <span class="accountName"><%= account.name %></span>
-        <form action="updateAccount/<%= account._id %>" method="get">
-          <button class="edit-account btn"><i class="fa-solid fa-pen"></i></button>
-        </form>
+        <button type="button" class="btn btn-secondary btn-sm edit-account" data-bs-toggle="modal" data-bs-target="#mainModal" data-action="edit" aria-label="Edit account">
+          <i class="fa-solid fa-pen"></i>
+        </button>
       </h2>
       <p>Account Type: <span class="accountType"><%= account.type[0].toUpperCase() + account.type.slice(1) %></span></p>
     </div>

@@ -11,6 +11,7 @@ router.get("/:id", ensureAuth, transactionsController.getTransaction)
 //get post/accountId to be removed after modal is implemented.
 router.get("/create/:accountId", ensureAuth, transactionsController.getCreateTransactionForm)
 router.post("/post/:accountId/:forecastId", ensureAuth, transactionsController.postTransaction)
+router.post("/create/:accountId/:forecastId", ensureAuth, transactionsController.postTransaction)
 
 //get update transaction form, pre-populate input fields with transaction data
 //get update to be removed after modal is implemented.

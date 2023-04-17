@@ -44,11 +44,10 @@ const dataActions = ['edit', 'convert', 'delete'];
 function renderMainModal(type, action, tileElement = null) {
     if (tileElement) console.log(tileElement)
     try {
-        //set #mainModalTitle
         renderMainModalTitle(type, action)
-        //set #mainModalBody using renderModalBody()
+
         renderMainModalBody(type, action, tileElement)
-        //set #mainModalSubmitButton action/href using setModalSubmit() ?
+        
         setMainModalSubmit()
     } catch (err) {
         console.error(err)
@@ -63,10 +62,10 @@ function renderMainModalTitle(type, action) {
 
 function renderMainModalBody(type, action, infoObj = null) {
     const mainModalBody = mainModal.querySelector('#mainModalBody')
-    // console.log(mainModalBody)
+
     let formElement = null
     let objectId = null
-    switch (action) { //body.appendChild(result)
+    switch (action) {
         case 'create':
             formElement = setCreateForm(type, infoObj)
             break
@@ -80,7 +79,7 @@ function renderMainModalBody(type, action, infoObj = null) {
             formElement = setDeletePrompt(type, infoObj)
             break
     }
-    // console.log('got form element', formElement)
+
     if (formElement.children.length > 0) {
         if (infoObj) {
             if (type === 'account') objectId = infoObj.dataset.accountId
@@ -97,7 +96,7 @@ function renderMainModalBody(type, action, infoObj = null) {
             if (type === 'forecast') objectId = infoObj.dataset.forecastId
         }
         formElement.setAttribute("action", `/${type}/${(action === 'edit') ? 'update' : action}${(objectId) ? '/' + objectId : ''}`)
-        // console.log(formElement)
+
         mainModalBody.appendChild(formElement)
     } else {
         alert("for some reason the modal didn't render a form")
@@ -105,7 +104,6 @@ function renderMainModalBody(type, action, infoObj = null) {
 }
 
 function setMainModalSubmit() {
-    //target the submit button
     mainModalSubmitButton.setAttribute("form", "form1")
     mainModalSubmitButton.setAttribute("value", "Submit")
 }
@@ -127,8 +125,6 @@ function setCreateForm(type, infoObject = null) {
 }
 
 function setCreateAccountForm(valuesObject = null) {
-    // console.log(`hello from setCreateAccountForm`)
-    //generate fields object
     const fields = {
         textInput: {
             label: "Give this account a name",
@@ -156,14 +152,12 @@ function setCreateAccountForm(valuesObject = null) {
             id: "createAccountBalance"
         }
     } else {
-        // console.log('update account', valuesObject)
         fields.textInput.label = "Give this account a new name"
     }
     return renderForm(fields)
 }
 
 function setCreateForecastForm(infoElement = null) {
-    // console.log(`create forecast form`)
     const fields = {
         selectOption: {
             label: "Are you expecting to pay something or to get paid?",
@@ -198,8 +192,6 @@ function setCreateForecastForm(infoElement = null) {
         }
     }
     if (infoElement) {
-        // console.log(`create forecast form`)
-        // console.log(infoElement)
         fields.selectOption.selected = infoElement.querySelector('.forecastAmount').innerText[0] === '+' ? 'debits' : 'credits'
         fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.slice(2)
         fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText
@@ -212,8 +204,6 @@ function setCreateForecastForm(infoElement = null) {
 
 function setCreateTransactionForm(infoElement = null) {
     const accountId = infoElement.dataset.accountId
-    // console.log(`set create transaction form func`)
-    // console.log(infoElement)
     const fields = {
         hiddenInput: {
             name: "account",
@@ -258,12 +248,10 @@ function setCreateTransactionForm(infoElement = null) {
         const category = infoElement.querySelector('.forecastCategory')
         if (category) fields.datalist.value = category.innerText
 
-        // console.log(`create transaction account name`)
         let accountLabel = "For "
         const accountName = infoElement.querySelector('.account-name')
         if (accountName) {
             fields.hiddenInput.label = accountLabel + accountName.innerText
-            // console.log(accountName.innerText)
         }
         else fields.hiddenInput.label = accountLabel + document.querySelector('.accounts-dash').querySelector('.account-name').innerText
     }
@@ -281,30 +269,20 @@ function setCreateTransactionForm(infoElement = null) {
     - setUpdateTransactionForm
 */
 function setUpdateForm(type, infoObj) {
-    //generate fields object
-    //call setForm() w/ fields object
     if (type === 'forecast') return setUpdateForecastForm(infoObj)
     if (type === 'account') return setUpdateAccountForm(infoObj)
     if (type === 'transaction') return setUpdateTransactionForm(infoObj)
 }
 
 function setUpdateAccountForm(infoObj) {
-    //return renderForm(fields)
-    // console.log(`update account form`)
     return setCreateAccountForm(infoObj)
 }
 
 function setUpdateForecastForm(infoObj) {
-    //return renderForm(fields)
-    // console.log(`update forecast form`)
     return setCreateForecastForm(infoObj)
 }
 
 function setUpdateTransactionForm(infoObj) {
-    //return renderForm(fields)
-    // console.log(`update transaction form`)
-    // console.log(infoObj.datalist)
-
     const fields = {
         selectOption: {
             label: "Are you putting money into this account, or spending out of it?",
@@ -360,8 +338,7 @@ function setDeletePrompt(type, tileElement) {
     const paragraph = {
         type
     }
-    // console.log(`setDeletePrompt has Element`)
-    // console.log(tileElement)
+
     const fields = {
         paragraph
     }
@@ -369,10 +346,8 @@ function setDeletePrompt(type, tileElement) {
     if (type === 'forecast') {
         if (tileElement.querySelector('.forecastDate')) paragraph.date = tileElement.querySelector('.forecastDate').innerText
     
-        // for amounts
         if (tileElement.querySelector('.forecastAmount')) paragraph.amount = tileElement.querySelector('.forecastAmount').innerText.slice(1)
 
-        // for categories
         if (tileElement.querySelector('.forecastCategory')) paragraph.category = tileElement.querySelector('.forecastCategory').innerText
         
     }
@@ -393,7 +368,6 @@ function setDeletePrompt(type, tileElement) {
         if (tileElement.querySelector('.transactionAmount')) paragraph.amount = tileElement.querySelector('.transactionAmount').innerText.slice(1)
     }
     
-    //call setMainModalSubmit() to set delete action link
     return renderForm(fields)
 }
 
@@ -469,8 +443,7 @@ function renderForm(fieldsObj) {
     formElement.setAttribute("method", "post")
     
     const {...fields} = fieldsObj
-    // console.log(fields)
-    //set attributes to form
+
     //append fields according to type
     // // render form group
     // // append input field to form group
@@ -478,7 +451,6 @@ function renderForm(fieldsObj) {
     for (const field in fields) {
         switch (field) {
             case 'textInput':
-                //call renderTextInput
                 formElement.appendChild(
                     renderFormGroup(
                         renderFormLabel(fieldsObj[field]),
@@ -487,7 +459,6 @@ function renderForm(fieldsObj) {
                 )
                 break
             case 'numberInput':
-                //call renderNumberInput
                 formElement.appendChild(
                     renderFormGroup(
                         renderFormLabel(fieldsObj[field]),
@@ -496,7 +467,6 @@ function renderForm(fieldsObj) {
                 )
                 break
             case 'dateInput':
-                //call renderDateInput
                 formElement.appendChild(
                     renderFormGroup(
                         renderFormLabel(fieldsObj[field]),
@@ -505,7 +475,6 @@ function renderForm(fieldsObj) {
                 )
                 break
             case 'hiddenInput':
-                //call renderDateInput
                 formElement.appendChild(
                     renderFormGroup(
                         renderFormLabel(fieldsObj[field]),
@@ -514,7 +483,6 @@ function renderForm(fieldsObj) {
                 )
                 break
             case 'selectOption':
-                //call renderSelectOption
                 formElement.appendChild(
                     renderFormGroup(
                         renderFormLabel(fieldsObj[field]),
@@ -530,8 +498,6 @@ function renderForm(fieldsObj) {
                         renderDatalistInput(fieldsObj[field])
                     )
                 )
-                //call renderFormTextInput
-                //call renderDatalist
                 break
             case 'paragraph':
                 formElement.appendChild(
@@ -543,8 +509,6 @@ function renderForm(fieldsObj) {
         }
     }
 
-    // // render form buttons
-    // console.log(formElement)
     return formElement
 }
 
@@ -554,25 +518,22 @@ function renderFormGroup(...elements) {
     elements.forEach(element => {
         if (element) formGroup.appendChild(element)
     })
-    // console.log(formGroup)
     return formGroup
 }
 
 function renderTextInput(fieldObject) {
-    // console.log(fieldObject)
     const {label, selectOptions, ...rest} = fieldObject
     const textInput = document.createElement('input')
     textInput.classList.add("form-control")
     textInput.setAttribute("type", "text")
     textInput.setAttribute("autocomplete", "off")
-    // console.log(rest)
 
     for (const attr in rest) {
         console.log(attr)
         console.log(fieldObject[attr])
         if (fieldObject[attr] != null) textInput.setAttribute(attr, fieldObject[attr])
     }
-    // console.log(textInput)
+
     return textInput
 }
 
@@ -598,7 +559,7 @@ function renderNumberInput(fieldObject) {
     for (const attr in rest) {
         if (fieldObject[attr]) numberInput.setAttribute(attr, fieldObject[attr])
     }
-    // console.log(numberInput)
+
     return numberInput
 }
 
@@ -611,7 +572,7 @@ function renderDateInput(fieldObject) {
     for (const attr in rest) {
         if (fieldObject[attr]) dateInput.setAttribute(attr, fieldObject[attr])
     }
-    // console.log(dateInput)
+
     return dateInput
 }
 
@@ -629,7 +590,7 @@ function renderSelectOptionInput(fieldObject) {
         if (selected && selected == k) optionElement.setAttribute('selected', 'selected')
         selectInput.appendChild(optionElement)
     }
-    // console.log(selectInput)
+
     return selectInput
 }
 
@@ -638,17 +599,17 @@ function renderDatalistInput(fieldObject) {
     const datalistInput = document.createElement('datalist')
     const {id, ...options} = selectOptions
     datalistInput.setAttribute('id', id)
+
     for (const [k,v] of Object.entries(options)) {
         const optionElement = document.createElement('option')
         optionElement.value = v
         datalistInput.appendChild(optionElement)
     }
-    // console.log(datalistInput)
+
     return datalistInput
 }
 
 function renderFormLabel(fieldObject) {
-    //wrap element in label
     const label = document.createElement('label')
     label.setAttribute("for", fieldObject.name)
     label.classList.add("form-label")
@@ -660,12 +621,11 @@ function renderDeleteParagraph(fieldObject) {
     console.log('delete action', fieldObject)
     const paragraph = document.createElement('p')
     paragraph.innerHTML += `Are you sure you want to delete the`
-    //for accounts
+
     if (fieldObject.hasOwnProperty("subType")) paragraph.innerHTML += ` ${fieldObject.subType}`
 
     paragraph.innerHTML += ` ${fieldObject.type}`
 
-    //for accounts
     if (fieldObject.hasOwnProperty("name")) paragraph.innerHTML += ` ${fieldObject.name}`
     
     if (fieldObject.hasOwnProperty("date")) paragraph.innerHTML += ` on ${fieldObject.date}`
@@ -675,8 +635,6 @@ function renderDeleteParagraph(fieldObject) {
     if (fieldObject.hasOwnProperty("amount")) paragraph.innerHTML += ` in the amount of ${fieldObject.amount}`
 
     paragraph.innerHTML += `?`
-
-    console.log(paragraph)
 
     return paragraph
 }

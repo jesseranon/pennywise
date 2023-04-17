@@ -27,8 +27,15 @@ module.exports = {
           model: 'Category'
         }
       })
-      console.log(targetAccount)
-      res.render("account.ejs", { user: req.user, account: targetAccount, formatRelative, addMinutes })
+
+      const user = await User.findOne({
+        _id: req.user._id
+      }).populate({
+        path: 'categories',
+        model: 'Category'
+      })
+      // console.log(targetAccount)
+      res.render("account.ejs", { user: user, account: targetAccount, formatRelative, addMinutes })
     } catch (err) {
       res.redirect("/profile")
     }

@@ -15,7 +15,7 @@ router.post("/create", ensureAuth, accountsController.createAccount)
 router.get("/:id", ensureAuth, accountsController.getAccount)
 
 // delete account
-router.delete("/delete/:id", ensureAuth, accountsController.deleteAccount)
+router.post("/delete/:id", ensureAuth, accountsController.deleteAccount)
 
 // modify account details
 //get updateAccount to be removed after modal is implemented.

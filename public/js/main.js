@@ -15,6 +15,7 @@ const dataActions = ['edit', 'convert', 'delete'];
     if (dash) {
         dash.addEventListener('click', async e => {
             const action = e.target.closest('[data-action]').dataset.action || null
+            console.log(action)
             let tileElement = e.target.closest('[data-type]')
             const type = tileElement.dataset.type
             if (type === 'transaction') {
@@ -78,10 +79,10 @@ function renderMainModalBody(type, action, infoObj = null) {
             formElement = setDeletePrompt(type, infoObj)
             break
     }
-    console.log(formElement)
+    console.log('got form element', formElement)
     if (formElement.children.length > 0) {
         if (infoObj) {
-            if (type === 'account') return
+            if (type === 'account') objectId = infoObj.dataset.accountId
             if (type === 'transaction') {
                 let suffix = ''
                 if (action === 'create') suffix += '/null'
@@ -89,8 +90,8 @@ function renderMainModalBody(type, action, infoObj = null) {
             }
             if (type === 'forecast') objectId = infoObj.dataset.forecastId
         }
-        formElement.setAttribute("action", `${type}/${(action === 'edit') ? 'update' : action}${(objectId) ? '/'+objectId : ''}`)
-        console.log(formElement)
+        formElement.setAttribute("action", `/${type}/${(action === 'edit') ? 'update' : action}${(objectId) ? '/' + objectId : ''}`)
+        // console.log(formElement)
         mainModalBody.appendChild(formElement)
     } else {
         alert("for some reason the modal didn't render a form")
@@ -313,16 +314,28 @@ function setDeletePrompt(type, tileElement) {
     // if (type === 'transaction') id = tileElement.dataset.forecastId
     // const formAction = `${type}/delete/`
     // for dates
-    if (tileElement.querySelector('.forecastDate')) paragraph.date = tileElement.querySelector('.forecastDate').innerText
+    if (type === 'forecast') {
+        if (tileElement.querySelector('.forecastDate')) paragraph.date = tileElement.querySelector('.forecastDate').innerText
     
-    // for amounts
-    if (tileElement.querySelector('.forecastAmount')) paragraph.amount = tileElement.querySelector('.forecastAmount').innerText.slice(1)
+        // for amounts
+        if (tileElement.querySelector('.forecastAmount')) paragraph.amount = tileElement.querySelector('.forecastAmount').innerText.slice(1)
 
-    // for categories
-    if (tileElement.querySelector('.forecastCategory')) paragraph.category = tileElement.querySelector('.forecastCategory').innerText
+        // for categories
+        if (tileElement.querySelector('.forecastCategory')) paragraph.category = tileElement.querySelector('.forecastCategory').innerText
+        
+    }
     
-    return renderForm(fields)
+    if (type === 'account') {
+        console.log('delete account')
+        if (tileElement.querySelector('.accountName')) paragraph.name = tileElement.querySelector('.accountName').innerText
+        
+        if (tileElement.querySelector('.accountType')) paragraph.subType = tileElement.querySelector('.accountType').innerText
+        
+        if (tileElement.querySelector('.accountBalance')) paragraph.amount = tileElement.querySelector('.accountBalance').innerText        
+    }
+    
     //call setMainModalSubmit() to set delete action link
+    return renderForm(fields)
 }
 
 /*
@@ -472,6 +485,7 @@ function renderForm(fieldsObj) {
     }
 
     // // render form buttons
+    console.log(formElement)
     return formElement
 }
 
@@ -481,7 +495,7 @@ function renderFormGroup(...elements) {
     elements.forEach(element => {
         if (element) formGroup.appendChild(element)
     })
-    // console.log(formGroup)
+    console.log(formGroup)
     return formGroup
 }
 
@@ -584,10 +598,11 @@ function renderFormLabel(fieldObject) {
 }
 
 function renderDeleteParagraph(fieldObject) {
+    console.log('delete action', fieldObject)
     const paragraph = document.createElement('p')
     paragraph.innerHTML += `Are you sure you want to delete the`
     //for accounts
-    if (fieldObject.hasOwnProperty("subType")) paragraph.innenrHTML += ` ${fieldObject.subType}`
+    if (fieldObject.hasOwnProperty("subType")) paragraph.innerHTML += ` ${fieldObject.subType}`
 
     paragraph.innerHTML += ` ${fieldObject.type}`
 
@@ -601,6 +616,8 @@ function renderDeleteParagraph(fieldObject) {
     if (fieldObject.hasOwnProperty("amount")) paragraph.innerHTML += ` in the amount of ${fieldObject.amount}`
 
     paragraph.innerHTML += `?`
+
+    console.log(paragraph)
 
     return paragraph
 }

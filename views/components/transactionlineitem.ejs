@@ -22,7 +22,7 @@
 <li class="list-group-item">
     <div class="row d-flex w-100 justify-content-between align-items-center">
         <div class="col-2 d-flex align-items-center justify-content-between">
-            <form action="/transaction/deleteTransaction/<%= transaction._id %>" method="post">
+            <form action="/transaction/delete/<%= transaction._id %>" method="post">
                 <button class="delete-transaction btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
             </form>
             <span><%= addMinutes(transaction.date, offset).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %></span>

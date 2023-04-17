@@ -4,15 +4,17 @@ const forecastsController = require("../controllers/forecasts");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Forecast routes
-router.get('/createForecast', ensureAuth, forecastsController.getCreateForecastForm)
-router.post('/createForecast', ensureAuth, forecastsController.postForecast)
+// router.get('/create', ensureAuth, forecastsController.getCreateForecastForm)
+router.post('/create', ensureAuth, forecastsController.postForecast)
 
-router.get('/updateForecast/:id', ensureAuth, forecastsController.getUpdateForecastForm)
-router.put('/updateForecast/:id', ensureAuth, forecastsController.updateForecast)
+// get updateForecast to be removed after modal is implemented.
+// router.get('/update/:id', ensureAuth, forecastsController.getUpdateForecastForm)
+router.post('/update/:id', ensureAuth, forecastsController.updateForecast)
 
-router.get('/convertForecast/:id', ensureAuth, forecastsController.getForecastToTransactionForm)
-router.post('/convertForecast/:id', ensureAuth, forecastsController.postForecastToTransaction)
+// get convertForecast to be removed after modal is implemented.
+// router.get('/convert/:id', ensureAuth, forecastsController.getForecastToTransactionForm)
+router.post('/convert/:id', ensureAuth, forecastsController.postForecastToTransaction)
 
-router.get('/deleteForecast/:id', ensureAuth, forecastsController.deleteForecast)
+router.post('/delete/:id', ensureAuth, forecastsController.deleteForecast)
 
 module.exports = router

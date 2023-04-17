@@ -10,7 +10,7 @@ module.exports = {
   getAccount: async (req, res) => {
     // this will be used to display the account page of a singular account
     const targetAccountId = req.params.id
-    console.log(targetAccountId)
+
     try {
       const targetAccount = await Account.findOne({
         _id: targetAccountId
@@ -27,8 +27,16 @@ module.exports = {
           model: 'Category'
         }
       })
-      console.log(targetAccount)
-      res.render("account.ejs", { user: req.user, account: targetAccount, formatRelative, addMinutes })
+
+      const user = await User.findOne({
+        _id: req.user._id
+      }).populate({
+        path: 'categories',
+        model: 'Category'
+      })
+
+      // console.log(targetAccount)
+      res.render("account.ejs", { user: user, account: targetAccount, formatRelative, addMinutes })
     } catch (err) {
       res.redirect("/profile")
     }
@@ -102,9 +110,7 @@ module.exports = {
     // will also allow the user to modify the account type,
     // limited other types that share a balanceType of the account
     const targetAccountId = req.params.id
-    const newAccountName = req.body.accountName
-    const newType = req.body.accountType
-    const newBalance = req.body.accountBalance
+    const newAccountName = req.body.createAccountName
     try {
       const targetAccount = await Account.findOne({
         user: req.user._id,
@@ -134,18 +140,6 @@ module.exports = {
         )
         // change the targetAccount name
         targetAccount.name = newAccountName
-      }
-
-      // if targetAccount type is changed,
-      if (targetAccount.type !== newType) {
-        // just change the type.
-        targetAccount.type = newType
-      }
-
-      // if targetAccount currentBalance has been changed
-      if (!targetAccount.debits.length && !targetAccount.credits.length && newBalance) {
-        //update targetAccount currentBalance
-        targetAccount.currentBalance = newBalance
       }
 
       await targetAccount.save()

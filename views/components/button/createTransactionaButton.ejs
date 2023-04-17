@@ -1,7 +1,10 @@
 <% const options = { btn: {} } %>
 <% const btn = options.btn %>
 <% btn.class = 'btn-primary btn-sm' %>
+<% btn["data-bs-toggle"] = "modal" %>
+<% btn["data-bs-target"] = "#mainModal" %>
+<% btn["data-type"] = "transaction" %>
+<% btn["data-action"] = "create" %>
 <% btn.icon = { class: "fa-solid fa-receipt" } %>
-<% href = "/transaction/post/" + accountId %>
 
-<%- include('aButton', { btn, href }) -%>
+<%- include('aButton', { btn }) -%>

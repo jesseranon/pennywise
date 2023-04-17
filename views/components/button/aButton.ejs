@@ -1,7 +1,10 @@
 <a
     class="btn<%= (btn.hasOwnProperty('class')) ? ' ' + btn.class : '' %>"
     role="button"
-    href="<%= href %>"
+    data-bs-toggle="modal"
+    data-bs-target="#mainModal"
+    data-type=<%=  (btn.hasOwnProperty('data-type')) ? btn["data-type"] : '' %>
+    data-action=<%=  (btn.hasOwnProperty('data-action')) ? btn["data-action"] : '' %>
 >
     <% if (btn.hasOwnProperty('icon')) { %>
         <i class="<%= btn.icon.class %>"></i>

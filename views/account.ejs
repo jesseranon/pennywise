@@ -12,33 +12,35 @@
 <% } %>
 
 <% const today = new Date() %>
+
 <% const offset = today.getTimezoneOffset() %>
 
+<%- include('partials/modal') -%>
 <div class="container d-flex flex-column align-items-center">
 
-  <div class="row d-flex justify-content-between my-5 col-sm-12 col-lg-8">
+  <div class="row d-flex justify-content-between my-5 col-sm-12 col-lg-8 accounts-dash" data-type="account" data-account-id="<%= account._id %>">
     <div class="col-8 d-flex flex-column justify-content-between">
       <h2 class="d-flex align-items-center">
         <% if (!accountTransactions.length) { %>
-          <form action="/account/deleteAccount/<%= account._id%>?_method=DELETE" method="POST">
-            <button class="delete-account btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
-          </form>
+          <button type="button" class="btn delete-account" data-bs-toggle="modal" data-bs-target="#mainModal" data-action="delete" aria-label="Delete account">
+            <i class="fa-solid fa-circle-minus"></i>
+          </button>
         <% } %>
-        <%= account.name %> 
-        <form action="updateAccount/<%= account._id %>" method="get">
-          <button class="edit-account btn"><i class="fa-solid fa-pen"></i></button>
-        </form>
+        <span class="accountName account-name"><%= account.name %></span>
+        <button type="button" class="btn edit-account" data-bs-toggle="modal" data-bs-target="#mainModal" data-action="edit" aria-label="Edit account">
+          <i class="fa-solid fa-pen"></i>
+        </button>
       </h2>
-      <p>Account Type: <%= account.type[0].toUpperCase() + account.type.slice(1) %></p>
+      <p>Account Type: <span class="accountType"><%= account.type[0].toUpperCase() + account.type.slice(1) %></span></p>
     </div>
     <div class="col-4 d-flex flex-column justify-content-between align-items-end">
-      <h2><%= user.currency %><%= account.currentBalance %></h2>
+      <h2 class="accountBalance"><%= user.currency %><%= account.currentBalance %></h2>
       <p>Available Balance</p>
     </div>
   </div>
-  <div class="row col-sm-12 col-lg-8">
+  <div class="row col-sm-12 col-lg-8 transactions-dash" data-account-id="<%= account._id %>">
     <p>Transactions <%- include('components/button/createTransactionaButton', {accountId: account._id}) %></p>
-    <ul class="list-group transactionsDash my-2">
+    <ul class="list-group transactions-dash my-2">
       <% if (accountTransactions.length) { %>
         <% for (let i = 0; i < accountTransactions.length; i++) { %>
           <%- include('components/transactionLineItem', {account: account, balanceType: account.balanceType, currency: user.currency, transaction: accountTransactions[i], offset, formatRelative, addMinutes}) -%>
@@ -49,5 +51,10 @@
   </div>
 
 </div>
+
+<script>
+  var categories = <%- JSON.stringify(user.categories.map(cat => cat.name)) %>
+  var accounts = <%- JSON.stringify(user.accounts) %>
+</script>
 
 <%- include('components/footer') -%>

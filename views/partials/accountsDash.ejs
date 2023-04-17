@@ -14,11 +14,11 @@
                     Checking & Savings
                 </h5>
 
-                <ul class="list-group accounts-dash mb-2">
+                <div class="list-group accounts-dash mb-2">
                     <% for(var i=0; i < assets.length; i++) {%>
                         <%- include('../components/accountTile', { account: assets[i], currency: user.currency }) -%>
                     <% } %>
-                </ul>
+                </div>
 
             <% } %>
 

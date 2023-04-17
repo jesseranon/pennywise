@@ -7,18 +7,20 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Account Routes - simplified for now
 // post account
-router.get("/createAccount", ensureAuth, accountsController.getCreateAccountForm)
-router.post("/createAccount", ensureAuth, accountsController.createAccount)
+//get createAccount to be removed after modal is implemented.
+// router.get("/create", ensureAuth, accountsController.getCreateAccountForm)
+router.post("/create", ensureAuth, accountsController.createAccount)
 
 // get account
 router.get("/:id", ensureAuth, accountsController.getAccount)
 
 // delete account
-router.delete("/deleteAccount/:id", ensureAuth, accountsController.deleteAccount)
+router.post("/delete/:id", ensureAuth, accountsController.deleteAccount)
 
 // modify account details
-router.get("/updateAccount/:id", ensureAuth, accountsController.getUpdateAccountForm)
-router.put("/updateAccount/:id", ensureAuth, accountsController.updateAccount)
+//get updateAccount to be removed after modal is implemented.
+router.get("/update/:id", ensureAuth, accountsController.getUpdateAccountForm)
+router.post("/update/:id", ensureAuth, accountsController.updateAccount)
 
 // update account - this doesn't need to be an option i don't think
 

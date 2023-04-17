@@ -1,8 +1,8 @@
 <% const thisBalance = account.currentBalance %>
-<a href="/account/<%= account._id %>">
 
-    <li class="list-group-item account-tile d-flex justify-content-between" id="<%= account._id %>">
-        <div>
+<a href="/account/<%= account._id %>">
+    <li class="list-group-item account-tile d-flex justify-content-between" data-type="account" data-action="read" data-account-id="<%= account._id %>">
+        <div class="account-name">
             <%= account.name %>
         </div>
         <div class="d-flex align-self-center justify-content-between">
@@ -10,9 +10,8 @@
                 <%= currency %><%= thisBalance %>
             </span>
             <span>
-                <%- include('./button/createTransactionaButton', { accountId: account._id }) -%>
+                <%- include('./button/createTransactionaButton') -%>
             </span>
         </div>
     </li>
-
 </a>

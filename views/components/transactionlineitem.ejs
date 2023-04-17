@@ -19,20 +19,20 @@
 
 
 
-<li class="list-group-item">
+<li class="list-group-item" data-type="transaction" data-transaction-id="<%= transaction._id %>">
     <div class="row d-flex w-100 justify-content-between align-items-center">
         <div class="col-2 d-flex align-items-center justify-content-between">
-            <form action="/transaction/delete/<%= transaction._id %>" method="post">
-                <button class="delete-transaction btn" type="submit"><i class="fa-solid fa-circle-minus"></i></button>
-            </form>
-            <span><%= addMinutes(transaction.date, offset).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %></span>
+            <button type="button" class="btn btn-sm delete-account" data-bs-toggle="modal" data-bs-target="#mainModal" data-action="delete" aria-label="Delete transaction">
+                <i class="fa-solid fa-circle-minus"></i>
+            </button>
+            <span class="transactionDate"><%= addMinutes(transaction.date, offset).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric', year: 'numeric' }) %></span>
 
         </div>
         <div class="col-8">
-            <span><%= transaction.category.name %></span>
+            <span class="transactionCategory"><%= transaction.category.name %></span>
         </div>
         <div class="col-2 d-flex align-items-center justify-content-between">
-            <span><%= incDec %><%= currency %><%= transaction.amount %></span>
+            <span class="transactionAmount"><%= incDec %><%= currency %><%= transaction.amount %></span>
             <form action="/transaction/update/<%= transaction._id %>" method="get">
                 <button class="edit-transaction btn btn-primary" type="submit"><i class="fa-solid fa-pen"></i></button>
             </form>

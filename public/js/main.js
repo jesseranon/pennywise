@@ -20,6 +20,7 @@ const dataActions = ['edit', 'convert', 'delete'];
             const type = tileElement.dataset.type
             if (type === 'transaction') {
                 tileElement = e.target.closest('[data-account-id]')
+                if (!tileElement) tileElement = e.target.closest('[data-transaction-id]')
                 renderMainModal(type, action, tileElement)
             } else if (action === 'create') {
                 renderMainModal(type, action)
@@ -85,8 +86,12 @@ function renderMainModalBody(type, action, infoObj = null) {
             if (type === 'account') objectId = infoObj.dataset.accountId
             if (type === 'transaction') {
                 let suffix = ''
-                if (action === 'create') suffix += '/null'
-                objectId = infoObj.dataset.accountId + suffix
+                console.log(infoObj)
+                if (action === 'create') {
+                    suffix += '/null'
+                    objectId = infoObj.dataset.accountId + suffix
+                }
+                else objectId = infoObj.dataset.transactionId
             }
             if (type === 'forecast') objectId = infoObj.dataset.forecastId
         }
@@ -311,14 +316,11 @@ function setDeletePrompt(type, tileElement) {
         type
     }
     console.log(`setDeletePrompt has Element`)
-    console.log(tileElement.dataset)
+    console.log(tileElement)
     const fields = {
         paragraph
     }
-    // let id = null
-    // if (type === 'transaction') id = tileElement.dataset.forecastId
-    // const formAction = `${type}/delete/`
-    // for dates
+
     if (type === 'forecast') {
         if (tileElement.querySelector('.forecastDate')) paragraph.date = tileElement.querySelector('.forecastDate').innerText
     
@@ -331,12 +333,19 @@ function setDeletePrompt(type, tileElement) {
     }
     
     if (type === 'account') {
-        console.log('delete account')
         if (tileElement.querySelector('.accountName')) paragraph.name = tileElement.querySelector('.accountName').innerText
         
         if (tileElement.querySelector('.accountType')) paragraph.subType = tileElement.querySelector('.accountType').innerText
         
         if (tileElement.querySelector('.accountBalance')) paragraph.amount = tileElement.querySelector('.accountBalance').innerText        
+    }
+
+    if (type === 'transaction') {
+        if (tileElement.querySelector('.transactionDate')) paragraph.date = tileElement.querySelector('.transactionDate').innerText
+
+        if (tileElement.querySelector('.transactionCategory')) paragraph.category = tileElement.querySelector('.transactionCategory').innerText
+
+        if (tileElement.querySelector('.transactionAmount')) paragraph.amount = tileElement.querySelector('.transactionAmount').innerText.slice(1)
     }
     
     //call setMainModalSubmit() to set delete action link

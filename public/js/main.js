@@ -15,7 +15,7 @@ const dataActions = ['edit', 'convert', 'delete'];
     if (dash) {
         dash.addEventListener('click', async e => {
             const action = e.target.closest('[data-action]').dataset.action || null
-            console.log(action)
+            // console.log(action)
             let tileElement = e.target.closest('[data-type]')
             const type = tileElement.dataset.type
             if (type === 'transaction') {
@@ -63,7 +63,7 @@ function renderMainModalTitle(type, action) {
 
 function renderMainModalBody(type, action, infoObj = null) {
     const mainModalBody = mainModal.querySelector('#mainModalBody')
-    console.log(mainModalBody)
+    // console.log(mainModalBody)
     let formElement = null
     let objectId = null
     switch (action) { //body.appendChild(result)
@@ -80,7 +80,7 @@ function renderMainModalBody(type, action, infoObj = null) {
             formElement = setDeletePrompt(type, infoObj)
             break
     }
-    console.log('got form element', formElement)
+    // console.log('got form element', formElement)
     if (formElement.children.length > 0) {
         if (infoObj) {
             if (type === 'account') objectId = infoObj.dataset.accountId
@@ -127,7 +127,7 @@ function setCreateForm(type, infoObject = null) {
 }
 
 function setCreateAccountForm(valuesObject = null) {
-    console.log(`hello from setCreateAccountForm`)
+    // console.log(`hello from setCreateAccountForm`)
     //generate fields object
     const fields = {
         textInput: {
@@ -156,7 +156,7 @@ function setCreateAccountForm(valuesObject = null) {
             id: "createAccountBalance"
         }
     } else {
-        console.log('update account', valuesObject)
+        // console.log('update account', valuesObject)
         fields.textInput.label = "Give this account a new name"
     }
     return renderForm(fields)
@@ -198,8 +198,8 @@ function setCreateForecastForm(infoElement = null) {
         }
     }
     if (infoElement) {
-        console.log(`create forecast form`)
-        console.log(infoElement)
+        // console.log(`create forecast form`)
+        // console.log(infoElement)
         fields.selectOption.selected = infoElement.querySelector('.forecastAmount').innerText[0] === '+' ? 'debits' : 'credits'
         fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.slice(2)
         fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText
@@ -212,8 +212,8 @@ function setCreateForecastForm(infoElement = null) {
 
 function setCreateTransactionForm(infoElement = null) {
     const accountId = infoElement.dataset.accountId
-    console.log(`set create transaction form func`)
-    console.log(infoElement)
+    // console.log(`set create transaction form func`)
+    // console.log(infoElement)
     const fields = {
         hiddenInput: {
             name: "account",
@@ -258,12 +258,12 @@ function setCreateTransactionForm(infoElement = null) {
         const category = infoElement.querySelector('.forecastCategory')
         if (category) fields.datalist.value = category.innerText
 
-        console.log(`create transaction account name`)
+        // console.log(`create transaction account name`)
         let accountLabel = "For "
         const accountName = infoElement.querySelector('.account-name')
         if (accountName) {
             fields.hiddenInput.label = accountLabel + accountName.innerText
-            console.log(accountName.innerText)
+            // console.log(accountName.innerText)
         }
         else fields.hiddenInput.label = accountLabel + document.querySelector('.accounts-dash').querySelector('.account-name').innerText
     }
@@ -290,20 +290,20 @@ function setUpdateForm(type, infoObj) {
 
 function setUpdateAccountForm(infoObj) {
     //return renderForm(fields)
-    console.log(`update account form`)
+    // console.log(`update account form`)
     return setCreateAccountForm(infoObj)
 }
 
 function setUpdateForecastForm(infoObj) {
     //return renderForm(fields)
-    console.log(`update forecast form`)
+    // console.log(`update forecast form`)
     return setCreateForecastForm(infoObj)
 }
 
 function setUpdateTransactionForm(infoObj) {
     //return renderForm(fields)
-    console.log(`update transaction form`)
-    console.log(infoObj.datalist)
+    // console.log(`update transaction form`)
+    // console.log(infoObj.datalist)
 
     const fields = {
         selectOption: {
@@ -346,7 +346,6 @@ function setUpdateTransactionForm(infoObj) {
         fields.numberInput.value = infoObj.querySelector('.forecastAmount').innerText.slice(2)
         fields.datalist.value = infoObj.querySelector('.forecastCategory').innerText
     }
-    
 
     return renderForm(fields)
 }
@@ -361,8 +360,8 @@ function setDeletePrompt(type, tileElement) {
     const paragraph = {
         type
     }
-    console.log(`setDeletePrompt has Element`)
-    console.log(tileElement)
+    // console.log(`setDeletePrompt has Element`)
+    // console.log(tileElement)
     const fields = {
         paragraph
     }
@@ -545,7 +544,7 @@ function renderForm(fieldsObj) {
     }
 
     // // render form buttons
-    console.log(formElement)
+    // console.log(formElement)
     return formElement
 }
 
@@ -555,18 +554,18 @@ function renderFormGroup(...elements) {
     elements.forEach(element => {
         if (element) formGroup.appendChild(element)
     })
-    console.log(formGroup)
+    // console.log(formGroup)
     return formGroup
 }
 
 function renderTextInput(fieldObject) {
-    console.log(fieldObject)
+    // console.log(fieldObject)
     const {label, selectOptions, ...rest} = fieldObject
     const textInput = document.createElement('input')
     textInput.classList.add("form-control")
     textInput.setAttribute("type", "text")
     textInput.setAttribute("autocomplete", "off")
-    console.log(rest)
+    // console.log(rest)
 
     for (const attr in rest) {
         console.log(attr)
@@ -699,84 +698,3 @@ function resetMainModal() {
     mainModalSubmitButton.removeAttribute("form")
     mainModalSubmitButton.removeAttribute("value")
 }
-
-/** DEPRECATE BELOW THIS LINE WHEN FINISHED **/
-
-// MODULAR FORM FIELDS RENDER FUNCTIONS TESTING
-
-// const testFormFieldsObject = {
-//     formAction: "#",
-//     formMethod: "GET",
-//     textInput: {
-//         label: "Name",
-//         selectOptions: null,
-//         name: "createAccountName",
-//         id: "createAccountName"
-//     },
-//     selectOption: {
-//         label: "Account Type",
-//         name: "createAccountType",
-//         id: "createAccountType",
-//         options: {
-//             savings: null,
-//             checking: null,
-//             cash: null,
-//             "credit-card": "Credit Card",
-//             loan: null
-//         }
-//     },
-//     numberInput: {
-//         label: "Beginning Balance",
-//         name: "createAccountBalance",
-//         id: "createAccountBalance"
-//     }
-// }
-
-// const testFormFieldsObject2 = {
-//     formAction: "#",
-//     formMethod: "GET",
-//     datalist: {
-//         label: "Choose Category",
-//         selectOptions: Object.assign({
-//             id: "categories"
-//             },
-//             categories
-//         ),
-//         name: "category",
-//         id: "category",
-//         list: "categories",
-
-//     }
-// }
-
-// renderForm(testFormFieldsObject2)
-
-// // DELETE MODAL
-// const deleteForecastButtons = document.querySelectorAll('.delete-forecast')
-
-// const deleteModal = document.querySelector('#deleteModal')
-
-// const deleteModalTextDocType = deleteModal.querySelector('#deleteModalTextDocType')
-// const deleteModalTextDate = deleteModal.querySelector('#deleteModalTextDate')
-// const deleteModalTextCategory = deleteModal.querySelector('#deleteModalTextCategory')
-// const deleteModalTextAmount = deleteModal.querySelector('#deleteModalTextAmount')
-// const deleteModalDeleteButton = deleteModal.querySelector('#deleteModalDeleteBtn')
-
-// const deleteModalText = [deleteModalTextDocType, deleteModalTextDate, deleteModalTextCategory, deleteModalTextAmount]
-
-// deleteForecastButtons.forEach(b => {
-//     b.addEventListener('click', e => {
-//         // get forecast info
-//         const clickedForecast =  e.target.closest('.forecast-tile')
-//         const forecastDate = clickedForecast.querySelector('.forecastDate').innerText
-//         const forecastCategory = clickedForecast.querySelector('.forecastCategory').innerText
-//         const forecastAmount = clickedForecast.querySelector('.forecastAmount').innerText
-//         const forecastId = clickedForecast.getAttribute('data-forecast-id')
-//         // populate spans in modal with forecast info
-//         deleteModalTextDocType.innerText = `forecast`
-//         deleteModalTextDate.innerText = forecastDate
-//         deleteModalTextCategory.innerText = forecastCategory
-//         deleteModalTextAmount.innerText = forecastAmount
-//         deleteModalDeleteButton.setAttribute('href', `/forecasts/deleteForecast/${forecastId}`)
-//     })
-// })

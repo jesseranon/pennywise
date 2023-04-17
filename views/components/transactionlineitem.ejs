@@ -33,9 +33,9 @@
         </div>
         <div class="col-2 d-flex align-items-center justify-content-between">
             <span class="transactionAmount"><%= incDec %><%= currency %><%= transaction.amount %></span>
-            <form action="/transaction/update/<%= transaction._id %>" method="get">
-                <button class="edit-transaction btn btn-primary" type="submit"><i class="fa-solid fa-pen"></i></button>
-            </form>
+            <button type="button" class="btn btn-secondary btn-sm delete-account" data-bs-toggle="modal" data-bs-target="#mainModal" data-action="edit" aria-label="Edit transaction">
+                <i class="fa-solid fa-pen"></i>
+            </button>
         </div>
     </div>
 </li>

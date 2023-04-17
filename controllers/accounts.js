@@ -36,7 +36,6 @@ module.exports = {
       })
 
       // console.log(targetAccount)
-      // console.log(targetAccount)
       res.render("account.ejs", { user: user, account: targetAccount, formatRelative, addMinutes })
     } catch (err) {
       res.redirect("/profile")

@@ -302,7 +302,43 @@ function setUpdateForecastForm(infoObj) {
 function setUpdateTransactionForm(infoObj) {
     //return renderForm(fields)
     console.log(`update transaction form`)
-    return setCreateTransactionForm(infoObj)
+    console.log(infoObj)
+
+    const fields = {
+        selectOption: {
+            label: "Are you putting money into this account, or spending out of it?",
+            name: "accountingType",
+            id: "accountingType",
+            options: {
+                debits: "deposit/pay down",
+                credits: "spend"
+            },
+            selected: null
+        },
+        numberInput: {
+            label: "How much?",
+            name: "amount",
+            id: "amount"
+        },
+        datalist: {
+            label: "Which category is this for?",
+            selectOptions: Object.assign(
+                {
+                    id: "categories"
+                },
+                categoriesObj
+            ),
+            name: "category",
+            id: "category",
+            list: "categories"
+        }
+    }
+
+    fields.selectOption.value = infoObj.querySelector('.transactionCategory').innerText
+    fields.numberInput.value = infoObj.querySelector('.transactionAmount').innerText.slice(2)
+    fields.datalist.value = infoObj.querySelector('.transactionCategory').innerText
+
+    return renderForm(fields)
 }
 
 /*

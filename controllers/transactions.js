@@ -303,7 +303,7 @@ module.exports = {
 
             await userDoc.save()
 
-            res.redirect("/profile")
+            res.redirect(req.get('referer'))
         } catch (err) {
             console.error(err)
             res.redirect("/profile")

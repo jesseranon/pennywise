@@ -19,8 +19,8 @@ const dataActions = ['edit', 'convert', 'delete'];
             let tileElement = e.target.closest('[data-type]')
             const type = tileElement.dataset.type
             if (type === 'transaction') {
-                tileElement = e.target.closest('[data-account-id]')
-                if (!tileElement) tileElement = e.target.closest('[data-transaction-id]')
+                if (action === 'create') tileElement = e.target.closest('[data-account-id]')
+                else if (action === 'delete') tileElement = e.target.closest('[data-transaction-id]')
                 renderMainModal(type, action, tileElement)
             } else if (action === 'create') {
                 renderMainModal(type, action)
@@ -91,6 +91,7 @@ function renderMainModalBody(type, action, infoObj = null) {
                     suffix += '/null'
                     objectId = infoObj.dataset.accountId + suffix
                 }
+
                 else objectId = infoObj.dataset.transactionId
             }
             if (type === 'forecast') objectId = infoObj.dataset.forecastId
@@ -199,7 +200,7 @@ function setCreateForecastForm(infoElement = null) {
     if (infoElement) {
         console.log(`create forecast form`)
         console.log(infoElement)
-        // fields.selectOption.value = valuesObject.accountingType < needs to add selected attribute
+        fields.selectOption.selected = infoElement.querySelector('.forecastAmount').innerText[0] === '+' ? 'debits' : 'credits'
         fields.numberInput.value = infoElement.querySelector('.forecastAmount').innerText.slice(2)
         fields.datalist.value = infoElement.querySelector('.forecastCategory').innerText
 
@@ -302,7 +303,7 @@ function setUpdateForecastForm(infoObj) {
 function setUpdateTransactionForm(infoObj) {
     //return renderForm(fields)
     console.log(`update transaction form`)
-    console.log(infoObj)
+    console.log(infoObj.datalist)
 
     const fields = {
         selectOption: {
@@ -334,9 +335,18 @@ function setUpdateTransactionForm(infoObj) {
         }
     }
 
-    fields.selectOption.value = infoObj.querySelector('.transactionCategory').innerText
-    fields.numberInput.value = infoObj.querySelector('.transactionAmount').innerText.slice(2)
-    fields.datalist.value = infoObj.querySelector('.transactionCategory').innerText
+    if (infoObj.dataset.type === 'transaction') {
+        fields.selectOption.selected = infoObj.querySelector('.transactionAmount').innerText[0] === '+' ? 'debits' : 'credits'
+        fields.numberInput.value = infoObj.querySelector('.transactionAmount').innerText.slice(2)
+        fields.datalist.value = infoObj.querySelector('.transactionCategory').innerText
+    }
+
+    if (infoObj.dataset.type === 'forecast') {
+        fields.selectOption.selected = infoObj.querySelector('.forecastAmount').innerText[0] === '+' ? 'debits' : 'credits'
+        fields.numberInput.value = infoObj.querySelector('.forecastAmount').innerText.slice(2)
+        fields.datalist.value = infoObj.querySelector('.forecastCategory').innerText
+    }
+    
 
     return renderForm(fields)
 }

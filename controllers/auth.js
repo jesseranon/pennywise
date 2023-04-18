@@ -81,6 +81,7 @@ exports.postSignup = async (req, res, next) => {
     req.flash("errors", validationErrors);
     return res.redirect("../signup");
   }
+  
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
   });

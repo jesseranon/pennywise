@@ -8,7 +8,7 @@ const format = require('date-fns/format')
 
 module.exports = {
     getProfile: async (req, res) => {
-
+        console.log(req.user.id)
         try {
             const user = await User.findOne({ _id: req.user.id })
                 .populate('accounts')

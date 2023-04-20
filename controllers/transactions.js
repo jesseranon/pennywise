@@ -18,11 +18,11 @@ module.exports = {
                 .populate('categories')
                 .populate('accounts')
             const account = user.accounts.filter(account => account._id == accountId)[0]
-            console.log(`transaction form requested for account ${req.params.accountId}`)
-            console.log(account)
+            // console.log(`transaction form requested for account ${req.params.accountId}`)
+            // console.log(account)
             res.render("transactionForm.ejs", {user: user, mode: 'create', account: account})
         } catch (err) {
-            console.error(err)
+            // console.error(err)
             res.redirect("/profile")
         }
     },
@@ -32,7 +32,7 @@ module.exports = {
         const userId = req.user.id
         try {
             //stuff
-            console.log(`hello from getUpdateTransactionForm`)
+            // console.log(`hello from getUpdateTransactionForm`)
             const transaction = await Transaction.findOne({
                 user: userId,
                 _id: transactionId
@@ -49,7 +49,7 @@ module.exports = {
             // console.log(transaction)
             res.render('transactionForm.ejs', {user: transaction.user,  mode: 'edit', transaction})
         } catch (err) {
-            console.error(err)
+            // console.error(err)
             res.redirect("/profile")
         }
     },
@@ -57,12 +57,12 @@ module.exports = {
     //will have to save Account in order to save transactions
     getTransaction: async (req, res) => {
         //display a single transaction's details
-        console.log(`transaction details requested for transaction ${req.params.id}`)
+        // console.log(`transaction details requested for transaction ${req.params.id}`)
     },
     // TODO: re-order create, update, delete functions
     updateTransaction: async (req, res) => {
         //modify a single transaction's details
-        console.log(`transaction modification requested for transaction ${req.params.transactionId}`)
+        // console.log(`transaction modification requested for transaction ${req.params.transactionId}`)
         try {
             const userId = req.user._id
 
@@ -81,7 +81,7 @@ module.exports = {
             if (originalCategory != newCategory) {
                 // run categoriesController.checkCategory on newCategory
                 // set targetTransaction.category to newCategory._id
-                console.log(`category has changed from ${originalCategory} to ${newCategory}`)
+                // console.log(`category has changed from ${originalCategory} to ${newCategory}`)
                 const foundCategory = await categoriesController.checkCategory(userId, newCategory)
                 targetTransaction.category = foundCategory._id
                 // await targetTransaction.save()
@@ -103,8 +103,8 @@ module.exports = {
                 targetTransaction.amount = newAmount
                 // save targetTransaction
                 await targetTransaction.save()
-                console.log(`amount has changed from ${originalAmount} to ${newAmount}.`)
-                console.log(`a difference of ${amountChange}`)
+                // console.log(`amount has changed from ${originalAmount} to ${newAmount}.`)
+                // console.log(`a difference of ${amountChange}`)
                 // find accounts affected by this transaction change
                 const accounts = Account.find({
                     user: userId,
@@ -116,13 +116,12 @@ module.exports = {
 
                 accounts.then(accounts => {
                     accounts.forEach(account => {
-                        console.log(account.currentBalance)
+                        // console.log(account.currentBalance)
                         const accountType = account.balanceType
-                        const accountAction = (account.debits.find(d => d === targetTransaction._id.toString()) ? 'debits' : 'credits')
-                        
+                        const accountAction = (account.debits.find(d => d == targetTransaction._id.toString()) ? 'debits' : 'credits')
                         if (accountType === 'asset' && accountAction === 'credits') amountChange = -amountChange
                         if (accountType === 'liability' && accountAction === 'debits') amountChange = -amountChange
-
+                        // console.log(`account type`, accountType, `account action`, accountAction, account.currentBalance, amountChange)
                         const newBalance = module.exports.incrementAccountCurrentBalance(account.currentBalance, amountChange)
                         account.currentBalance = newBalance
 
@@ -142,8 +141,8 @@ module.exports = {
         const targetTransactionId = req.params.id
         const userId = req.user._id
 
-        console.log(`transaction delete requested for transaction ${req.params.id}`)
-        console.log(`user: ${req.user._id}`)
+        // console.log(`transaction delete requested for transaction ${req.params.id}`)
+        // console.log(`user: ${req.user._id}`)
         try {
             const accounts = Account.find({
                 user: userId,
@@ -166,20 +165,21 @@ module.exports = {
             // console.log(`target transaction amount: ${transactionAmount}`)
 
             accounts.then(accounts => {
-                console.log(`hello from transactionsController.deleteTransaction - accounts promise`)
+                // console.log(`hello from transactionsController.deleteTransaction - accounts promise`)
                 accounts.forEach(async account => {
-                    console.log(`Account: ${account._id}`)
-                    console.log(`Current balance: ${account.currentBalance}`)
+                    // console.log(`Account: ${account._id}`)
+                    // console.log(`Transaction: ${transactionId}`)
+                    // console.log(`Current balance: ${account.currentBalance}`)
                     // console.log('debits', account.debits)
                     // console.log('credits', account.credits)
-                    console.log(`transaction amount reversing: ${transactionAmount}`)
-                    let transactionType = (account.debits.find(d => d._id == targetTransactionId) ? 'debits' : 'credits')
-                    console.log(`running find on account debits for targetTransactionId`)
-                    console.log(account.debits.find(d => d._id == targetTransactionId))
-                    console.log(`transaction type`, transactionType)
+                    // console.log(account.debits.find(d => d._id == targetTransactionId))
+                    let transactionType = (account.debits.find(d => d._id == targetTransactionId.toString()) ? 'debits' : 'credits')
+                    // console.log(`running find on account debits for targetTransactionId`)
+                    // console.log(account.debits.find(d => d._id == targetTransactionId))
+                    // console.log(`transaction type`, transactionType)
                     let accountCurrentBalance = account.currentBalance
                     const accountType = account.balanceType
-                    console.log(`account type: ${accountType}`)
+                    // console.log(`account type: ${accountType}`)
 
                     // 1. remove from any accounts that contain it in their debits or credits
                     if (transactionType === 'debits') {
@@ -191,16 +191,16 @@ module.exports = {
                     // // 1.5 increment/decrement account by transaction amount
                     if (accountType === 'asset') {
                     //     // inc/dec by transaction amount
-                        console.log(`account is an asset account`)
+                        // console.log(`account is an asset account`)
                         if (transactionType === 'debits') {
-                            console.log(`deleting this transaction should reduce the currentBalance`)
+                            // console.log(`deleting this transaction should reduce the currentBalance`)
                             account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
                         } else {
-                            console.log(`deleting this transaction should increase the currentBalance`)
+                            // console.log(`deleting this transaction should increase the currentBalance`)
                             account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
                         }
                     } else {
-                        console.log(`account is a liability account`)
+                        // console.log(`account is a liability account`)
                         if (transactionType === 'debit') account.currentBalance = Number(accountCurrentBalance) + Number(transactionAmount)
                         else account.currentBalance = Number(accountCurrentBalance) - Number(transactionAmount)
                     }
@@ -208,7 +208,7 @@ module.exports = {
                     await account.save()
                 })
             }).catch(err => {
-                console.log(err)
+                // console.log(err)
                 res.redirect(req.get('referer'))
             })
 
@@ -232,14 +232,14 @@ module.exports = {
             res.redirect(req.get('referer'))
 
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             res.redirect("/profile")
         }
     },
     // TODO: rename to createTransaction
     postTransaction: async (req, res) => {
-        console.log(`hello from postTransaction in transactions controller`)
-        console.log(req.body)
+        // console.log(`hello from postTransaction in transactions controller`)
+        // console.log(req.body)
 
         try {
             const accountAction = req.body.accountingType
@@ -294,7 +294,7 @@ module.exports = {
             if (req.params.forecastId != 'null') {
                 const forecastId = req.params.forecastId
                 userDoc.forecasts = userDoc.forecasts.filter(f => f != forecastId)
-                console.log(userDoc.forecasts)
+                // console.log(userDoc.forecasts)
                 await Forecast.findOneAndDelete({
                     user: user,
                     _id: forecastId
@@ -305,14 +305,14 @@ module.exports = {
 
             res.redirect(req.get('referer'))
         } catch (err) {
-            console.error(err)
+            // console.error(err)
             res.redirect("/profile")
         }
     },
     postTransactionToAccount: async (accountId, transactionId, userId, accountAction = 'debits') => {
         // helper function to post transactionId to account.debits/account.credits
         // calls the helper function to increment account.currentBalance
-        console.log(`postTransactionToAccount function`)
+        // console.log(`postTransactionToAccount function`)
         try {
             const accountDoc = await Account.findOne({
                 user: userId,
@@ -344,7 +344,7 @@ module.exports = {
 
             await accountDoc.save()
         } catch (err) {
-            console.log(err)
+            // console.log(err)
         }
     },
     incrementAccountCurrentBalance: (accountCurrentBalance, incrementNumber) => {

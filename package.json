@@ -4,7 +4,7 @@
   "description": "Simple personal finance",
   "main": "server.js",
   "scripts": {
-    "start": "ls views/ -a",
+    "start": "ls views/ -R",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },

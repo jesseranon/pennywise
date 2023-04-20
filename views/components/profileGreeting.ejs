@@ -1,4 +1,8 @@
+<% const today = new Date() %>
+
+<% const offset = today.getTimezoneOffset() %>
+
 <div class="d-flex justify-content-between">
     <h4>Hello, <strong><%= user.userName[0].toUpperCase() + user.userName.slice(1).toLowerCase() %></strong>.</h4>
-    <h4>It is <strong>March 27, 2023</strong>.</h4>
+    <h4>It is <strong><%= addMinutes(today, offset).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }) %></strong>.</h4>
 </div>

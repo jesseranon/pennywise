@@ -23,7 +23,7 @@ body {
     list-style-type: none
 }
 
-li[data-create="forecast"] {
+.forecast-tile, .account-tile {
     cursor: pointer;
 }
 

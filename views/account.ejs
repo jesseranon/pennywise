@@ -43,7 +43,7 @@
     <ul class="list-group transactions-dash my-2">
       <% if (accountTransactions.length) { %>
         <% for (let i = 0; i < accountTransactions.length; i++) { %>
-          <%- include('components/transactionLineItem', {account: account, balanceType: account.balanceType, currency: user.currency, transaction: accountTransactions[i], offset, formatRelative, addMinutes}) -%>
+          <%- include('components/transactionlineitem', {account: account, balanceType: account.balanceType, currency: user.currency, transaction: accountTransactions[i], offset, formatRelative, addMinutes}) -%>
         <% } %>
       <% } %>
     </ul>

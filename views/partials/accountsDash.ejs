@@ -16,7 +16,7 @@
 
                 <div class="list-group accounts-dash mb-2">
                     <% for(var i=0; i < assets.length; i++) {%>
-                        <%- include('views/components/accounttile.ejs', { account: assets[i], currency: user.currency }) -%>
+                        <%- include('../components/accounttile.ejs', { account: assets[i], currency: user.currency }) -%>
                     <% } %>
                 </div>
 
@@ -30,7 +30,7 @@
 
                 <ul class="list-group accounts-dash mb-2">
                     <% for(var i=0; i < liabilities.length; i++) {%>
-                        <%- include('views/components/accounttile.ejs', { account: liabilities[i], currency: user.currency }) -%>
+                        <%- include('../components/accounttile.ejs', { account: liabilities[i], currency: user.currency }) -%>
                     <% } %>
                 </ul>
 
@@ -39,7 +39,7 @@
         <% } %>
         
         <ul class="list-group accounts-dash">
-            <%- include('views/components/createAccountTile.ejs') -%>
+            <%- include('../components/createAccountTile.ejs') -%>
         </ul>
 
 </div>

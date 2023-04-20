@@ -314,7 +314,7 @@ function setUpdateTransactionForm(infoObj) {
     }
 
     if (infoObj.dataset.type === 'transaction') {
-        fields.selectOption.selected = infoObj.querySelector('.transactionAmount').innerText[0] === '+' ? 'debits' : 'credits'
+        delete fields.selectOption
         fields.numberInput.value = infoObj.querySelector('.transactionAmount').innerText.slice(2)
         fields.datalist.value = infoObj.querySelector('.transactionCategory').innerText
     }

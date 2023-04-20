@@ -21,7 +21,7 @@ module.exports = {
                         model: 'Category'
                     }
                 })
-
+            console.log(user)
             const items = {
                 user,
                 formatRelative: formatRelative,

@@ -13,7 +13,7 @@ module.exports = {
       return next();
     } else {
       console.log(`ensureGuest authenticated`)
-      res.redirect("/");
+      res.redirect("/profile");
     }
   },
 };

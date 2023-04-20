@@ -27,7 +27,7 @@
                             <% } else { %>
                                 <% runningTotal -= Number(currentForecast.amount) %>
                             <% } %>
-                            <%- include('../components/forecastTile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes, runningTotal: parseFloat(runningTotal).toFixed(2) }) -%>
+                            <%- include('../components/forecasttile', {currentForecast: sortedForecasts[i], currency: user.currency, today: today, offset: offset, formatRelative: formatRelative, addMinutes: addMinutes, runningTotal: parseFloat(runningTotal).toFixed(2) }) -%>
                         <% } %>
                     <% } %>
                 </div>

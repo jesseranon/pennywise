@@ -58,9 +58,11 @@ exports.logout = (req, res) => {
 };
 
 exports.getSignup = (req, res) => {
-  // if (req.user) {
-  //   return res.redirect("/profile");
-  // }
+  console.log(`getSignup`)
+  if (req.user) {
+    console.log(`redirecting to profile`)
+    return res.redirect("/profile");
+  }
   res.render("signup", {
     title: "Create Account",
   });

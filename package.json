@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
-  "author": "",
+  "author": "Jesse Ranon",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
